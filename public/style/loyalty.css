@@ -23,8 +23,8 @@
 }
 
 .container {
-    width: 1000px;
-    height: 1000px;
+    width: 900px;
+    height: 600px;
     margin: 50px;
     ;
     background: var(--loyalty-app-color);
@@ -42,8 +42,11 @@
 .app {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
     width: 50%;
-    background: aliceblue;
+    /* background: aliceblue; */
 }
 
 .titlebar {
@@ -98,8 +101,8 @@
     margin-left:5px;
     text-transform: uppercase;
     font-weight:bold;
-    font-size:12px;
-    line-height: 18px;
+    font-size:16px;
+    line-height: 20px;
     word-spacing: 2px;
     color:var(--loyalty-button-color);
 }
@@ -120,4 +123,30 @@
     text-transform: uppercase;
     font-weight:bold ;
     font-size: 14px;
+}
+
+.frame{
+    height:100%;
+    width:70%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border:10px solid var(--loyalty-phone-color);
+}
+
+.sensors{
+width:50%;
+height:3%;
+background:var(--loyalty-phone-color);
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+}
+
+.view{
+
+}
+
+.mobilenav{
+    
 }
