@@ -1,0 +1,86 @@
+:root {
+    --loyalty-background-color: white;
+    --loyalty-app-color: white;
+    --loyalty-text-color: #494A4B;
+    --loyalty-button-color: #FF7E00;
+    --loyalty-highlight-color: #FF002E;
+    --loyalty-phone-color: #39687E;
+}
+
+.loyalty {
+    padding: 0;
+    margin: 0;
+    background-color: var(--loyalty-background-color);
+    /* #F5F8FA; #33729b; #9f805e; */
+    /*    font-family: 'Open Sans', sans-serif;*/
+    font-family: 'IBM Plex Sans', sans-serif;
+    /* font-family: 'Questrial', sans-serif; */
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color:var(--loyalty-text-color);
+}
+
+.container {
+    width: 1000px;
+    height: 1000px;
+    margin: 50px;
+    ;
+    background: var(--loyalty-app-color);
+    display: flex;
+    flex-direction: row;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding-right:50px;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    background: aliceblue;
+}
+
+.titlebar {
+    display: flex;
+    flex-direction: row;
+}
+
+.logo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.icon {
+    width: 50px;
+}
+
+.title{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin:10px;
+    text-transform: uppercase;
+    font-weight:bold ;
+}
+
+.about{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin:10px;
+    text-transform: uppercase;
+    font-weight:normal;
+    font-size:14px;
+}
