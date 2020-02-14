@@ -2,13 +2,11 @@
 
 <head>
     <meta charset="utf-8">
-
     <title>Example Loyalty - Microservice Example on OpenShift V4</title>
     <meta name="description" content="A simulated mobile app that triggers a JEE backend on Kube">
     <meta name="author" content="Anton McConville">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style/loyalty.css?v=1.0">
-
 </head>
 
 <body class="loyalty">
@@ -48,19 +46,83 @@
                 <div class="logo"><img class="icon" src="./images/admin.svg"></div>
                 <div class="linktext">Admin view</div>
             </div>
-
-
-
         </div>
         <div class="app">
             <div class="frame">
                 <div class="sensors"></div>
-                <div class="view"></div>
+                <div class="view">
+                    <div class="viewtitle">Events</div>
+                    <welcome-element text="Your card validation code (CVC)
+                        is an extra security feature — it is the last 3 or 4 numbers on the
+                        back of your card."></welcome-element>
+                </div>
                 <div class="mobilenav"></div>
             </div>
         </div>
     </div>
 </body>
+
+<template id="welcomeview">
+    <style>
+        .welcomeview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .city {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .citylogo {
+            height: 200px;
+        }
+
+        .cityname {
+            text-transform: uppercase;
+            font-weight: bold;
+            text-size: 10px;
+            font-family: inherit;
+        }
+
+        .blurb {
+            width: 160px;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 20px;
+            line-height: 16px;
+            color: var(--loyalty-highlight-color);
+        }
+
+        .signup {
+            width: 120px;
+            height: 30px;
+            border-radius: 4px;
+            background: var(--loyalty-button-color);
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin: 30px;
+            outline: 0;
+        }
+    </style>
+    <div class="welcomeview">
+        <div class="city">
+            <img class="citylogo" src="../images/newyork.svg">
+            <div class="cityname">New York</div>
+        </div>
+        <button class="signup">SIGN UP</button>
+        <div class="blurb">THIS IS A SIMULATED LOYALTY APP TO HIGHLIGHT PRIVACY CONSIDERATIONS WHEN BUILDING CLOUD
+            APPLICATIONS. FOR DEMO PURPOSES ONLY</div>
+    </div>
+</template>
+
+
 <script src="./javascript/loyalty.js"></script>
+<script src="./javascript/welcome.js"></script>
 
 </html>

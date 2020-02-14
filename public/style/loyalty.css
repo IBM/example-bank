@@ -128,7 +128,7 @@
 .frame{
     height:100%;
     width:70%;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -144,9 +144,24 @@ border-bottom-right-radius: 10px;
 }
 
 .view{
+    height:100%;
+}
 
+.viewtitle{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .mobilenav{
-    
+    height:100px;
+    width:100%;
+    background: aliceblue;
 }
+
+
