@@ -25,8 +25,7 @@
 .container {
     width: 900px;
     height: 600px;
-    margin: 50px;
-    ;
+    margin: 70px;
     background: var(--loyalty-app-color);
     display: flex;
     flex-direction: row;

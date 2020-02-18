@@ -7,6 +7,8 @@
     <meta name="author" content="Anton McConville">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style/loyalty.css?v=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 
 <body class="loyalty">
@@ -93,9 +95,9 @@
             padding: 10px;
             line-height: 16px;
             color: var(--loyalty-highlight-color); */
-            font-size:10px;
-            margin:20px;
-            width:160px;
+            font-size: 10px;
+            margin: 20px;
+            width: 160px;
         }
 
         .signup {
@@ -189,9 +191,9 @@
             padding: 10px;
             line-height: 16px;
             color: var(--loyalty-highlight-color); */
-            font-size:10px;
-            margin:20px;
-            width:160px;
+            font-size: 10px;
+            margin: 20px;
+            width: 160px;
         }
 
         .signup {
@@ -228,14 +230,14 @@
             font-size: 10px;
         }
 
-        .checkbox{
+        .checkbox {
             margin-right: 10px;
         }
 
-        .tos{
-            font-size:10px;
-            margin:20px;
-            width:160px;
+        .tos {
+            font-size: 10px;
+            margin: 20px;
+            width: 160px;
         }
     </style>
     <div class="loginview">
@@ -264,19 +266,194 @@
         </div>
 
         <div class="gdprcheck">
-            <input class="checkbox" type="checkbox" id="gdprcheck" name="gdpr" value="false">
+            <input class="checkbox" type="checkbox" id="gdprcheck" name="gdpr" value="false" onclick="hitBox()">
             <label class="checktext">I CONSENT TO MY DATA BEING USED TO GATHER METRICS ABOUT EXAMPLE LOYALTY EVENTS.
                 EXAMPLE LOYALTY WILL NOT SHARE THIS DATA.</label>
         </div>
 
-        <button class="signup" onclick="create()">Create Account</button>
+        <button class="signup" id="createAccountButton" onclick="create()">Create Account</button>
 
         <div class="tos">BY CREATING AN ACCOUNT
-            YOU AGREE TO EXAMPLE 
+            YOU AGREE TO EXAMPLE
             LOYALTY’S TERMS OF SERVICE</div>
+    </div>
+</template>
 
-        
 
+
+
+<template id="accountview">
+    <style>
+        .accountview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .identity {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .identityblock {
+            display: flex;
+            flex-direction: row;
+            height: 30px;
+        }
+
+        .idpart {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+            /* justify-content: left; */
+            align-content: left;
+            width: 100px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #D8D8D8;
+            font-weight: bold;
+        }
+
+        .idinfo {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+            /* justify-content: left; */
+            align-content: left;
+            width: 100px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #494A4B;
+            font-weight: bold;
+        }
+
+        .blurb {
+            /* width: 120px;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 10px;
+            line-height: 16px;
+            color: var(--loyalty-highlight-color); */
+            font-size: 10px;
+            margin: 20px;
+            width: 160px;
+        }
+
+        .signup {
+            width: 70px;;
+            height: 30px;
+            border-radius: 4px;
+            background: var(--loyalty-button-color);
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin: 10;
+            outline: 0;
+            font-size: 9px;
+            text-transform: uppercase;
+        }
+
+        .viewtitle {
+            display: flex;
+            flex-direction: row;
+            height: 70px;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .countstack {
+            display: flex;
+            flex-direction: column;
+            width: 80px;
+            margin: 10px;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+
+        .count {
+            font-size: 50px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .data {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .countlabel {
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .dashboard {
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            width: 100%;
+            border-bottom: 1px solid #EDEDED;
+        }
+
+        .tos {
+            font-size: 10px;
+            margin: 20px;
+            width: 160px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .accountbuttons {
+            width: 70px;
+            height: 30px;
+            border-radius: 4px;
+            background: var(--loyalty-button-color);
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin: 10px;
+        }
+    </style>
+    <div class="accountview">
+        <div class="viewtitle">DASHBOARD</div>
+        <div class="dashboard">
+            <div class="data">
+                <div class="countstack">
+                    <label class="count" id="eventsattended">3</label>
+                    <label class="countlabel">EVENTS ATTENDED</label>
+                </div>
+                <div class="countstack">
+                    <label class="count" id="pointearned">45</label>
+                    <label class="countlabel">POINTS EARNED</label>
+                </div>
+
+            </div>
+            <button class="signup" id="createAccountButton" onclick="create()">Check In</button>
+        </div>
+
+        <div class="account">
+            <div class="viewtitle">ACCOUNT</div>
+            <div class="buttons">
+                <button class="signup" id="createAccountButton" onclick="create()">Edit</button>
+                <button class="signup" id="createAccountButton" onclick="create()">Download</button>
+                <button class="signup" id="createAccountButton" onclick="create()">Delete</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -284,5 +461,6 @@
 <script src="./javascript/loyalty.js"></script>
 <script src="./javascript/welcome.js"></script>
 <script src="./javascript/login.js"></script>
+<script src="./javascript/account.js"></script>
 
 </html>
