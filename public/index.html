@@ -50,11 +50,8 @@
         <div class="app">
             <div class="frame">
                 <div class="sensors"></div>
-                <div class="view">
-                    <div class="viewtitle">Events</div>
-                    <welcome-element text="Your card validation code (CVC)
-                        is an extra security feature — it is the last 3 or 4 numbers on the
-                        back of your card."></welcome-element>
+                <div id="mobileview" class="view">
+                    <welcome-element></welcome-element>
                 </div>
                 <div class="mobilenav"></div>
             </div>
@@ -90,12 +87,15 @@
         }
 
         .blurb {
-            width: 160px;
+            /* width: 120px;
             font-size: 10px;
             font-weight: bold;
-            padding: 20px;
+            padding: 10px;
             line-height: 16px;
-            color: var(--loyalty-highlight-color);
+            color: var(--loyalty-highlight-color); */
+            font-size:10px;
+            margin:20px;
+            width:160px;
         }
 
         .signup {
@@ -109,20 +109,180 @@
             margin: 30px;
             outline: 0;
         }
+
+        .viewtitle {
+            display: flex;
+            flex-direction: row;
+            height: 70px;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: bold;
+        }
     </style>
     <div class="welcomeview">
+        <div class="viewtitle">Events</div>
         <div class="city">
             <img class="citylogo" src="../images/newyork.svg">
             <div class="cityname">New York</div>
         </div>
-        <button class="signup">SIGN UP</button>
+        <button class="signup" onclick="signup()">SIGN UP</button>
         <div class="blurb">THIS IS A SIMULATED LOYALTY APP TO HIGHLIGHT PRIVACY CONSIDERATIONS WHEN BUILDING CLOUD
             APPLICATIONS. FOR DEMO PURPOSES ONLY</div>
+    </div>
+</template>
+
+<template id="loginview">
+    <style>
+        .loginview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .identity {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .identityblock {
+            display: flex;
+            flex-direction: row;
+            height: 30px;
+        }
+
+        .idpart {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+            /* justify-content: left; */
+            align-content: left;
+            width: 100px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #D8D8D8;
+            font-weight: bold;
+        }
+
+        .idinfo {
+            display: flex;
+            flex-direction: row;
+            align-items: left;
+            /* justify-content: left; */
+            align-content: left;
+            width: 100px;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #494A4B;
+            font-weight: bold;
+        }
+
+        .blurb {
+            /* width: 120px;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 10px;
+            line-height: 16px;
+            color: var(--loyalty-highlight-color); */
+            font-size:10px;
+            margin:20px;
+            width:160px;
+        }
+
+        .signup {
+            width: 120px;
+            height: 30px;
+            border-radius: 4px;
+            background: var(--loyalty-button-color);
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin: 30px;
+            outline: 0;
+        }
+
+        .viewtitle {
+            display: flex;
+            flex-direction: row;
+            height: 70px;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .gdprcheck {
+            display: flex;
+            flex-direction: row;
+            width: 160px;
+        }
+
+        .checktext {
+            text-transform: uppercase;
+            font-size: 10px;
+        }
+
+        .checkbox{
+            margin-right: 10px;
+        }
+
+        .tos{
+            font-size:10px;
+            margin:20px;
+            width:160px;
+        }
+    </style>
+    <div class="loginview">
+        <div class="viewtitle">Create Account</div>
+        <div class="identity">
+            <div class="identityblock">
+                <label class="idpart">First Name</label>
+                <div class="idinfo" id="firstname">John</div>
+            </div>
+
+            <div class="identityblock">
+                <label class="idpart">Surname</label>
+                <div class="idinfo" id="surname">Lennon</div>
+            </div>
+
+            <div class="identityblock">
+                <label class="idpart">Password</label>
+                <div class="idinfo" id="password">########</div>
+            </div>
+
+
+            <div class="identityblock">
+                <label class="idpart">Email</label>
+                <div class="idinfo" id="email">John@email.com</div>
+            </div>
+        </div>
+
+        <div class="gdprcheck">
+            <input class="checkbox" type="checkbox" id="gdprcheck" name="gdpr" value="false">
+            <label class="checktext">I CONSENT TO MY DATA BEING USED TO GATHER METRICS ABOUT EXAMPLE LOYALTY EVENTS.
+                EXAMPLE LOYALTY WILL NOT SHARE THIS DATA.</label>
+        </div>
+
+        <button class="signup" onclick="create()">Create Account</button>
+
+        <div class="tos">BY CREATING AN ACCOUNT
+            YOU AGREE TO EXAMPLE 
+            LOYALTY’S TERMS OF SERVICE</div>
+
+        
+
     </div>
 </template>
 
 
 <script src="./javascript/loyalty.js"></script>
 <script src="./javascript/welcome.js"></script>
+<script src="./javascript/login.js"></script>
 
 </html>

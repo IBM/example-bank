@@ -19,7 +19,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    color:var(--loyalty-text-color);
+    color: var(--loyalty-text-color);
 }
 
 .container {
@@ -36,7 +36,7 @@
     display: flex;
     flex-direction: column;
     width: 50%;
-    padding-right:50px;
+    padding-right: 50px;
 }
 
 .app {
@@ -65,89 +65,89 @@
     width: 50px;
 }
 
-.title{
+.title {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-content: center;
     align-items: center;
-    margin:10px;
+    margin: 10px;
     text-transform: uppercase;
-    font-weight:bold ;
+    font-weight: bold;
 }
 
-.about{
+.about {
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-content: center;
     align-items: center;
-    margin:10px;
-    margin-left:5px;
+    margin: 10px;
+    margin-left: 5px;
     text-transform: uppercase;
-    font-weight:normal;
-    font-size:12px;
+    font-weight: normal;
+    font-size: 12px;
     line-height: 18px;
     word-spacing: 2px;
 }
 
-.instruction{
+.instruction {
     display: flex;
     flex-direction: row;
     justify-content: left;
     align-content: center;
     align-items: center;
-    margin:10px;
-    margin-left:5px;
+    margin: 10px;
+    margin-left: 5px;
     text-transform: uppercase;
-    font-weight:bold;
-    font-size:16px;
+    font-weight: bold;
+    font-size: 16px;
     line-height: 20px;
     word-spacing: 2px;
-    color:var(--loyalty-button-color);
+    color: var(--loyalty-button-color);
 }
 
 .linkbar {
     display: flex;
     flex-direction: row;
-    margin-top:20px;
+    margin-top: 20px;
 }
 
-.linktext{
+.linktext {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-content: center;
     align-items: center;
-    margin:10px;
+    margin: 10px;
     text-transform: uppercase;
-    font-weight:bold ;
+    font-weight: bold;
     font-size: 14px;
 }
 
-.frame{
-    height:100%;
-    width:70%;
+.frame {
+    height: 100%;
+    width: 70%;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border:10px solid var(--loyalty-phone-color);
+    border: 10px solid var(--loyalty-phone-color);
 }
 
-.sensors{
-width:50%;
-height:3%;
-background:var(--loyalty-phone-color);
-border-bottom-left-radius: 10px;
-border-bottom-right-radius: 10px;
+.sensors {
+    width: 50%;
+    height: 3%;
+    background: var(--loyalty-phone-color);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
-.view{
-    height:100%;
+.view {
+    height: 100%;
 }
 
-.viewtitle{
+.viewtitle {
     display: flex;
     flex-direction: row;
     height: 50px;
@@ -158,10 +158,8 @@ border-bottom-right-radius: 10px;
     font-weight: bold;
 }
 
-.mobilenav{
-    height:100px;
-    width:100%;
+.mobilenav {
+    height: 80px;
+    width: 100%;
     background: aliceblue;
 }
-
-
