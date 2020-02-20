@@ -7,8 +7,8 @@
     <meta name="author" content="Anton McConville">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style/loyalty.css?v=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body class="loyalty">
@@ -51,11 +51,16 @@
         </div>
         <div class="app">
             <div class="frame">
-                <div class="sensors"></div>
+                <div class="sensors">
+                    <div class="sensor"></div>
+                    <div class="sensor"></div>
+                    <div class="sensor"></div>
+                    <div class="sensor"></div>
+                </div>
                 <div id="mobileview" class="view">
                     <welcome-element></welcome-element>
                 </div>
-                <div class="mobilenav"></div>
+                <navigation-element id="mobilenavigation" class="mobilenav"></navigation-element>
             </div>
         </div>
     </div>
@@ -115,7 +120,8 @@
         .viewtitle {
             display: flex;
             flex-direction: row;
-            height: 70px;
+            height: 20px;
+            padding-top: 20px;
             justify-content: center;
             align-items: center;
             text-transform: uppercase;
@@ -211,7 +217,8 @@
         .viewtitle {
             display: flex;
             flex-direction: row;
-            height: 70px;
+            height: 20px;
+            padding-top: 20px;
             justify-content: center;
             align-items: center;
             text-transform: uppercase;
@@ -279,9 +286,6 @@
     </div>
 </template>
 
-
-
-
 <template id="accountview">
     <style>
         .accountview {
@@ -301,6 +305,8 @@
 
         .identityblock {
             display: flex;
+            padding-top: 20px;
+            margin-left: 10px;
             flex-direction: row;
             height: 30px;
         }
@@ -344,7 +350,8 @@
         }
 
         .signup {
-            width: 70px;;
+            width: 70px;
+            ;
             height: 30px;
             border-radius: 4px;
             background: var(--loyalty-button-color);
@@ -360,7 +367,8 @@
         .viewtitle {
             display: flex;
             flex-direction: row;
-            height: 70px;
+            height: 20px;
+            padding-top: 20px;
             justify-content: center;
             align-items: center;
             text-transform: uppercase;
@@ -397,14 +405,15 @@
         }
 
         .dashboard {
-            height: 180px;
+            height: 200px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-content: center;
             align-items: center;
             width: 100%;
-            border-bottom: 1px solid #EDEDED;
+    
+            border-bottom: 1px solid var(--loyalty-divide-color);
         }
 
         .tos {
@@ -415,6 +424,7 @@
 
         .buttons {
             display: flex;
+            margin-top: 10px;
             flex-direction: row;
         }
 
@@ -448,6 +458,14 @@
 
         <div class="account">
             <div class="viewtitle">ACCOUNT</div>
+            <div class="identityblock">
+                <label class="idpart">Name</label>
+                <div class="idinfo" id="firstname">John Lennon</div>
+            </div>
+            <div class="identityblock">
+                <label class="idpart">Enrolled</label>
+                <div class="idinfo" id="surname">2019</div>
+            </div>
             <div class="buttons">
                 <button class="signup" id="createAccountButton" onclick="create()">Edit</button>
                 <button class="signup" id="createAccountButton" onclick="create()">Download</button>
@@ -457,10 +475,123 @@
     </div>
 </template>
 
+<template id="navigationview">
+    <style>
+        .navigationview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .city {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .citylogo {
+            height: 200px;
+        }
+
+        .cityname {
+            text-transform: uppercase;
+            font-weight: bold;
+            text-size: 10px;
+            font-family: inherit;
+        }
+
+        .blurb {
+            /* width: 120px;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 10px;
+            line-height: 16px;
+            color: var(--loyalty-highlight-color); */
+            font-size: 10px;
+            margin: 20px;
+            width: 160px;
+        }
+
+        .signup {
+            width: 120px;
+            height: 30px;
+            border-radius: 4px;
+            background: var(--loyalty-button-color);
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin: 30px;
+            outline: 0;
+        }
+
+        .viewtitle {
+            display: flex;
+            flex-direction: row;
+            height: 20px;
+            padding-top: 20px;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .navigation {
+            height: 80px;
+            width: 100%;
+            /* background: aliceblue; */
+            border-top: 2px solid var(--loyalty-divide-color);
+        }
+
+        .navimg {
+            height: 44px;
+        }
+
+        .iconrow {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        }
+
+        .navbutton {
+            margin: 10px;
+            border: none;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+            align-content: center;
+            outline: none;
+        }
+
+        .navbutton: hover {
+            /* border: 1px solid;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
+            outline-color: rgba(255, 255, 255, 0);
+            outline-offset: 15px;
+            text-shadow: 1px 1px 2px #427388; */
+        }
+    </style>
+    <div class="navigation">
+        <div class="iconrow">
+            <button class="navbutton" onclick=""><img class="navimg" src="./images/account-selected.svg"></button>
+            <button class="navbutton"><img class="navimg" src="./images/reservation-deselected.svg"></button>
+            <button class="navbutton"><img class="navimg" src="./images/eventlist-deselected.svg"></button>
+        </div>
+    </div>
+</template>
 
 <script src="./javascript/loyalty.js"></script>
 <script src="./javascript/welcome.js"></script>
 <script src="./javascript/login.js"></script>
 <script src="./javascript/account.js"></script>
+<script src="./javascript/navigation.js"></script>
 
 </html>

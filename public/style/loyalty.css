@@ -5,6 +5,8 @@
     --loyalty-button-color: #FF7E00;
     --loyalty-highlight-color: #FF002E;
     --loyalty-phone-color: #39687E;
+    --loyalty-sensor-color:#88a4b1;
+    --loyalty-divide-color:aliceblue;
 }
 
 .loyalty {
@@ -126,20 +128,25 @@
 
 .frame {
     height: 100%;
-    width: 70%;
-    border-radius: 8px;
+    width: 75%;
+    border-radius: 2px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 10px solid var(--loyalty-phone-color);
+    border: 5px solid var(--loyalty-phone-color);
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
 }
 
 .sensors {
+    flex-direction: row;
     width: 50%;
-    height: 3%;
+    height: 18px;
     background: var(--loyalty-phone-color);
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .view {
@@ -160,5 +167,16 @@
 .mobilenav {
     height: 80px;
     width: 100%;
-    background: aliceblue;
+    display: none;
+    /* visibility: hidden; */
+    /* background: aliceblue; */
+}
+
+.sensor{
+    height: 4px;
+    width: 4px;
+    border-radius: 4px;
+    background:var(--loyalty-sensor-color);
+    margin: 4px;
+
 }

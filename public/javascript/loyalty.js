@@ -4,7 +4,6 @@ function signup(){
     var mobileview = document.getElementById("mobileview");
     mobileview.innerHTML = "";
     mobileview.innerHTML = "<login-element></login-element>"
-
 }
 
 function create(){
@@ -13,6 +12,9 @@ function create(){
     var mobileview = document.getElementById("mobileview");
     mobileview.innerHTML = "";
     mobileview.innerHTML = "<account-element></account-element>"
+
+    var nav = document.getElementById("mobilenavigation");
+    nav.style.display = "flex";
 
 }
 
