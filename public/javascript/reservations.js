@@ -1,15 +1,14 @@
-class Account extends HTMLElement {
+class Reservations extends HTMLElement {
 
-    clickaccount() {
-        console.log('this is a test');
-    }
 
     constructor() {
         // Always call super first in constructor
         super();
 
-        let template = document.getElementById('accountview');
+        let template = document.getElementById('reservationview');
         let templateContent = template.content;
+
+        console.log('reservations view')
 
         const shadow = this.attachShadow({
                 mode: 'open'
@@ -19,7 +18,7 @@ class Account extends HTMLElement {
 }
 
 try {
-    customElements.define('account-element', Account);
+    customElements.define('reservations-element', Reservations);
 } catch (err) {
     const h3 = document.createElement('h3')
     h3.innerHTML = err

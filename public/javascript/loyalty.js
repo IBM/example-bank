@@ -27,3 +27,7 @@ function hitBox(){
 function clickAccount(){
     console.log('hello')
 }
+
+var mobileapp = document.getElementById('mobileapp')
+
+mobileapp.addEventListener('build', function (e) { console.log('received event') }, false);

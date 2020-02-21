@@ -8,7 +8,7 @@ class Navigation extends HTMLElement {
 
     clickAccount() {
         console.log('click account');
-        
+
         var accountimg = this.accountsbutton.childNodes[0];
         accountimg.src = './images/account-selected.svg';
 
@@ -19,9 +19,16 @@ class Navigation extends HTMLElement {
         eventimg.src = './images/eventlist-deselected.svg';
 
         this.SELECTEDVIEW = this.ACCOUNT;
+
+        var event = new Event('build');
+        this.dispatchEvent(event);
+
+        var mobileview = document.getElementById('mobileview');
+        mobileview.innerHTML = "<account-element></account-element>"
+
     }
 
-    clickReservation(){
+    clickReservation() {
 
         var accountimg = this.accountsbutton.childNodes[0];
         accountimg.src = './images/account-deselected.svg';
@@ -35,9 +42,14 @@ class Navigation extends HTMLElement {
         console.log('click reservation');
 
         this.SELECTEDVIEW = this.RESERVATION;
+
+        var mobileview = document.getElementById('mobileview');
+        mobileview.innerHTML = "<events-element></events-element>"
+
+
     }
 
-    clickEvents(){
+    clickEvents() {
         console.log('click events');
 
         var accountimg = this.accountsbutton.childNodes[0];
@@ -50,6 +62,10 @@ class Navigation extends HTMLElement {
         eventimg.src = './images/eventlist-selected.svg';
 
         this.SELECTEDVIEW = this.EVENTS;
+
+        var mobileview = document.getElementById('mobileview');
+        mobileview.innerHTML = "<reservations-element></reservations-element>"
+
     }
 
     constructor() {
