@@ -439,6 +439,7 @@
             margin: 10px;
         }
     </style>
+
     <div class="accountview">
         <div class="viewtitle">DASHBOARD</div>
         <div class="dashboard">
@@ -571,19 +572,12 @@
             outline: none;
         }
 
-        .navbutton: hover {
-            /* border: 1px solid;
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
-            outline-color: rgba(255, 255, 255, 0);
-            outline-offset: 15px;
-            text-shadow: 1px 1px 2px #427388; */
-        }
     </style>
     <div class="navigation">
         <div class="iconrow">
-            <button class="navbutton" onclick=""><img class="navimg" src="./images/account-selected.svg"></button>
-            <button class="navbutton"><img class="navimg" src="./images/reservation-deselected.svg"></button>
-            <button class="navbutton"><img class="navimg" src="./images/eventlist-deselected.svg"></button>
+            <button id="accountbutton" class="navbutton" onclick="clickAccount"><img class="navimg" src="./images/account-selected.svg"></button>
+            <button id="reservationsbutton" class="navbutton"><img class="navimg" src="./images/reservation-deselected.svg"></button>
+            <button id="eventsbutton" class="navbutton"><img class="navimg" src="./images/eventlist-deselected.svg"></button>
         </div>
     </div>
 </template>

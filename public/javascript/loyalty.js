@@ -23,3 +23,7 @@ function hitBox(){
     var button = document.getElementById('createAccountButton');
     button.disabled = false;
 }
+
+function clickAccount(){
+    console.log('hello')
+}

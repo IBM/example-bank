@@ -63,7 +63,7 @@
 }
 
 .icon {
-    width: 50px;
+    width: 40px;
 }
 
 .title {
@@ -129,12 +129,18 @@
 .frame {
     height: 100%;
     width: 75%;
-    border-radius: 2px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 5px solid var(--loyalty-phone-color);
+    border: 3px solid var(--loyalty-phone-color);
     box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+    /* border-radius: 20px;
+    background: #FFFFFF;
+    box-shadow:  31px 31px 71px #7d7d7d, 
+                 -31px -31px 71px #ffffff; */
+    
+
 }
 
 .sensors {
