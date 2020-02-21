@@ -252,23 +252,23 @@
         <div class="identity">
             <div class="identityblock">
                 <label class="idpart">First Name</label>
-                <div class="idinfo" id="firstname">John</div>
+                <div class="idinfo" id="firstname"></div>
             </div>
 
             <div class="identityblock">
                 <label class="idpart">Surname</label>
-                <div class="idinfo" id="surname">Lennon</div>
+                <div class="idinfo" id="surname"></div>
             </div>
 
             <div class="identityblock">
                 <label class="idpart">Password</label>
-                <div class="idinfo" id="password">########</div>
+                <div class="idinfo" id="password"></div>
             </div>
 
 
             <div class="identityblock">
                 <label class="idpart">Email</label>
-                <div class="idinfo" id="email">John@email.com</div>
+                <div class="idinfo" id="username"></div>
             </div>
         </div>
 
@@ -412,7 +412,7 @@
             align-content: center;
             align-items: center;
             width: 100%;
-    
+
             border-bottom: 1px solid var(--loyalty-divide-color);
         }
 
@@ -571,13 +571,15 @@
             align-content: center;
             outline: none;
         }
-
     </style>
     <div class="navigation">
         <div class="iconrow">
-            <button id="accountbutton" class="navbutton" onclick="clickAccount"><img class="navimg" src="./images/account-selected.svg"></button>
-            <button id="reservationsbutton" class="navbutton"><img class="navimg" src="./images/reservation-deselected.svg"></button>
-            <button id="eventsbutton" class="navbutton"><img class="navimg" src="./images/eventlist-deselected.svg"></button>
+            <button id="accountbutton" class="navbutton" onclick="clickAccount"><img class="navimg"
+                    src="./images/account-selected.svg"></button>
+            <button id="reservationsbutton" class="navbutton"><img class="navimg"
+                    src="./images/reservation-deselected.svg"></button>
+            <button id="eventsbutton" class="navbutton"><img class="navimg"
+                    src="./images/eventlist-deselected.svg"></button>
         </div>
     </div>
 </template>
@@ -708,7 +710,7 @@
             align-content: center;
             align-items: center;
             width: 100%;
-    
+
             border-bottom: 1px solid var(--loyalty-divide-color);
         }
 
@@ -740,7 +742,6 @@
         <div class="viewtitle">EVENTS</div>
     </div>
 </template>
-
 
 <template id="reservationview">
     <style>
@@ -868,7 +869,7 @@
             align-content: center;
             align-items: center;
             width: 100%;
-    
+
             border-bottom: 1px solid var(--loyalty-divide-color);
         }
 
@@ -900,7 +901,6 @@
         <div class="viewtitle">RESERVATIONS</div>
     </div>
 </template>
-
 
 <script src="./javascript/loyalty.js"></script>
 <script src="./javascript/welcome.js"></script>

@@ -3,7 +3,15 @@ function signup(){
 
     var mobileview = document.getElementById("mobileview");
     mobileview.innerHTML = "";
-    mobileview.innerHTML = "<login-element></login-element>"
+
+    var element = document.createElement('login-element');
+    element.setAttribute('firstname','Paul');
+    element.setAttribute('surname','McCartney');
+    element.setAttribute('password','######');
+    element.setAttribute('username','paul@email.com');
+    mobileview.appendChild(element);
+
+    // mobileview.innerHTML = '<login-element firstname="John surname="Lennon" password="######" username="john@email.com"></login-element>'
 }
 
 function create(){
