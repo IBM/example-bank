@@ -4,6 +4,26 @@ class Login extends HTMLElement {
         return ['firstname', 'surname'];
       }
 
+    clickCheck(){
+        console.log('login.clickCheck');
+        if(this.checkbox.checked){
+            this.createAccountButton.disabled = false;
+        }else{
+            this.createAccountButton.disabled = true;
+        }
+    }
+
+    createAccount(){
+        console.log('login.createAccount');
+
+        var mobileview = document.getElementById("mobileview");
+        mobileview.innerHTML = "";
+        mobileview.innerHTML = "<account-element></account-element>"
+    
+        var nav = document.getElementById("mobilenavigation");
+        nav.style.display = "flex";
+    }
+
     constructor() {
         // Always call super first in constructor
         super();
@@ -12,7 +32,22 @@ class Login extends HTMLElement {
         let templateContent = template.content;
 
         const shadow = this.attachShadow({mode: 'open'})
-          .appendChild(templateContent.cloneNode(true));         
+          .appendChild(templateContent.cloneNode(true));        
+          
+        var sr = this.shadowRoot;
+
+        this.checkbox = sr.getElementById('gdprcheck');
+        
+        this.checkbox.addEventListener('click', e => {
+            this.clickCheck();
+        });
+
+        this.createAccountButton = sr.getElementById('createAccountButton');
+
+        this.createAccountButton.addEventListener('click', e =>{
+            this.createAccount();
+        });
+
     }
 
     connectedCallback(){

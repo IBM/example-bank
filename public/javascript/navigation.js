@@ -69,7 +69,6 @@ class Navigation extends HTMLElement {
     }
 
     constructor() {
-        // Always call super first in constructor
         super();
 
         let template = document.getElementById('navigationview');

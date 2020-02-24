@@ -135,7 +135,7 @@
             <img class="citylogo" src="../images/newyork.svg">
             <div class="cityname">New York</div>
         </div>
-        <button class="signup" onclick="signup()">SIGN UP</button>
+        <button class="signup" onclick="loyalty.signup()">SIGN UP</button>
         <div class="blurb">THIS IS A SIMULATED LOYALTY APP TO HIGHLIGHT PRIVACY CONSIDERATIONS WHEN BUILDING CLOUD
             APPLICATIONS. FOR DEMO PURPOSES ONLY</div>
     </div>
@@ -214,6 +214,10 @@
             outline: 0;
         }
 
+        .signup:disabled {
+  background: #dddddd;
+}
+
         .viewtitle {
             display: flex;
             flex-direction: row;
@@ -273,12 +277,12 @@
         </div>
 
         <div class="gdprcheck">
-            <input class="checkbox" type="checkbox" id="gdprcheck" name="gdpr" value="false" onclick="hitBox()">
+            <input class="checkbox" type="checkbox" id="gdprcheck" name="gdpr" value="false">
             <label class="checktext">I CONSENT TO MY DATA BEING USED TO GATHER METRICS ABOUT EXAMPLE LOYALTY EVENTS.
                 EXAMPLE LOYALTY WILL NOT SHARE THIS DATA.</label>
         </div>
 
-        <button class="signup" id="createAccountButton" onclick="create()">Create Account</button>
+        <button class="signup" id="createAccountButton" disabled=true >Create Account</button>
 
         <div class="tos">BY CREATING AN ACCOUNT
             YOU AGREE TO EXAMPLE
@@ -454,7 +458,7 @@
                 </div>
 
             </div>
-            <button class="signup" id="createAccountButton" onclick="create()">Check In</button>
+            <button class="signup" id="createAccountButton" onclick="loyalty.create()">Check In</button>
         </div>
 
         <div class="account">
