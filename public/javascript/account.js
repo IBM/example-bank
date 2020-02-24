@@ -16,6 +16,7 @@ class Account extends HTMLElement {
             })
             .appendChild(templateContent.cloneNode(true));
     }
+
 }
 
 try {

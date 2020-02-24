@@ -23,31 +23,13 @@
                 MICROSERVICES RUNNING ON AN IBM CLOUD
                 OPENSHIFT 4 INSTANCE.
             </div>
-            <div class="instruction">CLICK BELOW FOR MORE RESOURCES …</div>
-            <div class="linkbar">
-                <div class="logo"><img class="icon" src="./images/lightbulb.svg"></div>
-                <div class="linktext">Background</div>
-            </div>
-            <div class="linkbar">
-                <div class="logo"><img class="icon" src="./images/cloud.svg"></div>
-                <div class="linktext">Cloud Architecture</div>
-            </div>
-            <div class="linkbar">
-                <div class="logo"><img class="icon" src="./images/threat.svg"></div>
-                <div class="linktext">Introduction to threat modelling</div>
-            </div>
-            <div class="linkbar">
-                <div class="logo"><img class="icon" src="./images/secure.svg"></div>
-                <div class="linktext">Building a JEE loyalty app on openshift 4 code pattern</div>
-            </div>
-            <div class="linkbar">
-                <div class="logo"><img class="icon" src="./images/istio.svg"></div>
-                <div class="linktext">Scaling secure communications with service mesh</div>
-            </div>
-            <div class="linkbar">
-                <div class="logo"><img class="icon" src="./images/admin.svg"></div>
-                <div class="linktext">Admin view</div>
-            </div>
+            <div class="instruction">CLICK BELOW FOR MORE RESOURCES …</div>      
+            <asset-element assetimage="./images/lightbulb.svg" text="Background"></asset-element>
+            <asset-element assetimage="./images/cloud.svg" text="Cloud Architecture"></asset-element>
+            <asset-element assetimage="./images/threat.svg" text="Introduction to threat modelling"></asset-element>
+            <asset-element assetimage="./images/secure.svg" text="Building a JEE loyalty app on openshift 4 code pattern"></asset-element>
+            <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh"></asset-element>
+            <asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element>
         </div>
         <div id="mobileapp" class="app">
             <div class="frame">
@@ -215,8 +197,8 @@
         }
 
         .signup:disabled {
-  background: #dddddd;
-}
+            background: #dddddd;
+        }
 
         .viewtitle {
             display: flex;
@@ -282,7 +264,7 @@
                 EXAMPLE LOYALTY WILL NOT SHARE THIS DATA.</label>
         </div>
 
-        <button class="signup" id="createAccountButton" disabled=true >Create Account</button>
+        <button class="signup" id="createAccountButton" disabled=true>Create Account</button>
 
         <div class="tos">BY CREATING AN ACCOUNT
             YOU AGREE TO EXAMPLE
@@ -906,6 +888,43 @@
     </div>
 </template>
 
+<template id="assetlink">
+    <style>
+        .logo {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-content: center;
+        }
+
+        .icon {
+            width: 40px;
+        }
+
+        .linkbar {
+            display: flex;
+            flex-direction: row;
+            margin-top: 20px;
+        }
+
+        .linktext {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            margin: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+    <div class="linkbar">
+        <div class="logo"><img id="assetimage" class="icon" src=""></div>
+        <div class="linktext" id="text"></div>
+    </div>
+</template>
+
 <script src="./javascript/loyalty.js"></script>
 <script src="./javascript/welcome.js"></script>
 <script src="./javascript/login.js"></script>
@@ -913,5 +932,6 @@
 <script src="./javascript/navigation.js"></script>
 <script src="./javascript/events.js"></script>
 <script src="./javascript/reservations.js"></script>
+<script src="./javascript/asset.js"></script>
 
 </html>
