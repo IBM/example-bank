@@ -16,9 +16,23 @@ class Login extends HTMLElement {
     createAccount(){
         console.log('login.createAccount');
 
+        /* where to make a data call for points/events */
+
+        var firstname = this.getAttribute('firstname');
+        var surname = this.getAttribute('surname');
+
+        var accountinfo ={
+            events:7,
+            points:42,
+            firstname:firstname,
+            surname: surname
+        }
+
         var mobileview = document.getElementById("mobileview");
         mobileview.innerHTML = "";
-        mobileview.innerHTML = "<account-element></account-element>"
+        mobileview.innerHTML = '<account-element events="' + accountinfo.events + 
+        '" points="' + accountinfo.points + 
+        '" name="' + accountinfo.firstname + ' ' + accountinfo.surname + '"></account-element>'
     
         var nav = document.getElementById("mobilenavigation");
         nav.style.display = "flex";

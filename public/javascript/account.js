@@ -1,5 +1,9 @@
 class Account extends HTMLElement {
 
+    static get observedAttributes() {
+        return ['events', 'points'];
+    }
+
     clickaccount() {
         console.log('this is a test');
     }
@@ -17,6 +21,19 @@ class Account extends HTMLElement {
             .appendChild(templateContent.cloneNode(true));
     }
 
+    connectedCallback(){
+        var customElement = this;
+        var sr = this.shadowRoot;
+
+        /* where to make a data call for points/events */
+
+        this.eventsattended = sr.getElementById('eventsattended');
+        this.eventsattended.innerHTML = customElement.getAttribute('events');
+        this.pointearned = sr.getElementById('pointearned');
+        this.pointearned.innerHTML = customElement.getAttribute('points');
+        this.name = sr.getElementById('name');
+        this.name.innerHTML = customElement.getAttribute('name');
+    }
 }
 
 try {
