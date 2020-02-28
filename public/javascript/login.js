@@ -28,11 +28,17 @@ class Login extends HTMLElement {
             surname: surname
         }
 
+        var fullname = accountinfo.firstname + ' ' + accountinfo.surname 
+
         var mobileview = document.getElementById("mobileview");
         mobileview.innerHTML = "";
         mobileview.innerHTML = '<account-element events="' + accountinfo.events + 
         '" points="' + accountinfo.points + 
-        '" name="' + accountinfo.firstname + ' ' + accountinfo.surname + '"></account-element>'
+        '" name="' + fullname + '"></account-element>'
+
+        localStorage.setItem("loyaltyevents", accountinfo.events);
+        localStorage.setItem("loyaltypoints", accountinfo.points);
+        localStorage.setItem("loyaltyname", fullname);
     
         var nav = document.getElementById("mobilenavigation");
         nav.style.display = "flex";
