@@ -23,12 +23,14 @@
                 MICROSERVICES RUNNING ON AN IBM CLOUD
                 OPENSHIFT 4 INSTANCE.
             </div>
-            <div class="instruction">CLICK BELOW FOR MORE RESOURCES …</div>      
+            <div class="instruction">CLICK BELOW FOR MORE RESOURCES …</div>
             <asset-element assetimage="./images/lightbulb.svg" text="Background"></asset-element>
             <asset-element assetimage="./images/cloud.svg" text="Cloud Architecture"></asset-element>
             <asset-element assetimage="./images/threat.svg" text="Introduction to threat modelling"></asset-element>
-            <asset-element assetimage="./images/secure.svg" text="Building a JEE loyalty app on openshift 4 code pattern"></asset-element>
-            <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh"></asset-element>
+            <asset-element assetimage="./images/secure.svg"
+                text="Building a JEE loyalty app on openshift 4 code pattern"></asset-element>
+            <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh">
+            </asset-element>
             <asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element>
         </div>
         <div id="mobileapp" class="app">
@@ -76,12 +78,6 @@
         }
 
         .blurb {
-            /* width: 120px;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 10px;
-            line-height: 16px;
-            color: var(--loyalty-highlight-color); */
             font-size: 10px;
             margin: 20px;
             width: 160px;
@@ -170,18 +166,6 @@
             text-transform: uppercase;
             color: #494A4B;
             font-weight: bold;
-        }
-
-        .blurb {
-            /* width: 120px;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 10px;
-            line-height: 16px;
-            color: var(--loyalty-highlight-color); */
-            font-size: 10px;
-            margin: 20px;
-            width: 160px;
         }
 
         .signup {
@@ -323,18 +307,6 @@
             font-weight: bold;
         }
 
-        .blurb {
-            /* width: 120px;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 10px;
-            line-height: 16px;
-            color: var(--loyalty-highlight-color); */
-            font-size: 10px;
-            margin: 20px;
-            width: 160px;
-        }
-
         .signup {
             width: 70px;
             ;
@@ -400,12 +372,6 @@
             width: 100%;
 
             border-bottom: 1px solid var(--loyalty-divide-color);
-        }
-
-        .tos {
-            font-size: 10px;
-            margin: 20px;
-            width: 160px;
         }
 
         .buttons {
@@ -471,60 +437,6 @@
             justify-content: center;
         }
 
-        .city {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .citylogo {
-            height: 200px;
-        }
-
-        .cityname {
-            text-transform: uppercase;
-            font-weight: bold;
-            text-size: 10px;
-            font-family: inherit;
-        }
-
-        .blurb {
-            /* width: 120px;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 10px;
-            line-height: 16px;
-            color: var(--loyalty-highlight-color); */
-            font-size: 10px;
-            margin: 20px;
-            width: 160px;
-        }
-
-        .signup {
-            width: 120px;
-            height: 30px;
-            border-radius: 4px;
-            background: var(--loyalty-button-color);
-            color: white;
-            font-weight: bold;
-            border: none;
-            margin: 30px;
-            outline: 0;
-        }
-
-        .viewtitle {
-            display: flex;
-            flex-direction: row;
-            height: 20px;
-            padding-top: 20px;
-            justify-content: center;
-            align-items: center;
-            text-transform: uppercase;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
         .navigation {
             height: 80px;
             width: 100%;
@@ -579,63 +491,8 @@
             justify-content: center;
         }
 
-        .identity {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 20px;
-        }
-
-        .identityblock {
-            display: flex;
-            padding-top: 20px;
-            margin-left: 10px;
-            flex-direction: row;
-            height: 30px;
-        }
-
-        .idpart {
-            display: flex;
-            flex-direction: row;
-            align-items: left;
-            /* justify-content: left; */
-            align-content: left;
-            width: 100px;
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #D8D8D8;
-            font-weight: bold;
-        }
-
-        .idinfo {
-            display: flex;
-            flex-direction: row;
-            align-items: left;
-            /* justify-content: left; */
-            align-content: left;
-            width: 100px;
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #494A4B;
-            font-weight: bold;
-        }
-
-        .blurb {
-            /* width: 120px;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 10px;
-            line-height: 16px;
-            color: var(--loyalty-highlight-color); */
-            font-size: 10px;
-            margin: 20px;
-            width: 160px;
-        }
-
         .signup {
             width: 70px;
-            ;
             height: 30px;
             border-radius: 4px;
             background: var(--loyalty-button-color);
@@ -643,6 +500,7 @@
             font-weight: bold;
             border: none;
             margin: 10;
+            margin-left: 0;
             outline: 0;
             font-size: 9px;
             text-transform: uppercase;
@@ -660,72 +518,71 @@
             font-weight: bold;
         }
 
-        .countstack {
+        .eventlist {
             display: flex;
             flex-direction: column;
-            width: 80px;
-            margin: 10px;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-        }
-
-        .count {
-            font-size: 50px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .data {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .countlabel {
+            width: 200px;
             font-size: 12px;
-            text-align: center;
+            font-weight: bold;
+            line-height: 20px;
+            width: 100%;
+            overflow: scroll;
+            height: 420px;
         }
 
-        .dashboard {
-            height: 200px;
+        .eventblock {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-            width: 100%;
-
-            border-bottom: 1px solid var(--loyalty-divide-color);
-        }
-
-        .tos {
-            font-size: 10px;
             margin: 20px;
-            width: 160px;
         }
 
-        .buttons {
-            display: flex;
-            margin-top: 10px;
-            flex-direction: row;
-        }
-
-        .accountbuttons {
-            width: 70px;
-            height: 30px;
-            border-radius: 4px;
-            background: var(--loyalty-button-color);
-            color: white;
+        .eventname {
             font-weight: bold;
-            border: none;
-            margin: 10px;
+            color: var(--loyalty-text-color);
+            padding-bottom: 5px;
+        }
+
+        .eventdate {
+            color: var(--loyalty-sensor-color);
+        }
+
+        .eventpoints {
+            color: var(--loyalty-phone-color);
         }
     </style>
 
     <div class="eventview">
         <div class="viewtitle">EVENTS</div>
+        <div class="eventlist">
+            <div class="eventblock">
+                <label class="eventname">CITYJSCONF</label>
+                <label class="eventdate">MARCH 27, 2020</label>
+                <label class="eventpoints">15 EVENT POINTS</label>
+                <label class="eventaddress">REGENT STREET THEATRE, LONDON</label>
+                <button class="signup">ATTEND</button>
+            </div>
+            <div class="eventblock">
+                <label class="eventname">BINARY DISTRICT ZERO PROOFS WORKSHOP</label>
+                <label class="eventdate">JUNE 12, 2020</label>
+                <label class="eventpoints">15 EVENT POINTS</label>
+                <label class="eventaddress">TRUMAN BREWERY, BRICK LANE, E1</label>
+                <button class="signup">ATTEND</button>
+            </div>
+            <div class="eventblock">
+                <label class="eventname">CITYJSCONF</label>
+                <label class="eventdate">MARCH 27, 2020</label>
+                <label class="eventpoints">15 EVENT POINTS</label>
+                <label class="eventaddress">REGENT STREET THEATRE, LONDON</label>
+                <button class="signup">ATTEND</button>
+            </div>
+            <div class="eventblock">
+                <label class="eventname">BINARY DISTRICT ZERO PROOFS WORKSHOP</label>
+                <label class="eventdate">JUNE 12, 2020</label>
+                <label class="eventpoints">15 EVENT POINTS</label>
+                <label class="eventaddress">TRUMAN BREWERY, BRICK LANE, E1</label>
+                <button class="signup">ATTEND</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -780,21 +637,8 @@
             font-weight: bold;
         }
 
-        .blurb {
-            /* width: 120px;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 10px;
-            line-height: 16px;
-            color: var(--loyalty-highlight-color); */
-            font-size: 10px;
-            margin: 20px;
-            width: 160px;
-        }
-
         .signup {
             width: 70px;
-            ;
             height: 30px;
             border-radius: 4px;
             background: var(--loyalty-button-color);
@@ -857,12 +701,6 @@
             width: 100%;
 
             border-bottom: 1px solid var(--loyalty-divide-color);
-        }
-
-        .tos {
-            font-size: 10px;
-            margin: 20px;
-            width: 160px;
         }
 
         .buttons {

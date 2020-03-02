@@ -3,7 +3,7 @@ class Navigation extends HTMLElement {
     ACCOUNT = 0
     RESERVATION = 1
     EVENTS = 2
-
+    
     SELECTEDVIEW = 0;
 
     clickAccount() {
@@ -25,7 +25,6 @@ class Navigation extends HTMLElement {
 
         var mobileview = document.getElementById('mobileview');
         mobileview.innerHTML = "<account-element></account-element>"
-
     }
 
     clickReservation() {
@@ -44,9 +43,7 @@ class Navigation extends HTMLElement {
         this.SELECTEDVIEW = this.RESERVATION;
 
         var mobileview = document.getElementById('mobileview');
-        mobileview.innerHTML = "<events-element></events-element>"
-
-
+        mobileview.innerHTML = "<reservations-element></reservations-element>"
     }
 
     clickEvents() {
@@ -64,8 +61,7 @@ class Navigation extends HTMLElement {
         this.SELECTEDVIEW = this.EVENTS;
 
         var mobileview = document.getElementById('mobileview');
-        mobileview.innerHTML = "<reservations-element></reservations-element>"
-
+        mobileview.innerHTML = "<events-element></events-element>"
     }
 
     constructor() {
