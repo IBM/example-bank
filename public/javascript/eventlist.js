@@ -23,20 +23,7 @@ class EventList extends HTMLElement {
 
         eventdata.forEach(function (event) {
 
-            var button = document.createElement('button');
-            button.className = 'signup';
-            button.innerHTML = component.buttonName;
-            button.eventdata = event;
-            button.onclick = function() {
-                var customEvent = new CustomEvent(component.eventid, {
-                    detail: {
-                        eventData: event
-                    },
-                    bubbles: true
-                });
-                component.dispatchEvent(customEvent);
-                console.log(event);
-            }
+
 
             var evt = document.createElement('div');
             evt.className = 'eventblock';
@@ -44,7 +31,26 @@ class EventList extends HTMLElement {
             evt.appendChild(component.createLabel('eventdate', event.date));
             evt.appendChild(component.createLabel('eventpoints', event.points + ' EVENT POINTS'));
             evt.appendChild(component.createLabel('eventaddress', event.address));
-            evt.appendChild(button);
+
+            if (component.buttonName != null) {
+                var button = document.createElement('button');
+                button.className = 'signup';
+                button.innerHTML = component.buttonName;
+                button.eventdata = event;
+                button.onclick = function () {
+                    var customEvent = new CustomEvent(component.eventid, {
+                        detail: {
+                            eventData: event
+                        },
+                        bubbles: true
+                    });
+                    component.dispatchEvent(customEvent);
+                    console.log(event);
+                }
+
+                evt.appendChild(button);
+            }
+
             anchor.appendChild(evt);
         })
     }

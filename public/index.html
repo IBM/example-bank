@@ -550,7 +550,7 @@
             color: var(--loyalty-phone-color);
         }
     </style>
-        <div class="eventlist" id="eventanchor">
+    <div class="eventlist" id="eventanchor">
     </div>
 </template>
 
@@ -574,7 +574,6 @@
             font-size: 16px;
             font-weight: bold;
         }
-
     </style>
 
     <div class="eventview">
@@ -659,15 +658,35 @@
             font-size: 16px;
             font-weight: bold;
         }
+
+        .controls {
+            margin: 5px;
+        }
+
+        .rescontrol {
+            border: 1px solid #88a4b1;
+            color: #39687E;
+            font-weight: bold;
+            outline: none;
+        }
+
+
+        .rescontroldim {
+            border: none;
+            background: #ffe5cc;
+            color:#FF7E00;
+            outline: none;
+        }
     </style>
 
     <div class="reservationview">
         <div class="viewtitle">RESERVATIONS</div>
         <div class="controls">
-            <button class="rescontrol">UPCOMING</button>
-            <button class="rescontrol">PAST</button>
+            <button id="upcomingbutton" class="rescontrol">UPCOMING</button>
+            <button id="pastbutton" class="rescontroldim">PAST</button>
         </div>
         <event-list id="UPCOMINGEVENTS" dataendpoint="" buttonname="CHECK IN" eventid="CHECKINEVENT"></event-list>
+        <event-list id="PASTEVENTS" dataendpoint="" eventid="CHECKINEVENT" style="display:none;"></event-list>
     </div>
 </template>
 
