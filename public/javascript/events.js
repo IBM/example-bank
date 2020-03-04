@@ -22,9 +22,8 @@ class Events extends HTMLElement {
 
         console.log('EVENTID: ' + eventid);
 
-        this.addEventListener(eventid, e => function () {
-            console.log('received custom event');
-            console.log(e.detail.text())
+        eventscomponent.addEventListener(eventid, e => {
+            console.log(e.detail)
         });
     }
 }

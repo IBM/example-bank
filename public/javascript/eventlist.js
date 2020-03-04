@@ -27,16 +27,15 @@ class EventList extends HTMLElement {
             button.className = 'signup';
             button.innerHTML = component.buttonName;
             button.eventdata = event;
-            button.onclick = function(){
-                var event = new Event(component.eventid, {
+            button.onclick = function() {
+                var customEvent = new CustomEvent(component.eventid, {
                     detail: {
-                        issuedBy: this.buttonName,
-                        eventData: this.eventdata
+                        eventData: event
                     },
                     bubbles: true
                 });
-                this.dispatchEvent(event);
-                console.log(this.eventdata);
+                component.dispatchEvent(customEvent);
+                console.log(event);
             }
 
             var evt = document.createElement('div');
