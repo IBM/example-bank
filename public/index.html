@@ -482,7 +482,7 @@
     </div>
 </template>
 
-<template id="eventview">
+<template id="eventlist">
     <style>
         .eventview {
             display: flex;
@@ -550,39 +550,36 @@
             color: var(--loyalty-phone-color);
         }
     </style>
+        <div class="eventlist" id="eventanchor">
+    </div>
+</template>
+
+<template id="eventview">
+    <style>
+        .eventview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .viewtitle {
+            display: flex;
+            flex-direction: row;
+            height: 20px;
+            padding-top: 20px;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+    </style>
 
     <div class="eventview">
         <div class="viewtitle">EVENTS</div>
-        <div class="eventlist" id="eventanchor">
-            <!-- div class="eventblock">
-                <label class="eventname">CITYJSCONF</label>
-                <label class="eventdate">MARCH 27, 2020</label>
-                <label class="eventpoints">15 EVENT POINTS</label>
-                <label class="eventaddress">REGENT STREET THEATRE, LONDON</label>
-                <button class="signup">ATTEND</button>
-            </div>
-            <div class="eventblock">
-                <label class="eventname">BINARY DISTRICT ZERO PROOFS WORKSHOP</label>
-                <label class="eventdate">JUNE 12, 2020</label>
-                <label class="eventpoints">15 EVENT POINTS</label>
-                <label class="eventaddress">TRUMAN BREWERY, BRICK LANE, E1</label>
-                <button class="signup">ATTEND</button>
-            </div>
-            <div class="eventblock">
-                <label class="eventname">CITYJSCONF</label>
-                <label class="eventdate">MARCH 27, 2020</label>
-                <label class="eventpoints">15 EVENT POINTS</label>
-                <label class="eventaddress">REGENT STREET THEATRE, LONDON</label>
-                <button class="signup">ATTEND</button>
-            </div>
-            <div class="eventblock">
-                <label class="eventname">BINARY DISTRICT ZERO PROOFS WORKSHOP</label>
-                <label class="eventdate">JUNE 12, 2020</label>
-                <label class="eventpoints">15 EVENT POINTS</label>
-                <label class="eventaddress">TRUMAN BREWERY, BRICK LANE, E1</label>
-                <button class="signup">ATTEND</button>
-            </div -->
-        </div>
+        <event-list id="ALLEVENTS" buttonname="ATTEND" dataendpoint="" eventid="SELECTIONEVENT"></event-list>
     </div>
 </template>
 
@@ -662,67 +659,15 @@
             font-size: 16px;
             font-weight: bold;
         }
-
-        .countstack {
-            display: flex;
-            flex-direction: column;
-            width: 80px;
-            margin: 10px;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-        }
-
-        .count {
-            font-size: 50px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .data {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .countlabel {
-            font-size: 12px;
-            text-align: center;
-        }
-
-        .dashboard {
-            height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-            width: 100%;
-
-            border-bottom: 1px solid var(--loyalty-divide-color);
-        }
-
-        .buttons {
-            display: flex;
-            margin-top: 10px;
-            flex-direction: row;
-        }
-
-        .accountbuttons {
-            width: 70px;
-            height: 30px;
-            border-radius: 4px;
-            background: var(--loyalty-button-color);
-            color: white;
-            font-weight: bold;
-            border: none;
-            margin: 10px;
-        }
     </style>
 
     <div class="reservationview">
         <div class="viewtitle">RESERVATIONS</div>
+        <div class="controls">
+            <button class="rescontrol">UPCOMING</button>
+            <button class="rescontrol">PAST</button>
+        </div>
+        <event-list id="UPCOMINGEVENTS" dataendpoint="" buttonname="CHECK IN" eventid="CHECKINEVENT"></event-list>
     </div>
 </template>
 
@@ -768,6 +713,7 @@
 <script src="./javascript/login.js"></script>
 <script src="./javascript/account.js"></script>
 <script src="./javascript/navigation.js"></script>
+<script src="./javascript/eventlist.js"></script>
 <script src="./javascript/events.js"></script>
 <script src="./javascript/reservations.js"></script>
 <script src="./javascript/asset.js"></script>

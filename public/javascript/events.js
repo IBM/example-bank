@@ -1,29 +1,5 @@
 class Events extends HTMLElement {
 
-    createLabel(classname, content) {
-        var label = document.createElement('label');
-        label.className = classname;
-        label.innerHTML = content;
-        return label;
-    }
-
-    showEvents(eventdata) {
-
-        var sr = this.shadowRoot;
-        var anchor = sr.getElementById('eventanchor');
-        var component = this;
-
-        eventdata.forEach(function (event) {
-            var evt = document.createElement('div');
-            evt.className = 'eventblock';
-            evt.appendChild(component.createLabel('eventname', event.title));
-            evt.appendChild(component.createLabel('eventdate', event.date));
-            evt.appendChild(component.createLabel('eventpoints', event.points + ' EVENT POINTS'));
-            evt.appendChild(component.createLabel('eventaddress', event.address));
-            anchor.appendChild(evt);
-        })
-    }
-
     constructor() {
         super();
 
@@ -40,31 +16,16 @@ class Events extends HTMLElement {
 
     connectedCallback() {
 
-        /* first retrieve the event data here*/
+        var sr = this.shadowRoot;
+        var eventscomponent = sr.getElementById('ALLEVENTS');
+        var eventid = eventscomponent.getAttribute('eventid');
 
-        var sampledata = [{
-            "title": "CITYJSCONF",
-            "date": "MARCH 27, 2020",
-            "points": 15,
-            "address": "REGENT STREET THEATRE, LONDON"
-        }, {
-            "title": "BINARY DISTRICT ZERO PROOFS WORKSHOP",
-            "date": "JUNE 12, 2020",
-            "points": 15,
-            "address": "TRUMAN BREWERY, BRICK LANE, E1"
-        }, {
-            "title": "CITYJSCONF",
-            "date": "MARCH 27, 2020",
-            "points": 15,
-            "address": "REGENT STREET THEATRE, LONDON"
-        }, {
-            "title": "BINARY DISTRICT ZERO PROOFS WORKSHOP",
-            "date": "JUNE 12, 2020",
-            "points": 15,
-            "address": "TRUMAN BREWERY, BRICK LANE, E1"
-        }]
+        console.log('EVENTID: ' + eventid);
 
-        this.showEvents(sampledata);
+        this.addEventListener(eventid, e => function () {
+            console.log('received custom event');
+            console.log(e.detail.text())
+        });
     }
 }
 

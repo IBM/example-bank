@@ -15,6 +15,20 @@ class Reservations extends HTMLElement {
             })
             .appendChild(templateContent.cloneNode(true));
     }
+
+    connectedCallback() {
+
+        var sr = this.shadowRoot;
+        var eventscomponent = sr.getElementById('UPCOMINGEVENTS');
+        var eventid = eventscomponent.getAttribute('eventid');
+
+        console.log('EVENTID: ' + eventid);
+
+        this.addEventListener(eventid, e => function () {
+            console.log('received custom event');
+            console.log(e.detail.text())
+        });
+    }
 }
 
 try {
