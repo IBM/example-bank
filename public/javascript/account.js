@@ -27,6 +27,26 @@ class Account extends HTMLElement {
                 mode: 'open'
             })
             .appendChild(templateContent.cloneNode(true));
+
+        let sr = this.shadowRoot;
+        let logoutButton = sr.getElementById("logoutAccountButton")
+        logoutButton.addEventListener("click", e => {
+            this.logout();
+        })
+    }
+
+    logout() {
+        // clear cookies of tokens
+        document.cookie = "access_token=; Max-Age=0'"
+        document.cookie = "id_token=; Max-Age=0'"
+
+        var mobileview = document.getElementById("mobileview");
+        mobileview.innerHTML = "";
+        var welcome = document.createElement('welcome-element')
+        mobileview.appendChild(welcome)
+
+        var nav = document.getElementById("mobilenavigation");
+        nav.style.display = "none";
     }
 
     connectedCallback(){
@@ -67,7 +87,7 @@ class Account extends HTMLElement {
         }else{
             console.log('points parameter passed in')
         }
-    
+
         this.name = customElement.getAttribute('name')
 
         if(this.name == null){

@@ -83,6 +83,26 @@
             width: 160px;
         }
 
+        .usernameinput {
+            width: 120px;
+            text-align: center;
+            font-family: inherit;
+            height: 25px;
+            margin-top: 10px;
+        }
+
+        .signin {
+            width: 120px;
+            height: 30px;
+            border-radius: 4px;
+            background: var(--loyalty-button-color);
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin-top: 10px;
+            outline: 0;
+        }
+
         .signup {
             width: 120px;
             height: 30px;
@@ -91,7 +111,7 @@
             color: white;
             font-weight: bold;
             border: none;
-            margin: 30px;
+            margin: 10px;
             outline: 0;
         }
 
@@ -113,6 +133,9 @@
             <img class="citylogo" src="../images/newyork.svg">
             <div class="cityname">New York</div>
         </div>
+        <select class="usernameinput" id="usernameselect">
+        </select>
+        <button class="signin" id="signin">SIGN IN</button>
         <button class="signup" onclick="loyalty.signup()">SIGN UP</button>
         <div class="blurb">THIS IS A SIMULATED LOYALTY APP TO HIGHLIGHT PRIVACY CONSIDERATIONS WHEN BUILDING CLOUD
             APPLICATIONS. FOR DEMO PURPOSES ONLY</div>
@@ -150,7 +173,7 @@
             align-content: left;
             width: 100px;
             font-size: 12px;
-            text-transform: uppercase;
+            /* text-transform: uppercase; */
             color: #D8D8D8;
             font-weight: bold;
         }
@@ -163,7 +186,7 @@
             align-content: left;
             width: 100px;
             font-size: 12px;
-            text-transform: uppercase;
+            /* text-transform: uppercase; */
             color: #494A4B;
             font-weight: bold;
         }
@@ -322,6 +345,21 @@
             text-transform: uppercase;
         }
 
+        .logout {
+            width: 70px;
+            ;
+            height: 30px;
+            border-radius: 4px;
+            background: #1c87c9;
+            color: white;
+            font-weight: bold;
+            border: none;
+            margin: 10;
+            outline: 0;
+            font-size: 9px;
+            text-transform: uppercase;
+        }
+
         .viewtitle {
             display: flex;
             flex-direction: row;
@@ -374,10 +412,16 @@
             border-bottom: 1px solid var(--loyalty-divide-color);
         }
 
-        .buttons {
+        .buttons, .buttonslogout {
             display: flex;
             margin-top: 10px;
             flex-direction: row;
+        }
+
+        .buttonslogout {
+            margin-top: 0px;
+            align-items: center;
+            justify-content: center;
         }
 
         .accountbuttons {
@@ -423,6 +467,9 @@
                 <button class="signup" id="createAccountButton" onclick="create()">Edit</button>
                 <button class="signup" id="createAccountButton" onclick="create()">Download</button>
                 <button class="signup" id="createAccountButton" onclick="create()">Delete</button>
+            </div>
+            <div class="buttonslogout">
+                <button class="logout" id="logoutAccountButton">Logout</button>
             </div>
         </div>
     </div>
@@ -729,6 +776,51 @@
     </div>
 </template>
 
+<template id="loadingspinner">
+    <style>
+        @keyframes spinner {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+        .spin::before {
+            animation: 1.5s linear infinite spinner;
+            animation-play-state: inherit;
+            border: solid 5px #cfd0d1;
+            border-bottom-color: #1c87c9;
+            border-radius: 50%;
+            content: "";
+            height: 40px;
+            width: 40px;
+            position: absolute;
+            transform: translate3d(-50%, -50%, 0);
+            will-change: transform;
+        }
+        .spin {
+            padding-top: 260px;
+        }
+        .spinner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .status {
+            font-size: 14px;
+            font-family: inherit;
+            margin-top: 40px;
+        }
+      </style>
+      <div class="spinner-container">
+        <div class="spin"></div>
+        <div class="status" id="status">Loading</div>
+      </div>
+</template>
+
+<script src="./javascript/clientHelpers/demoaccounts.js"></script>
 <script src="./javascript/loyalty.js"></script>
 <script src="./javascript/welcome.js"></script>
 <script src="./javascript/login.js"></script>
@@ -738,5 +830,6 @@
 <script src="./javascript/events.js"></script>
 <script src="./javascript/reservations.js"></script>
 <script src="./javascript/asset.js"></script>
+<script src="./javascript/spinner.js"></script>
 
 </html>

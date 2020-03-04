@@ -13,7 +13,7 @@ class Welcome extends HTMLElement {
         // Create spans
         // var wrapper = document.createElement('span');
         // wrapper.setAttribute('class', 'wrapper');
-        
+
         // wrapper.innerHTML = view;
         // Take attribute content and put it inside the info span
         // var text = this.getAttribute('text');
@@ -21,13 +21,46 @@ class Welcome extends HTMLElement {
 
         let template = document.getElementById('welcomeview');
         let templateContent = template.content;
-  
+
         const shadow = this.attachShadow({mode: 'open'})
           .appendChild(templateContent.cloneNode(true));
 
         // shadow.appendChild(wrapper);
         // wrapper.appendChild(info);
+        let sr = this.shadowRoot;
+
+        let selectUserInput = sr.getElementById("usernameselect")
+        let signinButton = sr.getElementById("signin")
+
+        getAllUsers((users) => {
+            users.forEach(user => {
+                var option = document.createElement("option");
+                option.text = user
+                selectUserInput.add(option)
+            });
+        })
+
+        signinButton.addEventListener("click", e => {
+            this.signin(selectUserInput.value, selectUserInput.value)
+        })
     }
+
+    signin(username, password) {
+        var mobileview = document.getElementById("mobileview");
+        mobileview.innerHTML = "";
+
+        // create loading spinner first
+        var element = document.createElement('loading-spinner-element');
+        element.setAttribute("status", "Logging in...")
+        mobileview.appendChild(element)
+
+        loginWithAppId(username, password, (jsonWebToken) => {
+            // when login complete,
+            // re-initialize app?
+            new Loyalty();
+        })
+    }
+
 }
 
 try {
