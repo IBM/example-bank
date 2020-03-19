@@ -40,12 +40,17 @@ router.post('/login', function (req, res) {
       res.send(err)
     } else {
       let jsonBody = JSON.parse(body)
-      let cookieOptions = {
-        maxAge: jsonBody.expires_in * 1000
+      if (jsonBody.error) {
+        console.log(jsonBody)
+        res.status('404').send(body)
+      } else {
+        let cookieOptions = {
+          maxAge: jsonBody.expires_in * 1000
+        }
+        res.cookie('access_token', jsonBody.access_token, cookieOptions)
+        res.cookie('id_token', jsonBody.id_token, cookieOptions)
+        res.send(body)
       }
-      res.cookie('access_token', jsonBody.access_token, cookieOptions)
-      res.cookie('id_token', jsonBody.id_token, cookieOptions)
-      res.send(body)
     }
   })
 })

@@ -58,6 +58,7 @@ class Welcome extends HTMLElement {
             // when login complete,
             // re-initialize app?
             new Loyalty();
+            // edge case when unable to sign in
         })
     }
 

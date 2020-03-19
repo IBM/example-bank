@@ -24,6 +24,12 @@ class Events extends HTMLElement {
 
         eventscomponent.addEventListener(eventid, e => {
             console.log(e.detail)
+            let id_object = loyalty.parseJwt(loyalty.getCookie('id_token'))
+            attendEvent(id_object.sub, e.detail.eventData)
+            // re-attach this component
+            let container = this.parentElement
+            let content = container.innerHTML
+            container.innerHTML = content
         });
     }
 }

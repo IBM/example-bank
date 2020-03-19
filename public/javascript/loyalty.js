@@ -1,8 +1,8 @@
 class Loyalty {
 
-    constructor(details) {
+    constructor() {
         console.log('initializing loyalty app');
-        this.details = details;
+        // this.details = details;
 
         // if cookie exists - then user is logged in
         //  navigate to account section
@@ -11,8 +11,6 @@ class Loyalty {
             console.log(id_object)
 
             var accountinfo = {
-                events:7,
-                points:42,
                 firstname: id_object.given_name,
                 surname: id_object.family_name
             }
@@ -23,13 +21,9 @@ class Loyalty {
             mobileview.innerHTML = "";
 
             let element = document.createElement('account-element')
-            element.setAttribute('events', accountinfo.events)
-            element.setAttribute('points', accountinfo.points)
             element.setAttribute('name', fullname)
             mobileview.appendChild(element)
 
-            localStorage.setItem("loyaltyevents", accountinfo.events);
-            localStorage.setItem("loyaltypoints", accountinfo.points);
             localStorage.setItem("loyaltyname", fullname);
 
             var nav = document.getElementById("mobilenavigation");
@@ -85,9 +79,4 @@ class Loyalty {
       }
 }
 
-var loyalty = new Loyalty({
-    firstname: 'Paul',
-    surname: 'McCartney',
-    password: '######',
-    username: 'paul@email.com'
-});
+var loyalty = new Loyalty();

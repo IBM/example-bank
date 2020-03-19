@@ -40,6 +40,9 @@ class Account extends HTMLElement {
         document.cookie = "access_token=; Max-Age=0'"
         document.cookie = "id_token=; Max-Age=0'"
 
+        // clear local storage
+        localStorage.clear()
+
         var mobileview = document.getElementById("mobileview");
         mobileview.innerHTML = "";
         var welcome = document.createElement('welcome-element')
@@ -56,50 +59,19 @@ class Account extends HTMLElement {
         /* where to make a data call for points/events */
 
         this.events = customElement.getAttribute('events')
-
-        if(this.events == null){
-            console.log('no events parameters passed in')
-            this.events = localStorage.getItem("loyaltyevents");
-
-            if( this.events == null){
-                console.log('no events parameters stored')
-                this.events = "";
-            }else{
-                console.log('using stored events parameter')
-            }
-
-        }else{
-            console.log('events parameter passed in')
-        }
-
         this.points = customElement.getAttribute('points')
 
-        if(this.points == null){
-            console.log('no points parameters passed in')
-            this.points = localStorage.getItem("loyaltypoints");
-
-            if( this.points == null){
-                console.log('no points parameters stored')
-                this.points = "";
-            }else{
-                console.log('using stored points parameter')
-            }
-        }else{
-            console.log('points parameter passed in')
+        if (this.events == null) {
+            this.events = '-'
+        }
+        if (this.points == null) {
+            this.points = '-'
         }
 
-        this.name = customElement.getAttribute('name')
+        this.name = customElement.getAttribute('name') || localStorage.getItem("loyaltyname")
 
         if(this.name == null){
-            console.log('no name parameters passed in')
-            this.name = localStorage.getItem("loyaltyname");
-
-            if( this.name == null){
-                console.log('no name parameters stored')
-                this.name = "";
-            }else{
-                console.log('using stored name parameter')
-            }
+            this.name = "";
         }else{
             console.log('name parameter passed in')
         }
@@ -110,6 +82,53 @@ class Account extends HTMLElement {
         this.pointearned.innerHTML = this.points;
         this.nameelement = sr.getElementById('name');
         this.nameelement.innerHTML = this.name;
+
+        // test
+        // getEvents(loyalty.getCookie('access_token'), (err, events) => {
+        //     Object.keys(events).forEach(id => {
+        //         let event = events[id]
+        //         console.log(event)
+        //     })
+        // })
+
+        // test
+        // getUserEvents(loyalty.getCookie('access_token'), (err, events) => {
+        //     console.log(events)
+        // })
+
+        getUserStats(loyalty.getCookie('access_token'), (err, eventCount, pointsEarned) => {
+            // if user is not registered (user profile is not in database)
+            // create one for user
+            if (err == 'User is not registered') {
+                let mobileview = document.getElementById("mobileview");
+                mobileview.innerHTML = "";
+                let element = document.createElement('loading-spinner-element');
+                element.setAttribute("status", "Creating user profile...")
+                mobileview.appendChild(element)
+
+                createProfile(loyalty.getCookie('access_token'), success => {
+                    // then re-initialize app
+                    if (success) {
+                        new Loyalty()
+                    }
+                    // else edge case when failed to create user profile
+                })
+            }
+            if (eventCount != null) customElement.setAttribute('events', eventCount)
+            if (pointsEarned != null) customElement.setAttribute('points', pointsEarned)
+        })
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        console.log('account attribute changed callback')
+
+        if (name == 'events') {
+            console.log('events changed')
+            this.shadowRoot.getElementById('eventsattended').innerHTML = newValue
+        } else if (name == 'points') {
+            console.log('points changed')
+            this.shadowRoot.getElementById('pointearned').innerHTML = newValue
+        }
     }
 }
 

@@ -49,6 +49,7 @@ class Reservations extends HTMLElement {
 
         var sr = this.shadowRoot;
         var eventscomponent = sr.getElementById('UPCOMINGEVENTS');
+        var pasteventscomponent = sr.getElementById('PASTEVENTS');
         var eventid = eventscomponent.getAttribute('eventid');
 
         this.pastButton = sr.getElementById('pastbutton');
@@ -64,9 +65,25 @@ class Reservations extends HTMLElement {
 
         console.log('EVENTID: ' + eventid);
 
-        this.addEventListener(eventid, e => function () {
-            console.log('received custom event');
-            console.log(e.detail.text())
+        eventscomponent.addEventListener(eventid, e => {
+            console.log('received custom event from ' + eventid);
+            console.log("Checking in - " + e.detail.eventData.eventId)
+            checkInEvent(loyalty.getCookie('access_token'), e.detail.eventData.eventId, bool => {
+                if (bool) {
+                    // remove event item
+                    let eventItemElement = e.detail.element()
+                    eventItemElement.parentNode.removeChild(eventItemElement)
+                    // remove event from local storage too
+                    removeStoredEvent(loyalty.parseJwt(loyalty.getCookie('id_token')).sub, e.detail.eventData.eventId)
+
+                    // re-attach the past event to trigger new data from server
+                    let pasteventelementparent = pasteventscomponent.parentNode
+                    let pasteventelement = pasteventscomponent
+                    pasteventelementparent.removeChild(pasteventelement)
+                    pasteventelementparent.appendChild(pasteventelement)
+
+                }
+            })
         });
     }
 }

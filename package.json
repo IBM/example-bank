@@ -10,6 +10,7 @@
     "cfenv": "^1.2.2",
     "dotenv": "^8.2.0",
     "express": "^4.16.4",
+    "express-http-proxy": "^1.6.0",
     "ibmcloud-appid": "^6.1.0",
     "log4js": "^6.1.0",
     "node-random-name": "^1.0.1",

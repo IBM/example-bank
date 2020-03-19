@@ -39,17 +39,24 @@ class Login extends HTMLElement {
                 let usernamepassword = firstname + "" + surname
                 loginWithAppId(usernamepassword, usernamepassword, (jsonWithTokens) => {
                     // when creation of account
-                    // and login complete, create the account view
-                    this.createAccountView(firstname, surname)
+                    // and login complete, create the profile
+                    element.setAttribute("status", "Creating user profile...")
+                    createProfile(jsonWithTokens.access_token, success => {
+                        // then show account view
+                        if (success) {
+                            this.createAccountView(firstname, surname)
+                        }
+                        // else edge case when failed to create user profile
+                    })
+                    // edge case when unable to sign in
                 })
             }
+            // edge case when failed to register with app id
         })
     }
 
     createAccountView(firstname, surname) {
         var accountinfo ={
-            events:7,
-            points:42,
             firstname:firstname,
             surname: surname
         }
@@ -58,12 +65,10 @@ class Login extends HTMLElement {
 
         var mobileview = document.getElementById("mobileview");
         mobileview.innerHTML = "";
-        mobileview.innerHTML = '<account-element events="' + accountinfo.events +
-        '" points="' + accountinfo.points +
-        '" name="' + fullname + '"></account-element>'
+        mobileview.innerHTML = '<account-element name="' + fullname + '"></account-element>'
 
-        localStorage.setItem("loyaltyevents", accountinfo.events);
-        localStorage.setItem("loyaltypoints", accountinfo.points);
+        // localStorage.setItem("loyaltyevents", accountinfo.events);
+        // localStorage.setItem("loyaltypoints", accountinfo.points);
         localStorage.setItem("loyaltyname", fullname);
 
         var nav = document.getElementById("mobilenavigation");
