@@ -1,0 +1,84 @@
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: loyalty-mobile-simulator-service
+    labels:
+      app: loyalty-mobile-simulator
+  spec:
+    ports:
+      - port: 80
+        protocol: TCP
+        targetPort: 8080
+    type: LoadBalancer
+    selector:
+      app: loyalty-mobile-simulator
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: loyalty-mobile-simulator-deployment
+  labels:
+    app: loyalty-mobile-simulator
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: loyalty-mobile-simulator
+    spec:
+      containers:
+        - image: anthonyamanse/loyalty-mobile-simulator:latest
+          imagePullPolicy: Always
+          name: loyalty-mobile-simulator
+          env:
+            - name: PORT
+              value: '8080'
+            - name: APP_ID_IAM_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: APP_ID_IAM_APIKEY
+            - name: APP_ID_MANAGEMENT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: APP_ID_MANAGEMENT_URL
+            - name: APP_ID_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: APP_ID_CLIENT_ID
+            - name: APP_ID_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: APP_ID_CLIENT_SECRET
+            - name: APP_ID_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: APP_ID_TOKEN_URL
+            - name: REDIS_URL_TEMP
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: REDIS_URL_TEMP
+            - name: REDIS_CA_TEMP_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: REDIS_CA_TEMP_BASE64
+            - name: PROXY_USER_MICROSERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: PROXY_USER_MICROSERVICE
+            - name: PROXY_USER_MICROSERVICE
+              valueFrom:
+                secretKeyRef:
+                  name: mobile-simulator-secrets
+                  key: PROXY_USER_MICROSERVICE
+          ports:
+            - containerPort: 8080

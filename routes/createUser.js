@@ -24,7 +24,7 @@ const APP_ID_TOKEN_URL = process.env.APP_ID_TOKEN_URL
 
 let redisClientUsers = redis.createClient(process.env.REDIS_URL_TEMP, {
 	tls: {
-	ca: process.env.REDIS_CA_TEMP }
+	ca: Buffer.from(process.env.REDIS_CA_TEMP_BASE64, 'base64').toString('utf-8') }
 })
 
 router.get('/random_user', function (req, res) {
