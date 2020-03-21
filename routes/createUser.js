@@ -12,14 +12,18 @@ const redis = require('redis');
 const redisScan = require('redisscan');
 // app id self service manager
 const SelfServiceManager = require("ibmcloud-appid").SelfServiceManager;
+let APP_ID_IAM_APIKEY = process.env.APP_ID_IAM_APIKEY
+let APP_ID_MANAGEMENT_URL = process.env.APP_ID_MANAGEMENT_URL
 let selfServiceManager = new SelfServiceManager({
-	iamApiKey: process.env.APP_ID_IAM_APIKEY,
-	managementUrl: process.env.APP_ID_MANAGEMENT_URL
+	iamApiKey: APP_ID_IAM_APIKEY,
+	managementUrl: APP_ID_MANAGEMENT_URL
 });
 // app id client credentials
 const APP_ID_CLIENT_ID = process.env.APP_ID_CLIENT_ID
 const APP_ID_CLIENT_SECRET = process.env.APP_ID_CLIENT_SECRET
 const APP_ID_TOKEN_URL = process.env.APP_ID_TOKEN_URL
+// IAM token url
+const IAM_TOKEN_URL = 'https://iam.cloud.ibm.com/identity/token'
 
 
 let redisClientUsers = redis.createClient(process.env.REDIS_URL_TEMP, {
@@ -75,9 +79,7 @@ router.post('/create_account', function (req, res) {
 
 	selfServiceManager.signUp(userData, "en").then(function (user) {
 		console.log('user created successfully');
-		return createUserPass(user, reqeustBody.firstName + reqeustBody.lastName, reqeustBody.password)
-	}).then(function (response) {
-		res.send({user: response.user, status: "user created successfully", responseFromRedis: response.res})
+		res.send({user , status: "user created successfully"})
 	}).catch(function (err) {
 		console.log(err);
 		if (err.statusCode) {
@@ -89,35 +91,16 @@ router.post('/create_account', function (req, res) {
 })
 
 router.get("/get_all_users", function(req, res) {
-	let users = []
-	redisScan({
-		redis: redisClientUsers,
-		keys_only: true,
-		each_callback: function (type, key, subkey, length, value, cb) {
-				users.push(key);
-				cb();
-		},
-		done_callback: function (err) {
-			if (err) {
-				res.status('404').send(err)
-			} else {
-				res.send(users)
+	getIAMToken(APP_ID_IAM_APIKEY, IAM_TOKEN_URL).then((token) => {
+		getUsersAppID(token, (users) => {
+			if (users == null) {
+				let empty = []
+				res.send(empty)
 			}
-		}
-	});
-});
-
-function createUserPass(user, username, password) {
-	return new Promise((resolve, reject) => {
-		redisClientUsers.set(username, password, function(err, res) {
-			if (err != null) {
-				reject(err)
-			} else {
-				resolve({user, res})
-			}
+			res.send(users)
 		})
 	})
-}
+});
 
 function getAppIdToken(username, password, callback) {
   let options = {
@@ -137,6 +120,83 @@ function getAppIdToken(username, password, callback) {
   request(options, function (err, response, body) {
     callback(err, response, body)
   })
+}
+
+function getIAMToken(iamApiKey, iamTokenUrl) {
+	if (!iamApiKey) {
+		return Promise.reject("You must pass 'iamToken' to self-service-manager APIs or specify 'iamApiKey' in selfServiceManager init options.");
+	}
+	var reqOptions = {
+		url: iamTokenUrl,
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded",
+			"Accept": "application/json"
+		},
+		form: {
+			"grant_type": "urn:ibm:params:oauth:grant-type:apikey",
+			"apikey": iamApiKey
+		}
+	};
+	return new Promise(function (resolve, reject) {
+		request(reqOptions, function (error, response, body) {
+			if (error) {
+				console.log("Obtained IAM token failure: " + error.message);
+				reject(error.message);
+			} else {
+				if (response.statusCode === 200) {
+					var IAMAccessToken = JSON.parse(body)["access_token"];
+					// console.log("Obtained IAM token: " + IAMAccessToken);
+					resolve(IAMAccessToken);
+				} else {
+					console.log("Obtained IAM token failure");
+					console.log("Got status code: " + response.statusCode);
+					console.log(body);
+					reject(body);
+				}
+			}
+		});
+	});
+};
+
+function getUsersAppID(iamToken, callback) {
+	let reqOptions = {
+		url: APP_ID_MANAGEMENT_URL + '/cloud_directory/Users',
+		method: "GET",
+		headers: {
+			"Authorization": "Bearer " + iamToken
+		}
+	}
+
+	request(reqOptions, function (error, response, body) {
+		if (error) {
+			console.log("Obtaining users failed")
+			console.log(error);
+			callback(null)
+		} else {
+			if (response.statusCode === 200) {
+				let responseBody = JSON.parse(body);
+				let users = responseBody.Resources
+				// get usernames
+				users = users.map((element) => {
+					return element.userName
+				})
+				// remove test accounts
+				users = users.filter((element) => {
+					if (element == 'testadmin' || element == 'gregdritschler') {
+						return false
+					}
+					return true
+				})
+				callback(users)
+			} else {
+				console.log("Obtaining users failed")
+				console.log("Got status code: " + response.statusCode);
+				console.log(body);
+				callback(null)
+			}
+		}
+	})
 }
 
 module.exports = router
