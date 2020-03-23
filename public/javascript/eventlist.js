@@ -25,12 +25,17 @@ class EventList extends HTMLElement {
 
 
 
+            const date = new Date(event.startTime)
+            const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
+            const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date)
+            const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
+
             var evt = document.createElement('div');
             evt.className = 'eventblock';
-            evt.appendChild(component.createLabel('eventname', event.title));
-            evt.appendChild(component.createLabel('eventdate', event.date));
-            evt.appendChild(component.createLabel('eventpoints', event.points + ' EVENT POINTS'));
-            evt.appendChild(component.createLabel('eventaddress', event.address));
+            evt.appendChild(component.createLabel('eventname', event.eventName));
+            evt.appendChild(component.createLabel('eventdate', `${month} ${day} ${year}`));
+            evt.appendChild(component.createLabel('eventpoints', event.pointValue + ' EVENT POINTS'));
+            evt.appendChild(component.createLabel('eventaddress', event.eventLocation));
 
             if (component.buttonName != null) {
                 var button = document.createElement('button');
@@ -40,7 +45,8 @@ class EventList extends HTMLElement {
                 button.onclick = function () {
                     var customEvent = new CustomEvent(component.eventid, {
                         detail: {
-                            eventData: event
+                            eventData: event,
+                            element: () => evt
                         },
                         bubbles: true
                     });
@@ -81,29 +87,83 @@ class EventList extends HTMLElement {
         this.buttonName = customElement.getAttribute('buttonname');
         this.eventid = customElement.getAttribute('eventid');
 
-        var sampledata = [{
-            "title": "CITYJSCONF",
-            "date": "MARCH 27, 2020",
-            "points": 15,
-            "address": "REGENT STREET THEATRE, LONDON"
-        }, {
-            "title": "BINARY DISTRICT ZERO PROOFS WORKSHOP",
-            "date": "JUNE 12, 2020",
-            "points": 15,
-            "address": "TRUMAN BREWERY, BRICK LANE, E1"
-        }, {
-            "title": "CITYJSCONF",
-            "date": "MARCH 27, 2020",
-            "points": 15,
-            "address": "REGENT STREET THEATRE, LONDON"
-        }, {
-            "title": "BINARY DISTRICT ZERO PROOFS WORKSHOP",
-            "date": "JUNE 12, 2020",
-            "points": 15,
-            "address": "TRUMAN BREWERY, BRICK LANE, E1"
-        }]
+        switch (this.id) {
+            case 'UPCOMINGEVENTS':
+                let arrayOfEvents = getStoredEvents(loyalty.parseJwt(loyalty.getCookie('id_token')).sub)
 
-        this.showEvents(sampledata);
+                if (arrayOfEvents == null) arrayOfEvents = []
+                // sort
+                let sortedArray = arrayOfEvents.sort((a, b) => (new Date(a.startTime) > new Date(b.startTime)) ? 1 : -1)
+
+                this.showEvents(sortedArray)
+                break
+            case 'ALLEVENTS':
+                getUserEvents(loyalty.getCookie('access_token'), (err, checkedInUserEvents) => {
+                    getEvents(loyalty.getCookie('access_token'), (err, events) => {
+                        let eventsOfArray = []
+                        let storedEvents = getStoredEvents(loyalty.parseJwt(loyalty.getCookie('id_token')).sub)
+                        // map array into eventIds only
+                        if (storedEvents != null) {
+                            storedEvents = storedEvents.map(e => e.eventId)
+                        } else {
+                            storedEvents = []
+                        }
+                        for (var i in events) {
+                            // dont show events that user has checked in already or stored already
+                            if (!checkedInUserEvents.includes(i) && !storedEvents.includes(i)) {
+                                // add event id in body
+                                events[i].eventId = i
+                                eventsOfArray.push(events[i])
+                            }
+                        }
+
+                        let sortedArray = eventsOfArray.sort((a, b) => (new Date(a.startTime) > new Date(b.startTime)) ? 1 : -1)
+                        // console.log(sortedArray)
+                        this.showEvents(sortedArray)
+                    })
+                })
+                break
+            case 'PASTEVENTS':
+                getUserEventsWithData(loyalty.getCookie('access_token'), (err, events) => {
+                    let eventsOfArray = []
+
+                    for (var i in events ) {
+                        // add event id in body
+                        events[i].eventId = i
+                        eventsOfArray.push(events[i])
+                    }
+
+                    let sortedArray = eventsOfArray.sort((a, b) => (new Date(a.startTime) > new Date(b.startTime)) ? 1 : -1)
+                    this.showEvents(sortedArray)
+                })
+                break
+            default:
+                break
+        }
+
+        // var sampledata = [{
+        //     "title": "CITYJSCONF",
+        //     "date": "MARCH 27, 2020",
+        //     "points": 15,
+        //     "address": "REGENT STREET THEATRE, LONDON"
+        // }, {
+        //     "title": "BINARY DISTRICT ZERO PROOFS WORKSHOP",
+        //     "date": "JUNE 12, 2020",
+        //     "points": 15,
+        //     "address": "TRUMAN BREWERY, BRICK LANE, E1"
+        // }, {
+        //     "title": "CITYJSCONF",
+        //     "date": "MARCH 27, 2020",
+        //     "points": 15,
+        //     "address": "REGENT STREET THEATRE, LONDON"
+        // }, {
+        //     "title": "BINARY DISTRICT ZERO PROOFS WORKSHOP",
+        //     "date": "JUNE 12, 2020",
+        //     "points": 15,
+        //     "address": "TRUMAN BREWERY, BRICK LANE, E1"
+        // }]
+
+        // this.showEvents(sampledata);
     }
 }
 

@@ -13,33 +13,64 @@ class Login extends HTMLElement {
         }
     }
 
-    createAccount(){
+    createAccount() {
         console.log('login.createAccount');
 
         /* where to make a data call for points/events */
 
         var firstname = this.getAttribute('firstname');
         var surname = this.getAttribute('surname');
+        var password = this.getAttribute('password')
+        var email = this.getAttribute('username')
 
+        var mobileview = document.getElementById("mobileview");
+        mobileview.innerHTML = "";
+
+        // create loading spinner first
+        var element = document.createElement('loading-spinner-element');
+        element.setAttribute("status", "Creating account...")
+        mobileview.appendChild(element)
+
+        createAccountAppId(firstname, surname, password, email, (json) => {
+            console.log(json)
+            if (json.status == "user created successfully") {
+
+                element.setAttribute("status", "Logging in...")
+                let usernamepassword = firstname + "" + surname
+                loginWithAppId(usernamepassword, usernamepassword, (jsonWithTokens) => {
+                    // when creation of account
+                    // and login complete, create the profile
+                    element.setAttribute("status", "Creating user profile...")
+                    createProfile(jsonWithTokens.access_token, success => {
+                        // then show account view
+                        if (success) {
+                            this.createAccountView(firstname, surname)
+                        }
+                        // else edge case when failed to create user profile
+                    })
+                    // edge case when unable to sign in
+                })
+            }
+            // edge case when failed to register with app id
+        })
+    }
+
+    createAccountView(firstname, surname) {
         var accountinfo ={
-            events:7,
-            points:42,
             firstname:firstname,
             surname: surname
         }
 
-        var fullname = accountinfo.firstname + ' ' + accountinfo.surname 
+        var fullname = accountinfo.firstname + ' ' + accountinfo.surname
 
         var mobileview = document.getElementById("mobileview");
         mobileview.innerHTML = "";
-        mobileview.innerHTML = '<account-element events="' + accountinfo.events + 
-        '" points="' + accountinfo.points + 
-        '" name="' + fullname + '"></account-element>'
+        mobileview.innerHTML = '<account-element name="' + fullname + '"></account-element>'
 
-        localStorage.setItem("loyaltyevents", accountinfo.events);
-        localStorage.setItem("loyaltypoints", accountinfo.points);
+        // localStorage.setItem("loyaltyevents", accountinfo.events);
+        // localStorage.setItem("loyaltypoints", accountinfo.points);
         localStorage.setItem("loyaltyname", fullname);
-    
+
         var nav = document.getElementById("mobilenavigation");
         nav.style.display = "flex";
     }
@@ -52,12 +83,12 @@ class Login extends HTMLElement {
         let templateContent = template.content;
 
         const shadow = this.attachShadow({mode: 'open'})
-          .appendChild(templateContent.cloneNode(true));        
-          
+          .appendChild(templateContent.cloneNode(true));
+
         var sr = this.shadowRoot;
 
         this.checkbox = sr.getElementById('gdprcheck');
-        
+
         this.checkbox.addEventListener('click', e => {
             this.clickCheck();
         });
