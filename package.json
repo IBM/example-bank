@@ -14,8 +14,6 @@
     "ibmcloud-appid": "^6.1.0",
     "log4js": "^6.1.0",
     "node-random-name": "^1.0.1",
-    "redis": "^3.0.2",
-    "redisscan": "^2.0.0",
     "request": "^2.88.2"
   },
   "repository": {},

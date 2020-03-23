@@ -6,10 +6,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 // random name generator
 const random_name = require('node-random-name');
-// redis connection
-const redis = require('redis');
-// redisscan
-const redisScan = require('redisscan');
 // app id self service manager
 const SelfServiceManager = require("ibmcloud-appid").SelfServiceManager;
 let APP_ID_IAM_APIKEY = process.env.APP_ID_IAM_APIKEY
@@ -24,12 +20,6 @@ const APP_ID_CLIENT_SECRET = process.env.APP_ID_CLIENT_SECRET
 const APP_ID_TOKEN_URL = process.env.APP_ID_TOKEN_URL
 // IAM token url
 const IAM_TOKEN_URL = 'https://iam.cloud.ibm.com/identity/token'
-
-
-let redisClientUsers = redis.createClient(process.env.REDIS_URL_TEMP, {
-	tls: {
-	ca: Buffer.from(process.env.REDIS_CA_TEMP_BASE64, 'base64').toString('utf-8') }
-})
 
 router.get('/random_user', function (req, res) {
 	res.send(random_name())
