@@ -29,7 +29,7 @@ spec:
         app: loyalty-mobile-simulator
     spec:
       containers:
-        - image: anthonyamanse/loyalty-mobile-simulator:latest
+        - image: us.icr.io/codey-cr/simulator:1.0-SNAPSHOT
           imagePullPolicy: Always
           name: loyalty-mobile-simulator
           env:
@@ -60,25 +60,28 @@ spec:
                 secretKeyRef:
                   name: mobile-simulator-secrets
                   key: APP_ID_TOKEN_URL
-            - name: REDIS_URL_TEMP
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: REDIS_URL_TEMP
-            - name: REDIS_CA_TEMP_BASE64
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: REDIS_CA_TEMP_BASE64
             - name: PROXY_USER_MICROSERVICE
               valueFrom:
                 secretKeyRef:
                   name: mobile-simulator-secrets
                   key: PROXY_USER_MICROSERVICE
-            - name: PROXY_USER_MICROSERVICE
+            - name: PROXY_EVENT_MICROSERVICE
               valueFrom:
                 secretKeyRef:
                   name: mobile-simulator-secrets
-                  key: PROXY_USER_MICROSERVICE
+                  key: PROXY_EVENT_MICROSERVICE
           ports:
             - containerPort: 8080
+      imagePullSecrets:
+      - name: roks43creds
+
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: loyalty-mobile-simulator-service
+spec:
+  to:
+    kind: Service
+    name: loyalty-mobile-simulator-service
+
