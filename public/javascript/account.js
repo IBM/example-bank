@@ -33,6 +33,12 @@ class Account extends HTMLElement {
         logoutButton.addEventListener("click", e => {
             this.logout();
         })
+
+
+        let deleteButton = sr.getElementById("deleteAccountButton")
+        deleteButton.addEventListener("click", e => {
+            this.delete();
+        })
     }
 
     logout() {
@@ -50,6 +56,25 @@ class Account extends HTMLElement {
 
         var nav = document.getElementById("mobilenavigation");
         nav.style.display = "none";
+    }
+
+    delete() {
+        let mobileview = document.getElementById("mobileview");
+        mobileview.innerHTML = "";
+        let element = document.createElement('loading-spinner-element');
+        element.setAttribute("status", "Deleting account...")
+        mobileview.appendChild(element)
+
+        setTimeout(() => {
+            deleteUserProfile(loyalty.getCookie('access_token'), success => {
+                if (success) {
+                    element.setAttribute("status", "Successfully deleted account. Logging out...")
+                    setTimeout(() => {
+                        this.logout();
+                    }, 2500)
+                }
+            })
+        }, 1500)
     }
 
     connectedCallback(){
@@ -83,19 +108,6 @@ class Account extends HTMLElement {
         this.nameelement = sr.getElementById('name');
         this.nameelement.innerHTML = this.name;
 
-        // test
-        // getEvents(loyalty.getCookie('access_token'), (err, events) => {
-        //     Object.keys(events).forEach(id => {
-        //         let event = events[id]
-        //         console.log(event)
-        //     })
-        // })
-
-        // test
-        // getUserEvents(loyalty.getCookie('access_token'), (err, events) => {
-        //     console.log(events)
-        // })
-
         getUserStats(loyalty.getCookie('access_token'), (err, eventCount, pointsEarned) => {
             // if user is not registered (user profile is not in database)
             // create one for user
@@ -103,16 +115,15 @@ class Account extends HTMLElement {
                 let mobileview = document.getElementById("mobileview");
                 mobileview.innerHTML = "";
                 let element = document.createElement('loading-spinner-element');
-                element.setAttribute("status", "Creating user profile...")
+                element.setAttribute("status", "User is marked for deletion...")
                 mobileview.appendChild(element)
 
-                createProfile(loyalty.getCookie('access_token'), success => {
-                    // then re-initialize app
-                    if (success) {
-                        new Loyalty()
-                    }
-                    // else edge case when failed to create user profile
-                })
+                setTimeout(() => {
+                    element.setAttribute("status", "Logging out...")
+                    setTimeout(() => {
+                        this.logout()
+                    }, 2500)
+                }, 2000)
             }
             if (eventCount != null) customElement.setAttribute('events', eventCount)
             if (pointsEarned != null) customElement.setAttribute('points', pointsEarned)

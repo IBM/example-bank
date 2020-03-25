@@ -29,9 +29,9 @@
             <asset-element assetimage="./images/threat.svg" text="Introduction to threat modelling"></asset-element>
             <asset-element assetimage="./images/secure.svg"
                 text="Building a JEE loyalty app on openshift 4 code pattern"></asset-element>
-            <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh">
+            <!-- <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh">
             </asset-element>
-            <asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element>
+            <asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element> -->
         </div>
         <div id="mobileapp" class="app">
             <div class="frame">
@@ -416,6 +416,8 @@
             display: flex;
             margin-top: 10px;
             flex-direction: row;
+            align-items: center;
+            justify-content: center;
         }
 
         .buttonslogout {
@@ -450,7 +452,7 @@
                 </div>
 
             </div>
-            <button class="signup" id="createAccountButton" onclick="loyalty.create()">Check In</button>
+            <!-- <button class="signup" id="createAccountButton" onclick="loyalty.create()">Check In</button> -->
         </div>
 
         <div class="account">
@@ -464,12 +466,10 @@
                 <div class="idinfo" id="surname">2019</div>
             </div>
             <div class="buttons">
-                <button class="signup" id="createAccountButton" onclick="create()">Edit</button>
-                <button class="signup" id="createAccountButton" onclick="create()">Download</button>
-                <button class="signup" id="createAccountButton" onclick="create()">Delete</button>
-            </div>
-            <div class="buttonslogout">
-                <button class="logout" id="logoutAccountButton">Logout</button>
+                <!-- <button class="signup" id="createAccountButton" onclick="create()">Edit</button>
+                <button class="signup" id="createAccountButton" onclick="create()">Download</button> -->
+                <button class="signup" id="deleteAccountButton">Delete</button>
+                <button class="signup" id="logoutAccountButton">Logout</button>
             </div>
         </div>
     </div>

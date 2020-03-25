@@ -143,3 +143,19 @@ function checkInEvent(access_token, eventId, callback) {
         }
     })
 }
+
+function deleteUserProfile(access_token, callback) {
+    fetch(SECURE_USER_BACKEND_URL + '/loyalty/v1/users/self', {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        }
+    }).then((response) => {
+        console.log(response)
+        if (response.status == '204') {
+            callback(true)
+        } else {
+            callback(false)
+        }
+    })
+}
