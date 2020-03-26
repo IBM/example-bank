@@ -29,7 +29,7 @@ spec:
         app: loyalty-mobile-simulator
     spec:
       containers:
-        - image: us.icr.io/codey-cr/simulator:1.0-SNAPSHOT
+        - image: simulator:1.0-SNAPSHOT
           imagePullPolicy: Always
           name: loyalty-mobile-simulator
           env:
@@ -72,8 +72,6 @@ spec:
                   key: PROXY_EVENT_MICROSERVICE
           ports:
             - containerPort: 8080
-      imagePullSecrets:
-      - name: roks43creds
 
 ---
 apiVersion: v1

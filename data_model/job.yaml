@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: loyalty-database-load
+  labels:
+    app: loyalty-database-load
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: loyalty-database-load
+          image: loyalty-db-load:1.0-SNAPSHOT
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: loyalty-db-secret
+

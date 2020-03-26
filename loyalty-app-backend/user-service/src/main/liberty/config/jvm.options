@@ -1,0 +1,2 @@
+# This option is needed when using an IBM JRE to avoid a handshake failure when making a secure JDBC connection.
+-Dcom.ibm.jsse2.overrideDefaultTLS=true
