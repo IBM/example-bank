@@ -78,14 +78,14 @@ export EVENTS_BASEURL=http://<host>:<port>
 
 Prefix for test user names and the password they should use.  These users are created dynamically by the tests.
 ```
-export TEST_USER_PREFIX=
-export TEST_PASSWORD=
+export TEST_USER_PREFIX=<testUsername>
+export TEST_PASSWORD=<testUserPassword>
 ```
 
 Admin user name and password.  This user name must exist in App Id prior to running the test and must have the admin role.
 ```
-export TEST_ADMIN_USER=
-export TEST_ADMIN_PASSWORD=
+export TEST_ADMIN_USER=<adminUsername>
+export TEST_ADMIN_PASSWORD=<adminUserPassword>
 ```
 
 App Id service URL.  Change to correct URL for the region where your App Id instance is deployed.
@@ -103,7 +103,7 @@ export OIDC_ISSUERIDENTIFIER=%APPID_SERVICE_URL%/%APPID_TENANTID%
 
 IAM API key (needed for authentication to App Id)
 ```
-export IAM_APIKEY=
+export IAM_APIKEY=<apikey>
 export IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
 ```
 
