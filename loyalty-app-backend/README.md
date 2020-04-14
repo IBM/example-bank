@@ -65,3 +65,51 @@ curl -X GET "Authorization: Bearer <access-token>" -k https://localhost:9444/loy
 curl -X GET "Authorization: Bearer <access-token>" -k "https://localhost:9444/loyalty/v1/events?id=&id=&id="
 
 ```
+
+## Running the integration tests
+
+### Set environment variables
+
+Base URL where users and events services are deployed
+```
+export USERS_BASEURL=http://<host>:<port>
+export EVENTS_BASEURL=http://<host>:<port>
+```
+
+Prefix for test user names and the password they should use.  These users are created dynamically by the tests.
+```
+export TEST_USER_PREFIX=<testUsername>
+export TEST_PASSWORD=<testUserPassword>
+```
+
+Admin user name and password.  This user name must exist in App Id prior to running the test and must have the admin role.
+```
+export TEST_ADMIN_USER=<adminUsername>
+export TEST_ADMIN_PASSWORD=<adminUserPassword>
+```
+
+App Id service URL.  Change to correct URL for the region where your App Id instance is deployed.
+```
+export APPID_SERVICE_URL=https://us-south.appid.cloud.ibm.com
+```
+
+App Id tenant id, client id, and client password (secret)
+```
+export APPID_TENANTID=<tenant id>
+export OIDC_CLIENTID=<client id>
+export OIDC_CLIENTPASSWORD=<client secret>
+export OIDC_ISSUERIDENTIFIER=%APPID_SERVICE_URL%/%APPID_TENANTID%
+```
+
+IAM API key (needed for authentication to App Id)
+```
+export IAM_APIKEY=<apikey>
+export IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
+```
+
+
+### Run the tests
+
+```
+mvn -pl :integration-tests -am verify
+```
