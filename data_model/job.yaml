@@ -10,9 +10,8 @@ spec:
       restartPolicy: Never
       containers:
         - name: loyalty-database-load
-          image: loyalty-db-load:1.0-SNAPSHOT
+          image: ykoyfman/schema-data:1.0-SNAPSHOT
           imagePullPolicy: Always
           envFrom:
             - secretRef:
                 name: loyalty-db-secret
-

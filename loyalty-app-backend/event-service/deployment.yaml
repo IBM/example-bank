@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: loyalty-event-service
-        image: loyalty-event-service:1.0-SNAPSHOT
+        image: ykoyfman/loyalty-event-service:1.0-SNAPSHOT
         imagePullPolicy: Always
         ports:
         - name: http-server
