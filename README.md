@@ -332,7 +332,7 @@ kubectl create secret generic loyalty-appid-secret --from-literal=APPID_TENANTID
 
 2. `loyalty-iam-secret`: This secret uses the IAM key to allow the service to authenticate to AppId.
 ```
-kubectl create secret generic loyalty-iam-secret --from-literal=IAM_APIKEY=2Lp3s9gCGGDjnl5JbYd6WSpCvXz8BROdSmrqXZzid6jD --from-literal=IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
+kubectl create secret generic loyalty-iam-secret --from-literal=IAM_APIKEY=<IAM_KEY> --from-literal=IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
 ```
 
 Here are the steps to retreive this token:
