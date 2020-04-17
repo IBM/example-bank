@@ -27,6 +27,8 @@ spec:
     metadata:
       labels:
         app: loyalty-mobile-simulator
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - image: ykoyfman/simulator:1.0-SNAPSHOT
