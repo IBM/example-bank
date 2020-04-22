@@ -1,7 +1,7 @@
 class Asset extends HTMLElement {
 
     static get observedAttributes() {
-        return ['assetimage', 'text'];
+        return ['assetimage', 'text', 'link'];
     }
 
     constructor(details) {
@@ -26,6 +26,13 @@ class Asset extends HTMLElement {
         this.assetimage.src = customElement.getAttribute('assetimage');
         this.assettext = sr.getElementById('text');
         this.assettext.innerHTML = customElement.getAttribute('text');
+
+        let link = customElement.getAttribute('link')
+        if (link) {
+            this.assettext.addEventListener("click", e => {
+                window.location = link
+            })
+        }
     }
 }
 
