@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import com.ibm.codey.loyalty.BaseResource;
 import com.ibm.codey.loyalty.accounts.dao.UserDao;
 import com.ibm.codey.loyalty.accounts.json.UserRegistration;
+import com.ibm.codey.loyalty.accounts.json.UserRegistrationInfo;
 import com.ibm.codey.loyalty.accounts.models.User;
 import com.ibm.codey.loyalty.interceptor.LoggingInterceptor;
 
@@ -65,7 +66,8 @@ public class UserResource extends BaseResource {
         if (prevUser == null) {
             return Response.status(Response.Status.NOT_FOUND).entity("User is not registered").build();
         } 
-        UserRegistration userRegistration = new UserRegistration();
+        UserRegistrationInfo userRegistration = new UserRegistrationInfo();
+        userRegistration.setUserId(prevUser.getUserId());
         userRegistration.setConsentGiven(prevUser.isConsentGiven());
         return Response.status(Response.Status.OK).entity(userRegistration).build();
     }
