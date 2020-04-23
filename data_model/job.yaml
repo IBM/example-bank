@@ -6,8 +6,11 @@ metadata:
     app: loyalty-database-load
 spec:
   template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
       containers:
         - name: loyalty-database-load
           image: ykoyfman/schema-data:1.0-SNAPSHOT
