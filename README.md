@@ -8,11 +8,59 @@ As people become more aware of data and concerned about their online privacy, re
 
 The GDPR standard defines requirements around what operations need to be available to users ("subjects"). However, GDPR is technology neutral, so it ends up being the responsibility of the implementors to build the architecture that implements the requirements. In addition, with the move toward microservice architures and containerization, we have technology such as service mesh that may be useful in the context of a data privacy service.
 
+## Included Components
+
+- [IBM Managed OpenShift](https://www.ibm.com/cloud/openshift)
+- [OpenLiberty](https://openliberty.io)
+- [App Id](https://www.ibm.com/cloud/app-id)
+- [LogDNA](https://www.ibm.com/cloud/log-analysis)
+
+# Prerequisites
+
+1. Log in, or create an cccount on [IBM Cloud](https://cloud.ibm.com)
+2. Provision an OpenShift 4.3 cluster on on [IBM Cloud](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_tutorial)
+3. Create a [project](https://docs.openshift.com/container-platform/4.3/applications/projects/configuring-project-creation.html) called `example-loyalty`.
+
+## Why OpenShift?
+
+OpenShift is RedHat's customized distribution of Kubernetes. With OpenShift, you get everything that you know and love about Kubernetes, with a few extra features, such as OperatorHub, for finding and installing new in-cluster services, a convenient CLI for navigating between different projects. For a quick look into new features, see: [Intro to OpenShift 4](https://developer.ibm.com/articles/intro-to-openshift-4/).
+
+## Project Requirements
+
+In this pattern, we will be looking to build a hypothetical customer loyalty back-end for an organization that wants to encourage developers to attend events and workshops by allowing them to earn points that can be redeemed for freebies like T-shirts, keychains, and hats.
+
+Customer loyalty programs are common for businesses that want to incentivize customers to "check-in" frequently, allowing businesses to provide services closely matched to user behavior and demand. As regulations come online, users typically have the ability to opt-out of data collection efforts. In addition, users want the ability to delete data.
+
+We have implemented a few important data privacy features inspired by real data privacy regulations:
+
+* Authorization verification with IBM AppId
+* Right to erasure: implemented via a special Kubernetes `CronJob` that checks for deletion requests every 24h.
+* Consent for data collection - requiring users to 'opt-in' requirement.
+* Logging: IBM LogDNA is used to aggregate log data from back-end services, making it possible to review user activity as well as monitor usage.
+
 # Architecture
 
 The loyalty system includes several microservices for handling user authentication, handling transacton mechanics.
 
 ![screenshot](images/pattern-flow-diag.png)
+
+## Introduction to the Mobile Simulator
+
+The JavaScript simulator app presents a view of a mobile app but run by Node.js service that gets deployed to the OpenShift project along with the other services.
+
+![simulator_main](images/simulator_main.png)
+
+From the dropdown menu inside the simulated phone app, pick one of the available accounts, and click **sign in** to see that user's point accumulation.
+
+![simulator_katy](images/simulator_katy.png)
+
+This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcomming event:
+
+![simulator_events.png](images/simulator_events.png)
+
+Once an event has been added to a user's list of reservations, they can then check in from list of upcoming events that is displayed by clicking on the middle button:
+
+![simulator_check_in](images/simulator_checkin.png)
 
 ## User authentication
 
@@ -34,54 +82,6 @@ The mobile app simulator is integrated with the App ID instance and whenever a u
 
 Whenever a request with a token in the authorization header is sent, the Liberty microservice uses the App ID integration to make sure that the token is valid. Then it continues to process the request. The liberty microservice also makes use of the subject ID or user ID in the token to identify which user is making the request. For example, when a user asks for his number of points earned, it needs to pull the right profile from the database. This is where the user ID in the token payload can be made use of.
 
-## Included Components
-
-- [IBM Managed OpenShift](https://www.ibm.com/cloud/openshift)
-- [OpenLiberty](https://openliberty.io)
-- [App Id](https://www.ibm.com/cloud/app-id)
-- [LogDNA](https://www.ibm.com/cloud/log-analysis)
-
-# Prerequisites
-
-1. Log in, or create an cccount on [IBM Cloud](https://cloud.ibm.com)
-2. Provision an OpenShift 4.3 cluster on on [IBM Cloud](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_tutorial)
-3. Create a [project](https://docs.openshift.com/container-platform/4.3/applications/projects/configuring-project-creation.html) called `example-loyalty`.
-
-## Why OpenShift?
-
-OpenShift is RedHat's customized distribution of Kubernetes. Its features are well documented in other IBM developer articles. (Link here).  With OpenShift, you get everything that you know and love about Kubernetes, with a few extra features, such as OperatorHub, for finding and installing new in-cluster services, a convenient CLI for navigating between different projects.
-
-## Project Requirements
-
-In this pattern, we will be looking to build a hypothetical customer loyalty back-end for an organization that wants to encourage developers to attend events and workshops by allowing them to earn points that can be redeemed for freebies like T-shirts, keychains, and hats.
-
-Customer loyalty programs are common for businesses that want to incentivize customers to "check-in" frequently, allowing businesses to provide services closely matched to user behavior and demand. As regulations come online, users typically have the ability to opt-out of data collection efforts. In addition, users want the ability to delete data.
-
-We have implemented a few important data privacy features inspired by real data privacy regulations:
-
-* Authorization verification with IBM AppId
-* Right to erasure: implemented via a special Kubernetes `CronJob` that checks for deletion requests every 24h.
-* Consent for data collection - requiring users to 'opt-in' requirement.
-* Logging: IBM LogDNA is used to aggregate log data from back-end services, making it possible to review user activity as well as monitor usage.
-
-## Introduction to the Mobile Simulator
-
-The JavaScript simulator app presents a view of a mobile app but run by Node.js service that gets deployed to the OpenShift project along with the other services.
-
-![simulator_main](images/simulator_main.png)
-
-From the dropdown menu inside the simulated phone app, pick one of the available accounts, and click **sign in** to see that user's point accumulation.
-
-![simulator_katy](images/simulator_katy.png)
-
-This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcomming event:
-
-![simulator_events.png](images/simulator_events.png)
-
-Once an event has been added to a user's list of reservations, they can then check in from list of upcoming events that is displayed by clicking on the middle button:
-
-![simulator_check_in](images/simulator_checkin.png)
-
 ## Deployment
 
 There two options for deploymen: an automated deployment process driven by Tekton pipelines, and a manual process drive by CLI. In either case, the following common steps should be completed first:
@@ -93,7 +93,7 @@ There two options for deploymen: an automated deployment process driven by Tekto
 
 ### Automated deployment
 
-The steps to use the Tekton pipelines - [link TBD]
+The steps to use the Tekton pipelines - [here.](https://developer.ibm.com/tutorials/tekton-pipeline-deploy-a-mobile-app-backend-openshift-4/)
 
 ### App ID Configuration
 
@@ -177,7 +177,7 @@ These will be used to create a Kubernetes secret that's used by all the services
 To load the data model, we are going to use a `Job` Kubernetes resource. This allows a task to
 be run to completion to perform a task.
 
-Follow instructions here: [link to PostgreSQL operator tutorial] to create a database in the
+Follow instructions [here](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/) to create a database in the
 project where the back-end services are deployed.
 
 After deploying the PostgreSQL database, load the SQL schema for users and event.
@@ -368,12 +368,6 @@ NAME                                      COMPLETIONS   DURATION   AGE
 delete-now                                1/1           33s        45h
 loyalty-database-load                     1/1           6s         3d
 ```
-
-### More details about internals: Login
-
-https://cloud.ibm.com/docs/openshift?topic=openshift-security&locale=dk
-
-OpenShift API server: Every cluster-related action that is sent to the OpenShift API server is logged for auditing reasons, including the time, the user, and the affected resource. For more information, see Kubernetes audit logs External link icon. You can access these logs by using IBM Cloud Activity Tracker with LogDNA. For more information, see the getting started tutorial.
 
 ## Data cleanup
 
