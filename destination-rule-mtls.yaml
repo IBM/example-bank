@@ -1,0 +1,50 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: loyalty-mobile-simulator-service
+spec:
+  host: loyalty-mobile-simulator-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: loyalty-user-service
+spec:
+  host: loyalty-user-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: loyalty-event-service
+spec:
+  host: loyalty-event-service
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: meshdb2
+spec:
+  host: meshdb2
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: loyalty-database-load
+spec:
+  host: loyalty-database-load
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+---
