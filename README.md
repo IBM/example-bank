@@ -6,13 +6,13 @@ In this pattern, we show how to deploy a microservice based back-end in OpenShif
 
 As people become more aware of data and concerned about their online privacy, regulations around the world have started requiring software projects to think about how customers' data is handled.  This pattern deploys a set of microservices to act as a back-end for a mobile loyalty app, such as those often used by businesses who want to better understand how people use their services by collecting data. Although inspired by regulations such GDPR (Europe's general data protection regulations), as this is not a real public facing application, we implement a few data privacy features as a way of demonstrating how one might go about building a privacy focused back-end in OpenShift 4.
 
-The GDPR standard defines requirements around what operations need to be available to users ("subjects"). However, GDPR is technology neutral, so it ends up being the responsibility of the implementors to build the architecture that implements the requirements. In addition, with the move toward microservice architures and containerization, we have technology such as service mesh that may be useful in the context of a data privacy service.
+The GDPR standard defines requirements around what operations need to be available to users ("subjects"). However, GDPR is technology neutral, so it ends up being the responsibility of the implementors to build the architecture that implements the requirements. In addition, with the move toward microservice architectures and containerization, we have technology such as service mesh that may be useful in the context of a data privacy service.
 
 ## Included Components
 
 - [IBM Managed OpenShift](https://www.ibm.com/cloud/openshift)
 - [OpenLiberty](https://openliberty.io)
-- [App Id](https://www.ibm.com/cloud/app-id)
+- [App ID](https://www.ibm.com/cloud/app-id)
 - [LogDNA](https://www.ibm.com/cloud/log-analysis)
 
 # Prerequisites
@@ -33,20 +33,20 @@ Customer loyalty programs are common for businesses that want to incentivize cus
 
 We have implemented a few important data privacy features inspired by real data privacy regulations:
 
-* Authorization verification with IBM AppId
+* Authorization verification with IBM App ID
 * Right to erasure: implemented via a special Kubernetes `CronJob` that checks for deletion requests every 24h.
 * Consent for data collection - requiring users to 'opt-in' requirement.
 * Logging: IBM LogDNA is used to aggregate log data from back-end services, making it possible to review user activity as well as monitor usage.
 
 # Architecture
 
-The loyalty system includes several microservices for handling user authentication, handling transacton mechanics.
+The loyalty system includes several microservices for handling user authentication and transacton mechanics.
 
 ![screenshot](images/pattern-flow-diag.png)
 
 ## Introduction to the Mobile Simulator
 
-The JavaScript simulator app presents a view of a mobile app but run by Node.js service that gets deployed to the OpenShift project along with the other services.
+The JavaScript simulator app presents a view of a mobile app but run by a Node.js service that gets deployed to the OpenShift project along with the other services.
 
 ![simulator_main](images/simulator_main.png)
 
@@ -66,8 +66,8 @@ Once an event has been added to a user's list of reservations, they can then che
 
 ![user-creation](images/user-creation.png)
 
-1. The user creates an account using the mobile app simulator. This hits the an API from the nodejs server. The nodejs server then hits an API from the App ID service that would create the user's account in its own cloud directory.
-2. The mobile app simulator then logs in the user after account creation. The App ID service then creates valid access tokens and id tokens for the user. The mobile app stores these tokens for later use in authentication.
+1. The user creates an account using the mobile app simulator. This hits an API from the nodejs server. The nodejs server then hits an API from the App ID service that would create the user's account in its own cloud directory.
+2. The mobile app simulator then logs in the user after account creation. The App ID service then creates valid access tokens and ID tokens for the user. The mobile app stores these tokens for later use in authentication.
 3. Using the access token from the previous step, the mobile app can now successfully call the protected APIs in the Liberty microservice. The mobile app calls the API with the access token in the authorization header to create the user profile in the database.
 4. The Liberty service is integrated with the App ID instance. This verifies the access token in the authorization header from the request.
 5. When the token is valid, the user profile is created in the database. The access token contains the user ID of the user that sent the request.
@@ -78,13 +78,13 @@ Once an event has been added to a user's list of reservations, they can then che
 
 The Liberty microservices are protected APIs that require authorization headers. If the request does not have one, it will not allow the request to be processed, thus sending a 401 Unauthorized response. The microservices makes use of a managed identity provider, App ID for this authentication. This makes it easier to protect APIs and manage identity information of users.
 
-The mobile app simulator is integrated with the App ID instance and whenever a user logs in, the app receives access tokens and stores it for later use in requests to the protected APIs. The tokens expire in an hour by default which would require users to authenticate again after expiration.
+The mobile app simulator is integrated with the App ID instance and whenever a user logs in, the app receives access tokens and stores them for later use in requests to the protected APIs. The tokens expire in an hour by default which would require users to authenticate again after expiration.
 
 Whenever a request with a token in the authorization header is sent, the Liberty microservice uses the App ID integration to make sure that the token is valid. Then it continues to process the request. The liberty microservice also makes use of the subject ID or user ID in the token to identify which user is making the request. For example, when a user asks for his number of points earned, it needs to pull the right profile from the database. This is where the user ID in the token payload can be made use of.
 
 ## Deployment
 
-There two options for deploymen: an automated deployment process driven by Tekton pipelines, and a manual process drive by CLI. In either case, the following common steps should be completed first:
+There two options for deploymen: an automated deployment process driven by Tekton pipelines, and a manual process driven by CLI. In either case, the following common steps should be completed first:
 
 1. Create an OpenShift 4.3 cluster.
 2. Complete the PostgreSQL database deployment process (see below).
@@ -117,9 +117,9 @@ Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once
 
 * Rename `.env.template` file to `.env` file
 
-## Secrets from App Id
+## Secrets from App ID
 
-Open the credentials screen to view the client IDs and keys needed for the back-end to interact with the App Id via its REST API endpoint.
+Open the credentials screen to view the client IDs and keys needed for the back-end to interact with the App ID via its REST API endpoint.
 
 The service credentials have the following fields - some of these are used in the `loyalty-oidc-secret` as described below:
 ```
@@ -164,7 +164,7 @@ The database schema allows us to manage user profiles and track their attendence
 
 ![screenshot](images/schema-1.png)
 
-In this pattern, the database is created in an database instance created inside the OpenShift cluster. See [operator tutorial] and database load as described below. Take note of these important elements of the database configuration:
+In this pattern, the database is created in an database instance created inside the OpenShift cluster. See [operator tutorial](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/) and database load as described below. Take note of these important elements of the database configuration:
 
 1. Database name
 2. Username
@@ -231,7 +231,7 @@ CREATE TABLE
 
 ### User and event management services
 
-The user and event management services manage registered users and events using  Open Liberty and JPA to handle database operations.
+The user and event management services manage registered users and events using Open Liberty and JPA to handle database operations.
 	
 - Check out the code for all services.
 
@@ -241,7 +241,7 @@ cd loyalty-app-backend
 ```
 
 1. Follow the instructions in the README.md file to build the microservices with Maven.
-2. Build the images and push them to an image repository like Docker hub that is accessible to OpenShift. 
+2. Build the images and push them to an image repository like Docker Hub that is accessible to OpenShift. 
 
 **Note:** *If you are using the IBM Container Registry (ICR) to store images, IBM OpenShift clusters are provisioned with a image pull secret for ICR images only in the default namespace/project.  Deployments to other prjects from ICR will require imagePullSecrets to be created.*
 
@@ -262,7 +262,7 @@ loyalty-user-service               ClusterIP      172.21.64.7      <none>       
 
 ### Mobile Simulator
 
-- Verify that the `.env` file is correctly set up as described above in the AppId section. This will be used by both the node image at runtime and in creating a Kubernetes secret:
+- Verify that the `.env` file is correctly set up as described above in the App ID section. This will be used by both the node image at runtime and in creating a Kubernetes secret:
 
 ```
 $ cat .env
@@ -288,7 +288,7 @@ docker build -t <repository> .
 docker push <image>
 ```
 
-- Modify the deployment.yaml image path to point to the image.
+- Modify the `deployment.yaml` image path to point to the image.
 
 ``` 
 oc apply -f deployment.yaml
@@ -323,9 +323,9 @@ docker push <your_repo>//loyalty-user-cleanup-utility:1.0-SNAPSHOT
 
 - Create secrets for the erasure service.
 
-The erasure service requires three secrets to communicate with the PostgreSQL database and AppId. The `loyalty-db-secret` was defined previously, as it's used by the other services. The two secrets are:
+The erasure service requires three secrets to communicate with the PostgreSQL database and App ID. The `loyalty-db-secret` was defined previously, as it's used by the other services. The two secrets are:
 
-1. `loyalty-appid-secret`: This secret defines environment variables for connecting the AppId, and includes the following parameters:
+1. `loyalty-appid-secret`: This secret defines environment variables for connecting the App ID, and includes the following parameters:
 ```
 kubectl create secret generic loyalty-appid-secret --from-literal=APPID_TENANTID=<tenant id> --from-literal=APPID_SERVICE_URL=https://us-south.appid.cloud.ibm.com
 ```
@@ -371,9 +371,9 @@ loyalty-database-load                     1/1           6s         3d
 
 ## Data cleanup
 
-Data erasure is two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectivly anonymized the event check-in data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
+Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectivly anonymized the event check-in data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
 
-The erasure service operates as a Kubernetes `CronJob` that checks that the user has been deleted from our database, and also removes them from AppId, effectively unregistering the user.
+The erasure service operates as a Kubernetes `CronJob` that checks that the user has been deleted from our database, and also removes them from App ID, effectively unregistering the user.
 
 ## LogDNA Integration
 
@@ -385,7 +385,7 @@ Once deployed, your instance of LogDNA will be keeping track of any logs that ar
 
 ![logdna](images/logdna.png)
 
-There can be a lot to sift through. Use one of the filters from the dropdown menus at the top of the screen to limit which logs you are viewing. For instance, you can only see logs dealing with AppID by selecting it from the **Apps** menu:
+There can be a lot to sift through. Use one of the filters from the dropdown menus at the top of the screen to limit which logs you are viewing. For instance, you can only see logs dealing with App ID by selecting it from the **Apps** menu:
 
 ![logdna_appid](images/logdna_appid_select.png)
 
