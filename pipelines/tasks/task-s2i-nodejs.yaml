@@ -1,0 +1,83 @@
+﻿apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: s2i-nodejs
+spec:
+  inputs:
+    params:
+      - default: '8'
+        description: The version of the nodejs
+        name: VERSION
+        type: string
+      - default: .
+        description: The location of the path to run s2i from.
+        name: PATH_CONTEXT
+        type: string
+      - default: 'true'
+        description: >-
+          Verify the TLS on the registry endpoint (for push/pull to a non-TLS
+          registry)
+        name: TLSVERIFY
+        type: string
+    resources:
+      - name: source
+        type: git
+  outputs:
+    resources:
+      - name: image
+        type: image
+  steps:
+    - command:
+        - s2i
+        - build
+        - $(inputs.params.PATH_CONTEXT)
+        - registry.access.redhat.com/rhscl/nodejs-$(inputs.params.VERSION)-rhel7
+        - '--as-dockerfile'
+        - /gen-source/Dockerfile.gen
+      image: quay.io/openshift-pipeline/s2i
+      name: generate
+      resources: {}
+      volumeMounts:
+        - mountPath: /gen-source
+          name: gen-source
+      workingDir: /workspace/source
+    - command:
+        - buildah
+        - bud
+        - '--tls-verify=$(inputs.params.TLSVERIFY)'
+        - '--layers'
+        - '-f'
+        - /gen-source/Dockerfile.gen
+        - '-t'
+        - $(outputs.resources.image.url)
+        - .
+      image: 'quay.io/buildah/stable:v1.11.4'
+      name: build
+      resources: {}
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+        - mountPath: /gen-source
+          name: gen-source
+      workingDir: /gen-source
+    - command:
+        - buildah
+        - push
+        - '--tls-verify=$(inputs.params.TLSVERIFY)'
+        - $(outputs.resources.image.url)
+        - 'docker://$(outputs.resources.image.url)'
+      image: 'quay.io/buildah/stable:v1.11.4'
+      name: push
+      resources: {}
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - mountPath: /var/lib/containers
+          name: varlibcontainers
+  volumes:
+    - emptyDir: {}
+      name: varlibcontainers
+    - emptyDir: {}
+      name: gen-source
