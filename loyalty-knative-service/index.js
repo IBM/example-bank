@@ -8,66 +8,73 @@ let transactionServiceUrl = process.env.TRANSACTION_SERVICE_URL
 let appIdTokenUrl = process.env.APP_ID_TOKEN_URL
 let appIdClientId = process.env.APP_ID_CLIENT_ID
 let appIdClientSecret = process.env.APP_ID_CLIENT_SECRET
+let appIdAdminUser = process.env.APP_ID_ADMIN_USER
+let appIdAdminPassword = process.env.APP_ID_ADMIN_PASSWORD
 
 let appIdResult;
 
 app.post('/process', (req, res) => {
   console.log('received request')
   console.log(req.query)
-  // if (!appIdResult) {
-  //   getAppIdToken('MaryDelrosario','MaryDelrosario')
-  //   .then(function (response) {
-  //     appIdResult = response.data
-  //     res.send('OK')
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error)
-  //     res.send('OK')
-  //   })
-  // } else {
-  //   // check if token is expired
-  //   if (isAccessTokenExpired(appIdResult.access_token)) {
-  //     getAppIdToken('MaryDelrosario','MaryDelrosario')
-  //       .then(function (response) {
-  //         appIdResult = response.data
-  //         res.send('OK')
-  //       })
-  //       .catch(function (error) {
-  //         console.log(error)
-  //         res.send('OK')
-  //       })
-  //   } else {
-  //     console.log('found app id result in global variable')
-  //     console.log(appIdResult.access_token)
-  //     res.send('OK')
-  //   }
-  // }
-  setTimeout(function() {
-    if (req.query.transactionId && req.query.category && req.query.amount) {
-      let pointsEarned = computeReward(req.query.category, req.query.amount);
-      axios({
-        method: 'put',
-        url: transactionServiceUrl + '/reward/' + req.query.transactionId,
-        data: {
-          pointsEarned
-        }
-      })
-      .then(function (response) {
-        if (response.status == '204') {
-          res.status('200').send('OK')
-        } else {
-          res.status('404').send({result: 'Failed to post to transaction API', response })
-        }
-      }).catch(function (error) {
-          console.log({error})
-          res.status('404').send({error})
-      })
+  if (!appIdResult) {
+    getAppIdToken(appIdAdminUser, appIdAdminPassword)
+    .then(function (response) {
+      appIdResult = response.data
+      sendToRewardEndpoint(req, res, appIdResult.access_token)
+    })
+    .catch(function (error) {
+      console.log(error)
+      res.status('404').send('Error getting admin token')
+    })
+  } else {
+    console.log('found app id result in global variable')
+    // check if token is expired
+    if (isAccessTokenExpired(appIdResult.access_token)) {
+      console.log('token found is expired. getting new one...')
+      getAppIdToken(appIdAdminUser, appIdAdminPassword)
+        .then(function (response) {
+          appIdResult = response.data
+          sendToRewardEndpoint(req, res, appIdResult.access_token)
+        })
+        .catch(function (error) {
+          console.log(error)
+          res.status('404').send('Error getting admin token')
+        })
     } else {
-      console.log('test')
-      res.status('404').send('transactionId, category, and amount must be present in query parameters.')
+      sendToRewardEndpoint(req, res, appIdResult.access_token)
     }
-  }, 0)
+  }
 });
+
+function sendToRewardEndpoint(req, res, authToken) {
+  if (req.query.transactionId && req.query.category && req.query.amount) {
+    let pointsEarned = computeReward(req.query.category, req.query.amount);
+    axios({
+      headers: {
+        'Authorization': 'Bearer ' + authToken
+      },
+      method: 'put',
+      url: transactionServiceUrl + '/reward/' + req.query.transactionId,
+      data: {
+        pointsEarned
+      }
+    })
+    .then(function (response) {
+      if (response.status == '204') {
+        res.status('200').send('OK')
+      } else {
+        console.log({status: error.response.status, data: error.response.data})
+        res.status('404').send({result: 'Failed to post to transaction API', response })
+      }
+    }).catch(function (error) {
+        console.log("Error in PUT /transactions/reward/{transactionId}")
+        console.log({status: error.response.status, data: error.response.data})
+        res.status('404').send({error})
+    })
+  } else {
+    res.status('404').send('transactionId, category, and amount must be present in query parameters.')
+  }
+}
 
 function computeReward(category, amount) {
     return amount;

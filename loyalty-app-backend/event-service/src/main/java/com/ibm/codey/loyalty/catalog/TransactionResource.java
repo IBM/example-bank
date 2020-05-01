@@ -163,6 +163,7 @@ public class TransactionResource extends BaseResource {
     @Path("reward/{transactionId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
+    @RequiresAuthorization
     public Response updateTransaction(@PathParam("transactionId") String transactionId, RewardTransactionDefinition rewardTransactionDefinition) {
         // Validate UUID is formatted correctly.
         try {
