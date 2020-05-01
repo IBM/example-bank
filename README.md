@@ -54,7 +54,7 @@ From the dropdown menu inside the simulated phone app, pick one of the available
 
 ![simulator_katy](images/simulator_katy.png)
 
-This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcomming event:
+This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcoming event:
 
 ![simulator_events.png](images/simulator_events.png)
 
@@ -84,7 +84,7 @@ Whenever a request with a token in the authorization header is sent, the Liberty
 
 ## Deployment
 
-There two options for deploymen: an automated deployment process driven by Tekton pipelines, and a manual process driven by CLI. In either case, the following common steps should be completed first:
+There are two options for deployment: an automated deployment process driven by Tekton pipelines, and a manual process driven by CLI. In either case, the following common steps should be completed first:
 
 1. Create an OpenShift 4.3 cluster.
 2. Complete the PostgreSQL database deployment process (see below).
@@ -111,7 +111,7 @@ Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once
 
 ![add-application](images/add-application.png)
 
-* Create Service credenitals with the `Writer` Role so that the simulator can create simulated users with the App ID instance. Take note of the `apikey` and `managementUrl` and place them in the `.env.template` file. The values belong in `APP_ID_IAM_APIKEY` and `APP_ID_MANAGEMENT_URL` respectively.
+* Create Service credentials with the `Writer` Role so that the simulator can create simulated users with the App ID instance. Take note of the `apikey` and `managementUrl` and place them in the `.env.template` file. The values belong in `APP_ID_IAM_APIKEY` and `APP_ID_MANAGEMENT_URL` respectively.
 
 ![writer-credentials](images/writer-credentials.png)
 
@@ -164,7 +164,7 @@ The database schema allows us to manage user profiles and track their attendence
 
 ![screenshot](images/schema-1.png)
 
-In this pattern, the database is created in an database instance created inside the OpenShift cluster. See [operator tutorial](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/) and database load as described below. Take note of these important elements of the database configuration:
+In this pattern, the database is created in a database instance created inside the OpenShift cluster. See [operator tutorial](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/) and database load as described below. Take note of these important elements of the database configuration:
 
 1. Database name
 2. Username
@@ -200,7 +200,7 @@ Build and deploy the image to load the database.
 oc apply -f job.yaml
 ```
 
-You can verify the successfull deployment this way:
+You can verify the successful deployment this way:
 
 1. Find the Jobs run:
 
@@ -335,7 +335,7 @@ kubectl create secret generic loyalty-appid-secret --from-literal=APPID_TENANTID
 kubectl create secret generic loyalty-iam-secret --from-literal=IAM_APIKEY=<IAM_KEY> --from-literal=IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
 ```
 
-Here are the steps to retreive this token:
+Here are the steps to retrieve this token:
 
 Via UI console:
 
@@ -371,7 +371,7 @@ loyalty-database-load                     1/1           6s         3d
 
 ## Data cleanup
 
-Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectivly anonymized the event check-in data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
+Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectively anonymized the event check-in data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
 
 The erasure service operates as a Kubernetes `CronJob` that checks that the user has been deleted from our database, and also removes them from App ID, effectively unregistering the user.
 
