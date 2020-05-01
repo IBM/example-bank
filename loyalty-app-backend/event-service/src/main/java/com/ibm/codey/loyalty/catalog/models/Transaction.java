@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.NamedQueries;
@@ -28,6 +29,7 @@ import lombok.Setter;
   @NamedQuery(name = "Transaction.groupCategoriesForUser", query = "SELECT COALESCE(t.category, 'Uncategorized'), COUNT (t.transactionId) FROM Transaction t WHERE t.userId = :userId GROUP BY t.category")
 })
 @Getter @Setter
+@EntityListeners(TransactionListener.class)
 public class Transaction implements Serializable {
 
   private static final long serialVersionUID = 1L;
