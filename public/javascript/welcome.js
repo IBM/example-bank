@@ -1,67 +1,73 @@
 class Welcome extends HTMLElement {
 
+    mode='INTEGRATED';
+
+    static get observedAttributes() {
+        return ['mode'];
+    }
+
     constructor() {
-        // Always call super first in constructor
-        super();
+        
+        super();        
 
-        // write element functionality in here
-
-        // var shadow = this.attachShadow({
-        //     mode: 'open'
-        // });
-
-        // Create spans
-        // var wrapper = document.createElement('span');
-        // wrapper.setAttribute('class', 'wrapper');
-
-        // wrapper.innerHTML = view;
-        // Take attribute content and put it inside the info span
-        // var text = this.getAttribute('text');
-        // info.textContent = text;
+        console.log('INITIALIZING WELCOME VIEW');
 
         let template = document.getElementById('welcomeview');
         let templateContent = template.content;
 
         const shadow = this.attachShadow({mode: 'open'})
           .appendChild(templateContent.cloneNode(true));
+       
+    }
 
-        // shadow.appendChild(wrapper);
-        // wrapper.appendChild(info);
+    connectedCallback() {
+        
+        this.mode = this.getAttribute('mode');
+
         let sr = this.shadowRoot;
 
         let selectUserInput = sr.getElementById("usernameselect")
         let signinButton = sr.getElementById("signin")
 
-        getAllUsers((users) => {
-            users.forEach(user => {
-                var option = document.createElement("option");
-                option.text = user
-                selectUserInput.add(option)
-            });
-        })
+        if(this.mode=='INTEGRATED'){
+
+            getAllUsers((users) => {
+                users.forEach(user => {
+                    var option = document.createElement("option");
+                    option.text = user
+                    selectUserInput.add(option)
+                });
+            })
+        }
 
         signinButton.addEventListener("click", e => {
             this.signin(selectUserInput.value, selectUserInput.value)
         })
     }
 
+
     signin(username, password) {
-        var mobileview = document.getElementById("mobileview");
+        let sr = this.shadowRoot;
+        
+        var mobileview = sr.host.parentElement;
         mobileview.innerHTML = "";
 
-        // create loading spinner first
-        var element = document.createElement('loading-spinner-element');
-        element.setAttribute("status", "Logging in...")
-        mobileview.appendChild(element)
+        if(this.mode=='INTEGRATED'){
+            // create loading spinner first
+            var element = document.createElement('loading-spinner-element');
+            element.setAttribute("status", "Logging in...")
+            mobileview.appendChild(element)
 
-        loginWithAppId(username, password, (jsonWebToken) => {
-            // when login complete,
-            // re-initialize app?
-            new Loyalty();
-            // edge case when unable to sign in
-        })
+            loginWithAppId(username, password, (jsonWebToken) => {
+                // when login complete,
+                // re-initialize app?
+                new Loyalty(this.mode);
+                // edge case when unable to sign in
+            })
+         }else{
+            new Loyalty(this.mode);
+         }
     }
-
 }
 
 try {

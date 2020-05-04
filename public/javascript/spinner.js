@@ -9,7 +9,7 @@ class LoadingSpinner extends HTMLElement {
         let template = document.getElementById('loadingspinner');
         let templateContent = template.content;
 
-        console.log('loading spinner')
+        console.log('INITIALIZING SPINNER')
 
         const shadow = this.attachShadow({
                 mode: 'open'

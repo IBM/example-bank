@@ -1,0 +1,61 @@
+<template id="transaction">
+
+    <style>
+        .transactiondata{
+
+        }
+
+        .transactionlist{
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .transactionitem{
+            display: flex;
+            flex-direction: row;
+            padding-top: 10px;
+            color:var(--loyalty-text-color);
+        }
+
+        .transactionvendor{
+            display: flex;
+            flex-direction: column;
+            min-width: 100px;
+        }
+
+        .vendorname{
+
+        }
+
+        .transactiondate{
+            font-size:10px;
+            padding-top: 2px;
+            font-weight: normal;
+        }
+
+        .transactionamount{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            justify-items: center;
+            min-width: 70px;
+        }
+
+        .transactionpoints{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            justify-items: center;
+            min-width: 70px;
+        }
+    </style>
+
+    <div class="transactionitem">
+        <div class="transactionvendor">
+            <label id="vendor" class="vendorname"></label>
+            <label id="date" class="transactiondate"></label>
+        </div>
+        <label id="amount" class="transactionamount"></label>
+        <label id="points" class="transactionpoints"></label>
+    </div>
+</template>

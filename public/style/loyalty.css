@@ -35,6 +35,8 @@
 
 .navigation {
     display: flex;
+    min-height: 15%;
+    max-height:15%;
     flex-direction: column;
     width: 50%;
     padding-right: 50px;
@@ -105,7 +107,7 @@
     font-size: 16px;
     line-height: 20px;
     word-spacing: 2px;
-    color: var(--loyalty-button-color);
+    color: var(--loyalty-text-color);
 }
 
 .linkbar {
@@ -126,63 +128,3 @@
     font-size: 14px;
 }
 
-.frame {
-    height: 100%;
-    width: 75%;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 3px solid var(--loyalty-phone-color);
-    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
-    /* border-radius: 20px;
-    background: #FFFFFF;
-    box-shadow:  31px 31px 71px #7d7d7d, 
-                 -31px -31px 71px #ffffff; */
-    
-
-}
-
-.sensors {
-    flex-direction: row;
-    width: 50%;
-    height: 18px;
-    background: var(--loyalty-phone-color);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.view {
-    height: 100%;
-}
-
-.viewtitle {
-    display: flex;
-    flex-direction: row;
-    height: 50px;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.mobilenav {
-    height: 80px;
-    width: 100%;
-    display: none;
-    /* visibility: hidden; */
-    /* background: aliceblue; */
-}
-
-.sensor{
-    height: 4px;
-    width: 4px;
-    border-radius: 4px;
-    background:var(--loyalty-sensor-color);
-    margin: 4px;
-
-}

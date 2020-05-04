@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Example Loyalty - Microservice Example on OpenShift V4</title>
+    <title>Example Bank - Microservice Example on OpenShift V4</title>
     <meta name="description" content="A simulated mobile app that triggers a JEE backend on Kube">
     <meta name="author" content="Anton McConville">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
         <div class="navigation">
             <div class="titlebar">
                 <div class="logo"><img class="icon" src="./images/loyaltylogo.svg"></div>
-                <div class="title">Example Loyalty</div>
+                <div class="title">Example Bank</div>
             </div>
             <div class="about">A SIMULATED, INTERACTIVE MOBILE PHONE
                 APP COMMUNICATING WITH JEE MICROPROFILE
@@ -33,22 +33,175 @@
             </asset-element>
             <asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element> -->
         </div>
-        <div id="mobileapp" class="app">
-            <div class="frame">
-                <div class="sensors">
-                    <div class="sensor"></div>
-                    <div class="sensor"></div>
-                    <div class="sensor"></div>
-                    <div class="sensor"></div>
-                </div>
-                <div id="mobileview" class="view">
-                    <welcome-element></welcome-element>
-                </div>
-                <navigation-element id="mobilenavigation" class="mobilenav"></navigation-element>
-            </div>
+        <phone-element id="phoneview"></phone-element>            
         </div>
     </div>
 </body>
+
+<template id="phone">
+    <style>   
+    .frame {
+    height: 100%;
+    width: 300px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 4px solid var(--loyalty-phone-color);
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+    /* border-radius: 20px;
+    background: #FFFFFF;
+    box-shadow:  31px 31px 71px #7d7d7d, 
+                 -31px -31px 71px #ffffff; */
+    }
+
+.sensors {
+    flex-direction: row;
+    min-height:5%;
+    max-height:5%;
+    width: 50%;
+    height: 18px;
+    background: var(--loyalty-phone-color);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view {
+    height: 100%;
+    width:100%;
+    overflow: hidden;
+}
+
+.viewtitle {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.mobilenav {
+    min-height: 10%;
+    max-height:10%;
+    width: 100%;
+    display: none;
+    /* visibility: hidden; */
+    /* background: aliceblue; */
+}
+
+.sensor{
+    height: 4px;
+    width: 4px;
+    border-radius: 4px;
+    background:var(--loyalty-sensor-color);
+    margin: 4px;
+
+}
+
+.basebar{
+    min-height:10%;
+    max-height:10%;
+    width:100%;
+    background: var(--loyalty-phone-color);
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.basebutton{
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+    border: 2px solid white;
+    background: var(--loyalty-phone-color);
+    outline:none;
+}
+    </style>
+   
+    <div class="frame">
+        <div class="sensors">
+            <div class="sensor"></div>
+            <div class="sensor"></div>
+            <div class="sensor"></div>
+            <div class="sensor"></div>
+        </div>
+        <div id="mobileview" class="view">
+            <homescreen-element></homescreen-element>
+        </div>
+        <navigation-element id="mobilenavigation" class="mobilenav"></navigation-element>
+        <div class="basebar">
+            <button class="basebutton" id="basebutton"></button>
+        </div>
+    </div>
+</template>
+
+<template id="tile">
+    <style>  
+    .tile{
+        height: 90px;
+        width: 90px;
+        margin: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        border: 1px solid lightgrey;
+        border-radius: 6px;
+        outline: none;
+    }
+
+    .tile:hover{
+        border: 1px solid var(--loyalty-button-color);
+    }
+
+    .buttonImage{
+        height:80px;
+        width:80px;
+    }
+    </style>
+    <button id="tileButton" class="tile">
+        <img class="buttonImage" id="buttonImage">
+    </button>
+</template>
+
+<template id="homescreen">
+    <style>  
+
+    .homescreen{
+
+    }
+
+    .apptiles{
+        margin-top:20px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+    }
+    </style>
+    <div class="homescreen">
+        <div id="APPTILES" class="apptiles">
+            <tile-element tileimage="./images/bank.svg" tiletext="bank"></tile-element>
+            <tile-element tileimage="./images/rideshare.svg" tiletext="ride"></tile-element>
+            <tile-element tileimage="./images/cafe.svg" tiletext="cafe"></tile-element>  
+            <tile-element tileimage="./images/groceries.svg" tiletext="groceries"></tile-element>
+            <tile-element tileimage="./images/restaurant.svg" tiletext="delivery"></tile-element>
+            <tile-element tileimage="./images/fuel.svg" tiletext="fuel"></tile-element>
+        </div>
+    </div>
+</template>
 
 <template id="welcomeview">
     <style>
@@ -67,7 +220,8 @@
         }
 
         .citylogo {
-            height: 200px;
+            padding-top: 20px;
+            height: 160px;
         }
 
         .cityname {
@@ -128,10 +282,10 @@
         }
     </style>
     <div class="welcomeview">
-        <div class="viewtitle">Events</div>
+        <div class="viewtitle">EXAMPLE BANK</div>
         <div class="city">
-            <img class="citylogo" src="../images/newyork.svg">
-            <div class="cityname">New York</div>
+            <img class="citylogo" src="../images/banklogo.svg">
+            <!-- <div class="cityname">New York</div> -->
         </div>
         <select class="usernameinput" id="usernameselect">
         </select>
@@ -439,22 +593,7 @@
     </style>
 
     <div class="accountview">
-        <div class="viewtitle">DASHBOARD</div>
-        <div class="dashboard">
-            <div class="data">
-                <div class="countstack">
-                    <label class="count" id="eventsattended"></label>
-                    <label class="countlabel">EVENTS ATTENDED</label>
-                </div>
-                <div class="countstack">
-                    <label class="count" id="pointearned"></label>
-                    <label class="countlabel">POINTS EARNED</label>
-                </div>
-
-            </div>
-            <!-- <button class="signup" id="createAccountButton" onclick="loyalty.create()">Check In</button> -->
-        </div>
-
+       
         <div class="account">
             <div class="viewtitle">ACCOUNT</div>
             <div class="identityblock">
@@ -492,7 +631,7 @@
         }
 
         .navimg {
-            height: 44px;
+            height: 36px;
         }
 
         .iconrow {
@@ -507,7 +646,7 @@
             margin: 10px;
             border: none;
             width: 60px;
-            height: 60px;
+            height: 40px;
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -519,40 +658,82 @@
     </style>
     <div class="navigation">
         <div class="iconrow">
+            
+            <button id="transactionsbutton" class="navbutton"><img class="navimg"
+                    src="./images/transactions-selected.svg"></button>
+            <button id="statsbutton" class="navbutton"><img class="navimg"
+                    src="./images/statistics-deselected.svg"></button>
             <button id="accountbutton" class="navbutton"><img class="navimg"
-                    src="./images/account-selected.svg"></button>
-            <button id="reservationsbutton" class="navbutton"><img class="navimg"
-                    src="./images/reservation-deselected.svg"></button>
-            <button id="eventsbutton" class="navbutton"><img class="navimg"
-                    src="./images/eventlist-deselected.svg"></button>
+                    src="./images/account-deselected.svg"></button>
         </div>
     </div>
 </template>
 
-<template id="eventlist">
+<template id="transaction">
+
     <style>
-        .eventview {
+        .transactiondata{
+
+        }
+
+        .transactionlist{
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .transactionitem{
+            display: flex;
+            flex-direction: row;
+            padding-top: 10px;
+            color:var(--loyalty-text-color);
+        }
+
+        .transactionvendor{
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            min-width: 100px;
         }
 
-        .signup {
-            width: 70px;
-            height: 30px;
-            border-radius: 4px;
-            background: var(--loyalty-button-color);
-            color: white;
-            font-weight: bold;
-            border: none;
-            margin: 10;
-            margin-left: 0;
-            outline: 0;
-            font-size: 9px;
-            text-transform: uppercase;
+        .vendorname{
+
         }
 
+        .transactiondate{
+            font-size:10px;
+            padding-top: 2px;
+            font-weight: normal;
+        }
+
+        .transactionamount{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            justify-items: center;
+            min-width: 70px;
+        }
+
+        .transactionpoints{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            justify-items: center;
+            min-width: 70px;
+        }
+    </style>
+
+    <div class="transactionitem">
+        <div class="transactionvendor">
+            <label id="vendor" class="vendorname"></label>
+            <label id="date" class="transactiondate"></label>
+        </div>
+        <label id="amount" class="transactionamount"></label>
+        <label id="points" class="transactionpoints"></label>
+    </div>
+</template>
+
+
+<template id="transactions">
+    <style>
         .viewtitle {
             display: flex;
             flex-direction: row;
@@ -565,180 +746,187 @@
             font-weight: bold;
         }
 
-        .eventlist {
-            display: flex;
-            flex-direction: column;
-            width: 200px;
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 20px;
+        .transactions{
             width: 100%;
-            overflow: scroll;
-            height: 420px;
-        }
-
-        .eventblock {
             display: flex;
             flex-direction: column;
-            max-width: 250px;
-            margin: 20px;
+            justify-content: center;
+            align-items: center;
         }
 
-        .eventname {
+        .transactionbox{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .transactionsummary{
+            display: flex;
+            flex-direction: column;
+            justify-items: left;
+            align-items: baseline;
+            justify-content: center;
+            height: 80px;
+            width: 100%;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--loyalty-divide-color);
+        }
+
+        .transactionsplit{
+            display: flex;
+            flex-direction: row;
+            width:100%;
+        }
+
+        .transactionsummarybox{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            justify-items: center;
+            width:50%;
+            height:100%;
+        }
+
+        .transactiontotal{
+            
+        }
+
+        .transactiontotalamount{
+            font-size:26px;
             font-weight: bold;
-            color: var(--loyalty-text-color);
-            padding-bottom: 5px;
+            color:var(--loyalty-phone-color);
         }
 
-        .eventdate {
-            color: var(--loyalty-sensor-color);
+        .transactiontotallabel{
+            margin-top:5px;
+            font-size: 10px;
+            font-weight: bold;
+            color:var(--loyalty-text-color);
         }
 
-        .eventpoints {
+        .transactionlist{
+            display:flex;
+            flex-direction: column;
+        }
+
+        .transactionheader{
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            height: 30px;
+            padding-top: 5px;
+            font-weight: bold;
+            font-size: 12px;
+            align-items: center;
+            justify-items: center;
             color: var(--loyalty-phone-color);
         }
-    </style>
-    <div class="eventlist" id="eventanchor">
-    </div>
-</template>
 
-<template id="eventview">
-    <style>
-        .eventview {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .viewtitle {
+        .transactionheaderlabel{
             display: flex;
             flex-direction: row;
-            height: 20px;
-            padding-top: 20px;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
-            text-transform: uppercase;
-            font-size: 16px;
-            font-weight: bold;
-        }
-    </style>
-
-    <div class="eventview">
-        <div class="viewtitle">EVENTS</div>
-        <event-list id="ALLEVENTS" buttonname="ATTEND" dataendpoint="" eventid="SELECTIONEVENT"></event-list>
-    </div>
-</template>
-
-<template id="reservationview">
-    <style>
-        .reservationview {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            justify-items: center;
+            min-width: 70px;
         }
 
-        .identity {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 20px;
-        }
-
-        .identityblock {
-            display: flex;
-            padding-top: 20px;
-            margin-left: 10px;
-            flex-direction: row;
-            height: 30px;
-        }
-
-        .idpart {
+        .transactionheadervendorlabel{
             display: flex;
             flex-direction: row;
-            align-items: left;
-            /* justify-content: left; */
-            align-content: left;
-            width: 100px;
+            justify-content: left;
+            align-items: center;
+            justify-items: center;
+            min-width: 100px;
+        }
+
+
+        .transactiondata{
+
+        }
+
+        .transactionlist{
             font-size: 12px;
-            text-transform: uppercase;
-            color: #D8D8D8;
             font-weight: bold;
+            overflow: scroll;
+            height: 300px;
         }
 
-        .idinfo {
+        .transactionitem{
             display: flex;
             flex-direction: row;
-            align-items: left;
-            /* justify-content: left; */
-            align-content: left;
-            width: 100px;
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #494A4B;
-            font-weight: bold;
+            padding-top: 10px;
+            color:var(--loyalty-text-color);
         }
 
-        .signup {
-            width: 70px;
-            height: 30px;
-            border-radius: 4px;
-            background: var(--loyalty-button-color);
-            color: white;
-            font-weight: bold;
-            border: none;
-            margin: 10;
-            outline: 0;
-            font-size: 9px;
-            text-transform: uppercase;
+        .transactionvendor{
+            display: flex;
+            flex-direction: column;
+            min-width: 100px;
         }
 
-        .viewtitle {
+        .vendorname{
+
+        }
+
+        .transactiondate{
+            font-size:10px;
+            padding-top: 2px;
+            font-weight: normal;
+        }
+
+        .transactionamount{
             display: flex;
             flex-direction: row;
-            height: 20px;
-            padding-top: 20px;
-            justify-content: center;
-            align-items: center;
-            text-transform: uppercase;
-            font-size: 16px;
-            font-weight: bold;
+            justify-content: flex-end;
+            justify-items: center;
+            min-width: 70px;
         }
 
-        .controls {
-            margin: 5px;
+        .transactionpoints{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            justify-items: center;
+            min-width: 70px;
         }
 
-        .rescontrol {
-            border: 1px solid #88a4b1;
-            color: #39687E;
-            font-weight: bold;
-            outline: none;
-            margin:5px;
-        }
-
-
-        .rescontroldim {
-            border: none;
-            background: #ffe5cc;
-            color:#FF7E00;
-            outline: none;
-            margin:5px;
-        }
     </style>
-
-    <div class="reservationview">
-        <div class="viewtitle">RESERVATIONS</div>
-        <div class="controls">
-            <button id="upcomingbutton" class="rescontrol">UPCOMING</button>
-            <button id="pastbutton" class="rescontroldim">PAST</button>
+    <div class="viewtitle">TRANSACTIONS</div>
+    <div class="transactions">
+        <div class="transactionbox">
+            <div class="transactionsummary">
+                <div class="transactionsplit">
+                    <div class="transactionsummarybox">
+                        <div class="transactiontotal">
+                            <div id="BALANCE" class="transactiontotalamount"></div>
+                            <label class="transactiontotallabel">BALANCE</label>
+                        </div>
+                    </div>
+                    <div class="transactionsummarybox">
+                        <div class="transactiontotal">
+                            <div id="POINTS" class="transactiontotalamount"></div>
+                            <label  class="transactiontotallabel">POINTS</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <event-list id="UPCOMINGEVENTS" dataendpoint="" buttonname="CHECK IN" eventid="CHECKINEVENT"></event-list>
-        <event-list id="PASTEVENTS" dataendpoint="" eventid="CHECKINEVENT" style="display:none;"></event-list>
+        <div class="transactionblock">
+            <div class="transactionheader">
+                <label class="transactionheadervendorlabel">VENDOR</label>
+                <label class="transactionheaderlabel">AMOUNT</label>
+                <label class="transactionheaderlabel">POINTS</label>
+            </div>
+            <div class="transactiondata">
+                <div id="TRANSACTIONLIST" class="transactionlist"></div>
+            </div>
+        </div>
     </div>
 </template>
+
 
 <template id="assetlink">
     <style>
@@ -824,14 +1012,16 @@
 <script src="./javascript/clientHelpers/demoaccounts.js"></script>
 <script src="./javascript/clientHelpers/libertyclient.js"></script>
 <script src="./javascript/clientHelpers/localstoragehelper.js"></script>
+<script src="./javascript/phone.js"></script>
+<script src="./javascript/tile.js"></script>
+<script src="./javascript/home.js"></script>
 <script src="./javascript/loyalty.js"></script>
 <script src="./javascript/welcome.js"></script>
 <script src="./javascript/login.js"></script>
 <script src="./javascript/account.js"></script>
 <script src="./javascript/navigation.js"></script>
-<script src="./javascript/eventlist.js"></script>
-<script src="./javascript/events.js"></script>
-<script src="./javascript/reservations.js"></script>
+<script src="./javascript/transaction.js"></script>
+<script src="./javascript/transactions.js"></script>
 <script src="./javascript/asset.js"></script>
 <script src="./javascript/spinner.js"></script>
 

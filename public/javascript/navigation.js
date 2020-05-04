@@ -1,8 +1,9 @@
 class Navigation extends HTMLElement {
 
-    ACCOUNT = 0
-    RESERVATION = 1
-    EVENTS = 2
+    
+    RESERVATION = 0
+    EVENTS = 1
+    ACCOUNT = 2
     
     SELECTEDVIEW = 0;
 
@@ -12,56 +13,65 @@ class Navigation extends HTMLElement {
         var accountimg = this.accountsbutton.childNodes[0];
         accountimg.src = './images/account-selected.svg';
 
-        var resimg = this.reservationsbutton.childNodes[0];
-        resimg.src = './images/reservation-deselected.svg';
+        var resimg = this.transactionsbutton.childNodes[0];
+        resimg.src = './images/transactions-deselected.svg';
 
-        var eventimg = this.eventsbutton.childNodes[0];
-        eventimg.src = './images/eventlist-deselected.svg';
+        var eventimg = this.statsbutton.childNodes[0];
+        eventimg.src = './images/statistics-deselected.svg';
 
         this.SELECTEDVIEW = this.ACCOUNT;
 
         var event = new Event('build');
         this.dispatchEvent(event);
 
-        var mobileview = document.getElementById('mobileview');
+        var mobileview = this.getMobileView();
         mobileview.innerHTML = "<account-element></account-element>"
     }
 
-    clickReservation() {
+    clickTransactions() {
 
         var accountimg = this.accountsbutton.childNodes[0];
         accountimg.src = './images/account-deselected.svg';
 
-        var resimg = this.reservationsbutton.childNodes[0];
-        resimg.src = './images/reservation-selected.svg';
+        var resimg = this.transactionsbutton.childNodes[0];
+        resimg.src = './images/transactions-selected.svg';
 
-        var eventimg = this.eventsbutton.childNodes[0];
-        eventimg.src = './images/eventlist-deselected.svg';
+        var eventimg = this.statsbutton.childNodes[0];
+        eventimg.src = './images/statistics-deselected.svg';
 
         console.log('click reservation');
 
         this.SELECTEDVIEW = this.RESERVATION;
 
-        var mobileview = document.getElementById('mobileview');
-        mobileview.innerHTML = "<reservations-element></reservations-element>"
+        var mobileview = this.getMobileView();
+        mobileview.innerHTML = "<transactions-element></transactions-element>";
     }
 
-    clickEvents() {
+    clickStats() {
         console.log('click events');
 
         var accountimg = this.accountsbutton.childNodes[0];
         accountimg.src = './images/account-deselected.svg';
 
-        var resimg = this.reservationsbutton.childNodes[0];
-        resimg.src = './images/reservation-deselected.svg';
+        var resimg = this.transactionsbutton.childNodes[0];
+        resimg.src = './images/transactions-deselected.svg';
 
-        var eventimg = this.eventsbutton.childNodes[0];
-        eventimg.src = './images/eventlist-selected.svg';
+        var eventimg = this.statsbutton.childNodes[0];
+        eventimg.src = './images/statistics-selected.svg';
 
         this.SELECTEDVIEW = this.EVENTS;
 
-        var mobileview = document.getElementById('mobileview');
-        mobileview.innerHTML = "<events-element></events-element>"
+        var mobileview = this.getMobileView();
+        mobileview.innerHTML = "<events-element></events-element>";
+    }
+
+    getMobileView(){
+        var sr = this.shadowRoot;
+
+         // I don't like this being hard coded, but have stuggled to find a dynamic way for exampe: .childNodes.item("mobileview");
+
+        var mobileview = sr.host.parentElement.childNodes[3]; 
+        return mobileview;
     }
 
     constructor() {
@@ -78,19 +88,19 @@ class Navigation extends HTMLElement {
         var sr = this.shadowRoot;
 
         this.accountsbutton = sr.getElementById('accountbutton');
-        this.reservationsbutton = sr.getElementById('reservationsbutton');
-        this.eventsbutton = sr.getElementById('eventsbutton');
+        this.transactionsbutton = sr.getElementById('transactionsbutton');
+        this.statsbutton = sr.getElementById('statsbutton');
 
         this.accountsbutton.addEventListener('click', e => {
             this.clickAccount();
         });
 
-        this.reservationsbutton.addEventListener('click', e => {
-            this.clickReservation();
+        this.transactionsbutton.addEventListener('click', e => {
+            this.clickTransactions();
         });
 
-        this.eventsbutton.addEventListener('click', e => {
-            this.clickEvents();
+        this.statsbutton.addEventListener('click', e => {
+            this.clickStats();
         });
     }
 }

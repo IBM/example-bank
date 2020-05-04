@@ -1,41 +1,72 @@
 class Loyalty {
 
-    constructor() {
-        console.log('initializing loyalty app');
-        // this.details = details;
+    mode = 'INTEGRATED';
+    mobileview;
+
+    constructor(mode) {
+
+        this.mode = mode;
+
+        console.log('INITIALIZING LOYALTY APP');      
+
+        var phoneview = document.getElementById("phoneview");
+        this.mobileview = phoneview.getMobileView();
 
         // if cookie exists - then user is logged in
         //  navigate to account section
-        if (this.getCookie('access_token') != "" && this.getCookie('id_token') != "") {
-            let id_object = this.parseJwt(this.getCookie('id_token'))
-            console.log(id_object)
+
+        if(this.mode=='INTEGRATED'){
+            if (this.getCookie('access_token') != "" && this.getCookie('id_token') != "") {
+                let id_object = this.parseJwt(this.getCookie('id_token'))
+                console.log(id_object)
+
+                var accountinfo = {
+                    firstname: id_object.given_name,
+                    surname: id_object.family_name
+                }
+
+                var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+
+                this.mobileview.innerHTML = "";
+
+                let element = document.createElement('transactions-element')
+                element.setAttribute('name', fullname);
+                element.setAttribute('mode', this.mode);
+                this.mobileview.appendChild(element); 
+
+                localStorage.setItem("loyaltyname", fullname);
+
+                phoneview.showNavigation();
+            }
+        }
+
+        if(this.mode=='DEVMODE'){
 
             var accountinfo = {
-                firstname: id_object.given_name,
-                surname: id_object.family_name
+                firstname: 'JOHN',
+                surname: 'SMITH'
             }
 
             var fullname = accountinfo.firstname + ' ' + accountinfo.surname
 
-            var mobileview = document.getElementById("mobileview");
-            mobileview.innerHTML = "";
+            // var phoneview = document.getElementById("phoneview");
+            // var mobileview = phoneview.getMobileView();
+            
+            let element = document.createElement('transactions-element')
+            element.setAttribute('name', fullname);
+            element.setAttribute('mode', this.mode);
+            this.mobileview.appendChild(element)
 
-            let element = document.createElement('account-element')
-            element.setAttribute('name', fullname)
-            mobileview.appendChild(element)
-
-            localStorage.setItem("loyaltyname", fullname);
-
-            var nav = document.getElementById("mobilenavigation");
-            nav.style.display = "flex";
+            phoneview.showNavigation();
         }
     }
 
     signup() {
         console.log('loyalty.signup');
 
-        var mobileview = document.getElementById("mobileview");
-        mobileview.innerHTML = "";
+        // var phoneview = document.getElementById("phoneview");
+        // var mobileview = phoneview.getMobileView();
+        this.mobileview.innerHTML = "";
 
         var element = document.createElement('login-element');
 
@@ -45,7 +76,7 @@ class Loyalty {
             element.setAttribute('password', password);
             element.setAttribute('username', email);
 
-            mobileview.appendChild(element);
+            this.mobileview.appendChild(element);
         })
 
         /* same as mobileview.innerHTML =
