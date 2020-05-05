@@ -62,7 +62,7 @@ class Navigation extends HTMLElement {
         this.SELECTEDVIEW = this.EVENTS;
 
         var mobileview = this.getMobileView();
-        mobileview.innerHTML = "<events-element></events-element>";
+        mobileview.innerHTML = "<analysis-element></analysis-element>";
     }
 
     getMobileView(){
