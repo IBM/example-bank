@@ -38,27 +38,12 @@ class Phone extends HTMLElement {
         var sr = this.shadowRoot;
         var basebutton = sr.getElementById('basebutton');
         var mobileview = sr.getElementById('mobileview');
+        var navigation = sr.getElementById('mobilenavigation');
         var apptiles = sr.getElementById('APPTILES');
         basebutton.addEventListener('click', e => {
             mobileview.innerHTML = '<homescreen-element id="HOMESCREEN"></homescreen-element>';
+            navigation.style.display = 'none';
         });
-
-        // var homescreen = sr.getElementById('HOMESCREEN');
-
-        // homescreen.addEventListener('APPTILE', e => {
-        //     console.log('HOMESCREEN RECIEVED EVENT FROM TILE: ' + e.detail.eventData.toLocaleUpperCase());
-            
-        //     switch(e.detail.eventData){
-
-        //         case 'bank':
-        //             mobileview.innerHTML = '<welcome-element mode="' + this.mode + '"></welcome-element>';
-        //             break;
-
-        //         default:
-        //             break;
-        //     }
-        // });
-
     }
 }
 

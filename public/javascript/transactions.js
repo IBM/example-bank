@@ -32,10 +32,15 @@ class Transactions extends HTMLElement {
         var balance = sr.getElementById('BALANCE');
         var points = sr.getElementById('POINTS');
         var transactionComponent = this;
+
+       
+
         this.testdata.forEach(function(item){
+
+            var date = moment(item.date).format("MMM Do YYYY");
             transactionComponent.balance = transactionComponent.balance + item.amount;
             transactionComponent.points = transactionComponent.points + item.pointsEarned;
-            var transaction = transactionComponent.createTransaction(item.transactionName, '01 MAY 2020', '$' + item.amount, item.pointsEarned);
+            var transaction = transactionComponent.createTransaction(item.transactionName, date, '$' + item.amount, item.pointsEarned);
             transactionlist.appendChild(transaction);
         })
         balance.innerHTML = '$' + transactionComponent.balance;
