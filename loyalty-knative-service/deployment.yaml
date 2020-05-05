@@ -1,10 +1,11 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: helloworld-go
+  name: process-transaction
   namespace: default
-  # labels:
-  #   serving.knative.dev/visibility: cluster-local
+  # local to cluster only
+  labels:
+    serving.knative.dev/visibility: cluster-local
 spec:
   template:
     metadata:
@@ -17,7 +18,25 @@ spec:
         # autoscaling.knative.dev/maxScale: "50"
     spec:
       containers:
-        - image: gcr.io/knative-samples/helloworld-nodejs
+        - image: anthonyamanse/knative-transaction-process:with-auth
+          envFrom:
+            - secretRef:
+                name: loyalty-oidc-adminuser
           env:
-            - name: TARGET
-              value: "Node Sample v1"
+            - name: TRANSACTION_SERVICE_URL
+              value: "http://loyalty-event-service:9080/loyalty/v1/transactions"
+            - name: APP_ID_TOKEN_URL
+              valueFrom:
+                secretKeyRef:
+                  name: loyalty-oidc-secret
+                  key: OIDC_ISSUERIDENTIFIER
+            - name: APP_ID_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: loyalty-oidc-secret
+                  key: OIDC_AUDIENCES
+            - name: APP_ID_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: loyalty-oidc-secret
+                  key: OIDC_SECRET
