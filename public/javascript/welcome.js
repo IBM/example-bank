@@ -29,15 +29,40 @@ class Welcome extends HTMLElement {
         let selectUserInput = sr.getElementById("usernameselect")
         let signinButton = sr.getElementById("signin")
 
-        if(this.mode=='INTEGRATED'){
+        var phoneview = document.getElementById("phoneview");
+        var mobileview = phoneview.getMobileView();
 
-            getAllUsers((users) => {
-                users.forEach(user => {
-                    var option = document.createElement("option");
-                    option.text = user
-                    selectUserInput.add(option)
-                });
-            })
+        if(this.mode=='INTEGRATED'){
+            if (loyalty.getCookie('access_token') != "" && loyalty.getCookie('id_token') != "") {
+                let id_object = loyalty.parseJwt(loyalty.getCookie('id_token'))
+                console.log(id_object)
+
+                var accountinfo = {
+                    firstname: id_object.given_name,
+                    surname: id_object.family_name
+                }
+
+                var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+
+                mobileview.innerHTML = "";
+
+                let element = document.createElement('transactions-element')
+                element.setAttribute('name', fullname);
+                element.setAttribute('mode', this.mode);
+                mobileview.appendChild(element); 
+
+                localStorage.setItem("loyaltyname", fullname);
+
+                phoneview.showNavigation();
+            } else {
+                getAllUsers((users) => {
+                    users.forEach(user => {
+                        var option = document.createElement("option");
+                        option.text = user
+                        selectUserInput.add(option)
+                    });
+                })
+            }
         }
 
         signinButton.addEventListener("click", e => {

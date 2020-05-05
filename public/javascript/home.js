@@ -1,7 +1,7 @@
 class Home extends HTMLElement {
 
-    mode = 'DEVMODE';
-    // mode = 'INTEGRATED';
+    // mode = 'DEVMODE';
+    mode = 'INTEGRATED';
 
     constructor() {
         super();

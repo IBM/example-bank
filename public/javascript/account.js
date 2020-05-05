@@ -36,9 +36,7 @@ class Account extends HTMLElement {
 
         let deleteButton = sr.getElementById("deleteAccountButton")
         deleteButton.addEventListener("click", e => {
-            if(MODE=='INTEGRATED'){
                 this.delete();
-            }
         })
     }
 
@@ -50,17 +48,19 @@ class Account extends HTMLElement {
         // clear local storage
         localStorage.clear()
 
-        var mobileview = document.getElementById("mobileview");
+        var phoneview = document.getElementById("phoneview");
+        var mobileview = phoneview.getMobileView();
         mobileview.innerHTML = "";
         var welcome = document.createElement('welcome-element')
+        welcome.setAttribute('mode','INTEGRATED')
         mobileview.appendChild(welcome)
 
-        var nav = document.getElementById("mobilenavigation");
-        nav.style.display = "none";
+        phoneview.hideNavigation();
     }
 
     delete() {
-        let mobileview = document.getElementById("mobileview");
+        let phoneview = document.getElementById("phoneview");
+        let mobileview = phoneview.getMobileView();
         mobileview.innerHTML = "";
         let element = document.createElement('loading-spinner-element');
         element.setAttribute("status", "Deleting account...")
