@@ -57,8 +57,8 @@
 
 .sensors {
     flex-direction: row;
-    min-height:5%;
-    max-height:5%;
+    min-height:4%;
+    max-height:4%;
     width: 50%;
     height: 18px;
     background: var(--loyalty-phone-color);
@@ -148,26 +148,26 @@
 <template id="tile">
     <style>  
     .tile{
-        height: 90px;
-        width: 90px;
-        margin: 20px;
+        height: 100px;
+        width: 100px;
+        margin: 16px;
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
         align-content: center;
-        border: 1px solid lightgrey;
+        border: 2px solid var(--loyalty-divide-color);
         border-radius: 6px;
         outline: none;
     }
 
     .tile:hover{
-        border: 1px solid var(--loyalty-button-color);
+        border: 2px solid var(--loyalty-highlight-color);
     }
 
     .buttonImage{
-        height:80px;
-        width:80px;
+        height:74px;
+        width:74px;
     }
     </style>
     <button id="tileButton" class="tile">
@@ -221,50 +221,54 @@
 
         .citylogo {
             padding-top: 20px;
-            height: 160px;
+            height: 140px;
         }
 
         .cityname {
             text-transform: uppercase;
             font-weight: bold;
-            text-size: 10px;
+            font-size: 10px;
             font-family: inherit;
         }
 
         .blurb {
             font-size: 10px;
             margin: 20px;
-            width: 160px;
+            width: 120px;
+            color: var(--loyalty-phone-color);
         }
 
         .usernameinput {
             width: 120px;
             text-align: center;
             font-family: inherit;
-            height: 25px;
+            height: 28px;
             margin-top: 10px;
+            border: 2px solid #ffe5cc;
+            background: #ffe5cc;
+            border: 2px solid var(--loyalty-highlight-color);
+            background:var(--loyalty-highlight-color);
         }
 
         .signin {
             width: 120px;
-            height: 30px;
+            height: 28px;
             border-radius: 4px;
             background: var(--loyalty-button-color);
             color: white;
             font-weight: bold;
-            border: none;
+            border: 2px solid var(--loyalty-button-color);
             margin-top: 10px;
             outline: 0;
         }
 
         .signup {
             width: 120px;
-            height: 30px;
+            height: 28px;
             border-radius: 4px;
-            background: var(--loyalty-button-color);
-            color: white;
+            color: var(--loyalty-sensor-color);
             font-weight: bold;
-            border: none;
+            border: 2px solid var(--loyalty-sensor-color);
             margin: 10px;
             outline: 0;
         }
@@ -280,6 +284,13 @@
             font-size: 16px;
             font-weight: bold;
         }
+
+        .or{
+            font-size: 12px;
+            padding-top: 10px;
+            font-weight: bold;
+            color: var(--loyalty-sensor-color);
+        }
     </style>
     <div class="welcomeview">
         <div class="viewtitle">EXAMPLE BANK</div>
@@ -290,8 +301,9 @@
         <select class="usernameinput" id="usernameselect">
         </select>
         <button class="signin" id="signin">SIGN IN</button>
+        <div class="or">OR</div>
         <button class="signup" onclick="loyalty.signup()">SIGN UP</button>
-        <div class="blurb">THIS IS A SIMULATED LOYALTY APP TO HIGHLIGHT PRIVACY CONSIDERATIONS WHEN BUILDING CLOUD
+        <div class="blurb">THIS IS A SIMULATED BANKING APP TO EXPLORE PRIVACY CONSIDERATIONS WHEN DEVELOPING CLOUD
             APPLICATIONS. FOR DEMO PURPOSES ONLY</div>
     </div>
 </template>
@@ -317,6 +329,7 @@
             display: flex;
             flex-direction: row;
             height: 30px;
+            width:80%;
         }
 
         .idpart {
@@ -325,7 +338,7 @@
             align-items: left;
             /* justify-content: left; */
             align-content: left;
-            width: 100px;
+            width: 75px;
             font-size: 12px;
             /* text-transform: uppercase; */
             color: #D8D8D8;
@@ -338,7 +351,7 @@
             align-items: left;
             /* justify-content: left; */
             align-content: left;
-            width: 100px;
+            width: 175px;
             font-size: 12px;
             /* text-transform: uppercase; */
             color: #494A4B;
@@ -456,6 +469,7 @@
             margin-left: 10px;
             flex-direction: row;
             height: 30px;
+            width: 80%;
         }
 
         .idpart {
@@ -465,9 +479,9 @@
             /* justify-content: left; */
             align-content: left;
             width: 100px;
-            font-size: 12px;
+            font-size: 14px;
             text-transform: uppercase;
-            color: #D8D8D8;
+            color:var(--loyalty-phone-color);
             font-weight: bold;
         }
 
@@ -477,10 +491,10 @@
             align-items: left;
             /* justify-content: left; */
             align-content: left;
-            width: 100px;
-            font-size: 12px;
+            width: 175px;
+            font-size: 14px;
             text-transform: uppercase;
-            color: #494A4B;
+            color:var(--loyalty-text-color);
             font-weight: bold;
         }
 
@@ -590,20 +604,43 @@
             border: none;
             margin: 10px;
         }
+
+        .account{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .accountdetails{
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+            width: 100%;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            /* border-bottom: 2px solid var(--loyalty-divide-color); */
+            background: var(--loyalty-highlight-color);
+        }
     </style>
 
     <div class="accountview">
        
         <div class="account">
             <div class="viewtitle">ACCOUNT</div>
+            <div class="accountdetails">
             <div class="identityblock">
-                <label class="idpart">Name</label>
+                <label class="idpart">Name:</label>
                 <div class="idinfo" id="name"></div>
             </div>
             <div class="identityblock">
-                <label class="idpart">Enrolled</label>
+                <label class="idpart">Joined:</label>
                 <div class="idinfo" id="surname">2019</div>
             </div>
+        </div>
             <div class="buttons">
                 <!-- <button class="signup" id="createAccountButton" onclick="create()">Edit</button>
                 <button class="signup" id="createAccountButton" onclick="create()">Download</button> -->
@@ -763,20 +800,25 @@
         .transactionsummary{
             display: flex;
             flex-direction: column;
-            justify-items: left;
-            align-items: baseline;
+            justify-items: center;
+            align-items: center;
             justify-content: center;
             height: 80px;
             width: 100%;
             padding-bottom: 10px;
             margin-bottom: 10px;
-            border-bottom: 2px solid var(--loyalty-divide-color);
+            margin-top: 10px;
+            /* border-bottom: 2px solid var(--loyalty-divide-color); */
+            background:var(--loyalty-highlight-color);
         }
 
         .transactionsplit{
             display: flex;
             flex-direction: row;
-            width:100%;
+            width: 80%;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
         }
 
         .transactionsummarybox{
@@ -789,8 +831,24 @@
             height:100%;
         }
 
-        .transactiontotal{
-            
+        .transactionsummaryboxleft{
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: flex-start;
+            justify-items: center;
+            width:50%;
+            height:100%;
+        }
+
+        .transactionsummaryboxright{
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: flex-end;
+            justify-items: center;
+            width:50%;
+            height:100%;
         }
 
         .transactiontotalamount{
@@ -806,6 +864,27 @@
             color:var(--loyalty-text-color);
         }
 
+        .transactiontotallabelleft{
+            margin-top:5px;
+            font-size: 10px;
+            font-weight: bold;
+            align-self:flex-start;
+            color:var(--loyalty-text-color);
+        }
+
+        .transactiontotallabelright{
+            margin-top:5px;
+            font-size: 10px;
+            font-weight: bold;
+            align-self: flex-end;
+            color:var(--loyalty-text-color);
+        }
+
+        .transactiontotal{
+            display: flex;
+            flex-direction: column;
+        }
+
         .transactionlist{
             display:flex;
             flex-direction: column;
@@ -814,14 +893,15 @@
         .transactionheader{
             display: flex;
             flex-direction: row;
-            justify-content: left;
+            justify-content: center;
             height: 30px;
-            padding-top: 5px;
             font-weight: bold;
             font-size: 12px;
             align-items: center;
             justify-items: center;
             color: var(--loyalty-phone-color);
+            width: 100%;
+            border-bottom: 2px solid var(--loyalty-highlight-color);
         }
 
         .transactionheaderlabel{
@@ -842,16 +922,11 @@
             min-width: 100px;
         }
 
-
-        .transactiondata{
-
-        }
-
         .transactionlist{
             font-size: 12px;
             font-weight: bold;
             overflow: scroll;
-            height: 300px;
+            height: 265px;
         }
 
         .transactionitem{
@@ -865,10 +940,6 @@
             display: flex;
             flex-direction: column;
             min-width: 100px;
-        }
-
-        .vendorname{
-
         }
 
         .transactiondate{
@@ -893,22 +964,29 @@
             min-width: 70px;
         }
 
+        .transactionblock{
+            width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+        }
+
     </style>
     <div class="viewtitle">TRANSACTIONS</div>
     <div class="transactions">
         <div class="transactionbox">
             <div class="transactionsummary">
                 <div class="transactionsplit">
-                    <div class="transactionsummarybox">
+                    <div class="transactionsummaryboxleft">
                         <div class="transactiontotal">
                             <div id="BALANCE" class="transactiontotalamount"></div>
-                            <label class="transactiontotallabel">BALANCE</label>
+                            <label class="transactiontotallabelleft">BALANCE</label>
                         </div>
                     </div>
-                    <div class="transactionsummarybox">
+                    <div class="transactionsummaryboxright">
                         <div class="transactiontotal">
                             <div id="POINTS" class="transactiontotalamount"></div>
-                            <label  class="transactiontotallabel">POINTS</label>
+                            <label  class="transactiontotallabelright">POINTS</label>
                         </div>
                     </div>
                 </div>
@@ -923,6 +1001,47 @@
             <div class="transactiondata">
                 <div id="TRANSACTIONLIST" class="transactionlist"></div>
             </div>
+        </div>
+    </div>
+</template>
+
+
+<template id="analysis">
+    <style>
+    .viewtitle {
+        display: flex;
+        flex-direction: row;
+        height: 50px;
+        justify-content: center;
+        align-items: center;
+        text-transform: uppercase;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .analysisbox{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .chart{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        width: 260px;
+        height:260px;
+    }
+
+    </style>
+    <div class="viewtitle">Analysis</div>
+    <div class="analysisbox">
+        <div class="chart">
+            <canvas id="myChart" width="200" height="200"></canvas>
         </div>
     </div>
 </template>
@@ -1023,6 +1142,8 @@
 <script src="./javascript/navigation.js"></script>
 <script src="./javascript/transaction.js"></script>
 <script src="./javascript/transactions.js"></script>
+<script src="./javascript/analysis.js"></script>
 <script src="./javascript/asset.js"></script>
 <script src="./javascript/spinner.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 </html>
