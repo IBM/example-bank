@@ -181,3 +181,25 @@ function getTransactions(access_token, callback) {
         callback(e, null)
     })
 }
+
+function getSpending(access_token, callback) {
+    fetch(SECURE_EVENT_BACKEND_URL + '/loyalty/v1/transactions/spending', {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + access_token
+        }
+    }).then(async (response) => {
+        if (response.status == '200') {
+            return response.json()
+        } else {
+            let responsetext = await response.text()
+            console.log(responsetext)
+            throw responsetext
+        }
+    }).then((transactions) => {
+        callback(null, transactions)
+    }).catch(e => {
+        console.log(e)
+        callback(e, null)
+    })
+}
