@@ -19,6 +19,7 @@
     font-family: 'IBM Plex Sans', sans-serif;
     /* font-family: 'Questrial', sans-serif; */
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     display: flex;
     flex-direction: row;
     justify-content: center;

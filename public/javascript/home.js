@@ -16,25 +16,50 @@ class Home extends HTMLElement {
             .appendChild(templateContent.cloneNode(true));            
     }
 
+    showNotification(shadowRoot, tile){
+        var notifcationArea = shadowRoot.getElementById('notificationarea');
+        notifcationArea.innerHTML = '';
+
+        var limit = tile.detail.eventData.limit * 100;
+        var base =  tile.detail.eventData.base * 100;
+
+        var charge = Math.floor(Math.random() * (limit - base + 1)) + base;
+        charge=charge/100;
+        charge=charge.toFixed(2);
+      
+        var entity = tile.detail.eventData.name.toUpperCase()
+      
+        console.log('CREATING A CREDIT CARD CHARGE OF $' + charge + ' ON ' + entity );
+        
+        var message = document.createElement('div');
+        message.innerHTML = 'NEW CREDIT CARD CHARGE - ' + entity ;
+        message.className = 'notification';
+        notifcationArea.appendChild(message);
+
+        setTimeout(function(){
+            notifcationArea.innerHTML = ''; 
+        }, 2000);
+    }
+
     connectedCallback() {
        
         var sr = this.shadowRoot;
 
         var tiles = sr.getElementById('APPTILES');
 
+        var homescreen = this;
+
         tiles.addEventListener('APPTILE', e => {
-            console.log('HOMESCREEN RECIEVED EVENT FROM TILE: ' + e.detail.eventData.toLocaleUpperCase());
+            console.log('HOMESCREEN RECIEVED EVENT FROM TILE: ' + e.detail.eventData.name.toLocaleUpperCase());
             
             switch(e.detail.eventData){
 
                 case 'bank':
-                    // var frame = sr.parentElement.parentElement
-                    // var mobilenav = frame.getElementById('mobilenavigation');
-                    // mobilenav.style.display = 'none';
                     sr.host.parentElement.innerHTML = '<welcome-element mode="' + this.mode + '"></welcome-element>';
                     break;
 
                 default:
+                    homescreen.showNotification(sr, e);
                     break;
             }
         });
