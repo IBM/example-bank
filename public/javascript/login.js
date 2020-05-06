@@ -25,10 +25,12 @@ class Login extends HTMLElement {
         var password = this.getAttribute('password')
         var email = this.getAttribute('username')
 
-        var mobileview = document.getElementById("mobileview");
+        var phoneview = document.getElementById("phoneview");
+        var mobileview = phoneview.getMobileView();
+        this.MODE = this.getAttribute('mode')
         mobileview.innerHTML = "";
 
-        if(MODE=='INTEGRATED'){
+        if(this.MODE=='INTEGRATED'){
 
             // create loading spinner first
             var element = document.createElement('loading-spinner-element');
@@ -48,7 +50,7 @@ class Login extends HTMLElement {
                         createProfile(jsonWithTokens.access_token, success => {
                             // then show account view
                             if (success) {
-                                this.createAccountView(firstname, surname)
+                                this.createTransactionsView(firstname, surname)
                             }
                             // else edge case when failed to create user profile
                         })
@@ -62,7 +64,7 @@ class Login extends HTMLElement {
       }
     }
 
-    createAccountView(firstname, surname) {
+    createTransactionsView(firstname, surname) {
         var accountinfo ={
             firstname:firstname,
             surname: surname
@@ -70,16 +72,17 @@ class Login extends HTMLElement {
 
         var fullname = accountinfo.firstname + ' ' + accountinfo.surname
 
-        var mobileview = document.getElementById("mobileview");
+        var phoneview = document.getElementById("phoneview");
+        var mobileview = phoneview.getMobileView();
+        let element = document.createElement('transactions-element')
+        element.setAttribute('name', fullname);
+        element.setAttribute('mode', this.MODE);
         mobileview.innerHTML = "";
-        mobileview.innerHTML = '<account-element name="' + fullname + '"></account-element>'
+        mobileview.appendChild(element);
 
-        // localStorage.setItem("loyaltyevents", accountinfo.events);
-        // localStorage.setItem("loyaltypoints", accountinfo.points);
         localStorage.setItem("loyaltyname", fullname);
 
-        var nav = document.getElementById("mobilenavigation");
-        nav.style.display = "flex";
+        phoneview.showNavigation();
     }
 
     constructor() {

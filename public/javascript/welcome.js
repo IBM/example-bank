@@ -87,6 +87,26 @@ class Welcome extends HTMLElement {
                 // when login complete,
                 // re-initialize app?
                 new Loyalty(this.mode);
+                let id_object = loyalty.parseJwt(jsonWebToken.id_token)
+                console.log(id_object)
+
+                var accountinfo = {
+                    firstname: id_object.given_name,
+                    surname: id_object.family_name
+                }
+
+                var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+
+                mobileview.innerHTML = "";
+
+                let element = document.createElement('transactions-element')
+                element.setAttribute('name', fullname);
+                element.setAttribute('mode', this.mode);
+                mobileview.appendChild(element); 
+
+                localStorage.setItem("loyaltyname", fullname);
+
+                phoneview.showNavigation();
                 // edge case when unable to sign in
             })
          }else{
