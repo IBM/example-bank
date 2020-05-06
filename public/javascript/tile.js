@@ -1,7 +1,7 @@
 class Tile extends HTMLElement {
 
     static get observedAttributes() {
-        return ['tileimage', 'tiletext', 'costlimit'];
+        return ['tileimage', 'tiletext', 'limit', 'base'];
     }
 
     constructor() {

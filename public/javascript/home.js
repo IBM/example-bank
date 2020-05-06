@@ -32,7 +32,7 @@ class Home extends HTMLElement {
         console.log('CREATING A CREDIT CARD CHARGE OF $' + charge + ' ON ' + entity );
         
         var message = document.createElement('div');
-        message.innerHTML = 'NEW CREDIT CARD CHARGE - ' + entity ;
+        message.innerHTML = 'CREDIT CARD $' + charge + ' ON ' + entity ;
         message.className = 'notification';
         notifcationArea.appendChild(message);
 
@@ -52,7 +52,7 @@ class Home extends HTMLElement {
         tiles.addEventListener('APPTILE', e => {
             console.log('HOMESCREEN RECIEVED EVENT FROM TILE: ' + e.detail.eventData.name.toLocaleUpperCase());
             
-            switch(e.detail.eventData){
+            switch(e.detail.eventData.name){
 
                 case 'bank':
                     sr.host.parentElement.innerHTML = '<welcome-element mode="' + this.mode + '"></welcome-element>';
