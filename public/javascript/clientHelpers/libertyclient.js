@@ -203,3 +203,26 @@ function getSpending(access_token, callback) {
         callback(e, null)
     })
 }
+
+function createTransaction(access_token, transactionName, category, amount, callback) {
+    let jsonRequestBody = { transactionName, category, amount }
+
+    fetch(SECURE_EVENT_BACKEND_URL + '/loyalty/v1/transactions', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + access_token,
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(jsonRequestBody)
+    }).then(response => {
+        console.log(response)
+        if (response.status == '204') {
+            callback(true)
+        } else {
+            callback(false)
+        }
+    }).catch(e => {
+        console.log(e)
+        callback(false)
+    })
+}
