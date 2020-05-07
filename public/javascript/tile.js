@@ -1,7 +1,7 @@
 class Tile extends HTMLElement {
 
     static get observedAttributes() {
-        return ['tileimage', 'tiletext'];
+        return ['tileimage', 'tiletext', 'limit', 'base'];
     }
 
     constructor() {
@@ -22,12 +22,14 @@ class Tile extends HTMLElement {
         this.tileimage = sr.getElementById('buttonImage');
         this.tileimage.src = customElement.getAttribute('tileimage');
         this.tiletext = customElement.getAttribute('tiletext');
+        this.limit=customElement.getAttribute('ceiling');
+        this.base=customElement.getAttribute('base');
         this.button = sr.getElementById('tileButton');
         this.button.onclick = function () {
             console.log('CLICKING TILE: ' + customElement.tiletext.toLocaleUpperCase());
             var customEvent = new CustomEvent( 'APPTILE', {
                 detail: {
-                    eventData: customElement.tiletext
+                    eventData: {"name":customElement.tiletext,"limit":customElement.limit,"base":customElement.base}
                 },
                 bubbles: true
             });
