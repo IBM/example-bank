@@ -21,7 +21,9 @@ class Transactions extends HTMLElement {
         var transaction = document.createElement('transaction-element');
         transaction.setAttribute('vendor', vendor);
         transaction.setAttribute('date', date);
-        transaction.setAttribute('amount', amount); 
+        if (amount != '-') amount = amount.toFixed(2);
+        if (points != '-') points = points.toFixed(2);
+        transaction.setAttribute('amount', amount);
         transaction.setAttribute('points',points);
         return transaction;
     }
@@ -52,8 +54,8 @@ class Transactions extends HTMLElement {
                 transactionlist.appendChild(transactionElement)
               })
     
-              balance.innerHTML = '$' + transactionComponent.balance;
-              points.innerHTML = transactionComponent.points;
+              balance.innerHTML = '$' + transactionComponent.balance.toFixed(2);
+              points.innerHTML = transactionComponent.points.toFixed(2);
             } else if (err == 'User not registered') {
               let phoneview = document.getElementById("phoneview");
               let mobileview = phoneview.getMobileView();

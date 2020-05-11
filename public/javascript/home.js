@@ -17,9 +17,6 @@ class Home extends HTMLElement {
     }
 
     generateTransaction(access_token, shadowRoot, tile){
-        var notifcationArea = shadowRoot.getElementById('notificationarea');
-        notifcationArea.innerHTML = '';
-
         var limit = tile.detail.eventData.limit * 100;
         var base =  tile.detail.eventData.base * 100;
 
@@ -52,7 +49,7 @@ class Home extends HTMLElement {
         notifcationArea.appendChild(message);
 
         setTimeout(function(){
-            notifcationArea.innerHTML = ''; 
+            message.remove()
         }, 2000);
     }
 
@@ -78,7 +75,7 @@ class Home extends HTMLElement {
                     if (access_token != "") {
                         homescreen.generateTransaction(access_token, sr, e)
                     } else {
-
+                        homescreen.showNotification(sr, 'Please log in using the Bank app.')
                     }
                     break;
             }
