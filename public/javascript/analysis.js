@@ -63,36 +63,71 @@ class Analysis extends HTMLElement {
         var sr = this.shadowRoot;
         var ctx = sr.getElementById('myChart');
 
-        var dataset = this.getChartData();
-        
-        var labels = [];
-        var values = [];
+        getSpending(loyalty.getCookie('access_token'), (err, spending) => {
+            if (err == null) {
+                console.log(spending)
+                let labels = []
+                let values = []
+                
+                spending.forEach(entry => {
+                    labels.push(entry.category)
+                    values.push(entry.count)
+                })
 
-        dataset.forEach(function(entry){
-            labels.push(entry.category);
-            values.push(entry.count);
+                let data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Spending Breakdown',
+                        data: values,
+                        backgroundColor: [
+                            'rgba(178, 35, 60, 1.0)',
+                            'rgba(229, 45, 78, 1.0)',
+                            'rgba(236, 108, 131, 1.0)',
+                            'rgba(244, 171, 184, 1.0)',
+                            'rgba(252, 234, 237, 1.0)',
+                            'rgba(102, 20, 34, 1.0)'
+                        ]
+                    }]
+                };
+
+                let myDoughnutChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data
+                });
+            }
+
         })
+        
+        // var dataset = this.getChartData();
 
-        var data = {
-            labels: labels,
-            datasets: [{
-                label: 'Spending Breakdown',
-                data: values,
-                backgroundColor: [
-                    'rgba(178, 35, 60, 1.0)',
-                    'rgba(229, 45, 78, 1.0)',
-                    'rgba(236, 108, 131, 1.0)',
-                    'rgba(244, 171, 184, 1.0)',
-                    'rgba(252, 234, 237, 1.0)',
-                    'rgba(102, 20, 34, 1.0)'
-                ]
-            }]
-        };
+        // var labels = [];
+        // var values = [];
 
-        var myDoughnutChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: data
-        });     
+        // dataset.forEach(function(entry){
+        //     labels.push(entry.category);
+        //     values.push(entry.count);
+        // })
+
+        // var data = {
+        //     labels: labels,
+        //     datasets: [{
+        //         label: 'Spending Breakdown',
+        //         data: values,
+        //         backgroundColor: [
+        //             'rgba(178, 35, 60, 1.0)',
+        //             'rgba(229, 45, 78, 1.0)',
+        //             'rgba(236, 108, 131, 1.0)',
+        //             'rgba(244, 171, 184, 1.0)',
+        //             'rgba(252, 234, 237, 1.0)',
+        //             'rgba(102, 20, 34, 1.0)'
+        //         ]
+        //     }]
+        // };
+
+        // var myDoughnutChart = new Chart(ctx, {
+        //     type: 'doughnut',
+        //     data: data
+        // });     
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

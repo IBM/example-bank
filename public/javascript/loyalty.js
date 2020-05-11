@@ -15,30 +15,30 @@ class Loyalty {
         // if cookie exists - then user is logged in
         //  navigate to account section
 
-        if(this.mode=='INTEGRATED'){
-            if (this.getCookie('access_token') != "" && this.getCookie('id_token') != "") {
-                let id_object = this.parseJwt(this.getCookie('id_token'))
-                console.log(id_object)
+        // if(this.mode=='INTEGRATED'){
+        //     if (this.getCookie('access_token') != "" && this.getCookie('id_token') != "") {
+        //         let id_object = this.parseJwt(this.getCookie('id_token'))
+        //         console.log(id_object)
 
-                var accountinfo = {
-                    firstname: id_object.given_name,
-                    surname: id_object.family_name
-                }
+        //         var accountinfo = {
+        //             firstname: id_object.given_name,
+        //             surname: id_object.family_name
+        //         }
 
-                var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+        //         var fullname = accountinfo.firstname + ' ' + accountinfo.surname
 
-                this.mobileview.innerHTML = "";
+        //         this.mobileview.innerHTML = "";
 
-                let element = document.createElement('transactions-element')
-                element.setAttribute('name', fullname);
-                element.setAttribute('mode', this.mode);
-                this.mobileview.appendChild(element); 
+        //         let element = document.createElement('transactions-element')
+        //         element.setAttribute('name', fullname);
+        //         element.setAttribute('mode', this.mode);
+        //         this.mobileview.appendChild(element); 
 
-                localStorage.setItem("loyaltyname", fullname);
-
-                phoneview.showNavigation();
-            }
-        }
+        //         localStorage.setItem("loyaltyname", fullname);
+        //         console.log(phoneview)
+        //         phoneview.showNavigation();
+        //     }
+        // }
 
         if(this.mode=='DEVMODE'){
 
@@ -69,7 +69,7 @@ class Loyalty {
         this.mobileview.innerHTML = "";
 
         var element = document.createElement('login-element');
-
+        element.setAttribute('mode', this.mode);
         getRandomUser((firstname, surname, password, email) => {
             element.setAttribute('firstname', firstname);
             element.setAttribute('surname', surname);
@@ -110,4 +110,5 @@ class Loyalty {
       }
 }
 
-var loyalty = new Loyalty();
+// var loyalty = new Loyalty();
+var loyalty = new Loyalty('INTEGRATED');

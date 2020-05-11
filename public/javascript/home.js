@@ -1,7 +1,7 @@
 class Home extends HTMLElement {
 
-    mode = 'DEVMODE';
-    // mode = 'INTEGRATED';
+    // mode = 'DEVMODE';
+    mode = 'INTEGRATED';
 
     constructor() {
         super();
@@ -16,10 +16,7 @@ class Home extends HTMLElement {
             .appendChild(templateContent.cloneNode(true));            
     }
 
-    showNotification(shadowRoot, tile){
-        var notifcationArea = shadowRoot.getElementById('notificationarea');
-        notifcationArea.innerHTML = '';
-
+    generateTransaction(access_token, shadowRoot, tile){
         var limit = tile.detail.eventData.limit * 100;
         var base =  tile.detail.eventData.base * 100;
 
@@ -30,14 +27,29 @@ class Home extends HTMLElement {
         var entity = tile.detail.eventData.name.toUpperCase()
       
         console.log('CREATING A CREDIT CARD CHARGE OF $' + charge + ' ON ' + entity );
-        
+
+        createTransaction(access_token, entity, entity, charge,
+            (success) => {
+                if (success) {
+                    let text = 'CREDIT CARD $' + charge + ' ON ' + entity ;
+                    this.showNotification(shadowRoot, text)
+                } else {
+                    this.showNotification(shadowRoot, "Failed creating transaction. Please check logs")
+                }
+        })
+    }
+
+    showNotification(shadowRoot, notificationText) {
+        var notifcationArea = shadowRoot.getElementById('notificationarea');
+        notifcationArea.innerHTML = '';
+
         var message = document.createElement('div');
-        message.innerHTML = 'CREDIT CARD $' + charge + ' ON ' + entity ;
+        message.innerHTML = notificationText
         message.className = 'notification';
         notifcationArea.appendChild(message);
 
         setTimeout(function(){
-            notifcationArea.innerHTML = ''; 
+            message.remove()
         }, 2000);
     }
 
@@ -59,7 +71,12 @@ class Home extends HTMLElement {
                     break;
 
                 default:
-                    homescreen.showNotification(sr, e);
+                    let access_token = loyalty.getCookie('access_token')
+                    if (access_token != "") {
+                        homescreen.generateTransaction(access_token, sr, e)
+                    } else {
+                        homescreen.showNotification(sr, 'Please log in using the Bank app.')
+                    }
                     break;
             }
         });
