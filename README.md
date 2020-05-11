@@ -107,7 +107,10 @@ Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once
 
 ![disable-email](images/disable-email.png)
 
-* Add an application in the `Applications` tab. Take note of the `clientId`, `secret`, `oAuthServerUrl` and place them in the `.env.template` file of this repo. The values belong in `APP_ID_CLIENT_ID`, `APP_ID_CLIENT_SECRET`, `APP_ID_TOKEN_URL` respectively.
+* Add an application in the `Applications` tab. Select "Regular web application" 
+
+
+Take note of the `clientId`, `secret`, `oAuthServerUrl` and place them in the `.env.template` file of this repo. The values belong in `APP_ID_CLIENT_ID`, `APP_ID_CLIENT_SECRET`, `APP_ID_TOKEN_URL` respectively.
 
 ![add-application](images/add-application.png)
 
