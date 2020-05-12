@@ -26,7 +26,7 @@ import lombok.Setter;
   @NamedQuery(name = "Transaction.findTransactionsByUser", query = "SELECT t FROM Transaction t WHERE t.userId = :userId"),
   @NamedQuery(name = "Transaction.findTransactionById", query = "SELECT t FROM Transaction t WHERE t.transactionId = :transactionId AND t.userId = :userId"),
   @NamedQuery(name = "Transaction.findTransactionByIdOnly", query = "SELECT t FROM Transaction t WHERE t.transactionId = :transactionId"),
-  @NamedQuery(name = "Transaction.groupCategoriesForUser", query = "SELECT COALESCE(t.category, 'Uncategorized'), COUNT (t.transactionId) FROM Transaction t WHERE t.userId = :userId GROUP BY t.category")
+  @NamedQuery(name = "Transaction.groupCategoriesForUser", query = "SELECT COALESCE(t.category, 'Uncategorized'), SUM (t.amount) FROM Transaction t WHERE t.userId = :userId GROUP BY t.category")
 })
 @Getter @Setter
 @EntityListeners(TransactionListener.class)
