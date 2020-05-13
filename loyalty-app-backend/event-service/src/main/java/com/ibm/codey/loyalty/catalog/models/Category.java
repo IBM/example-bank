@@ -1,5 +1,7 @@
 package com.ibm.codey.loyalty.catalog.models;
 
+import java.math.BigDecimal;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,10 +9,10 @@ import lombok.Setter;
 public class Category {
   
   private String category;
-  private int count;
+  private BigDecimal amount;
 
-  public Category(String category, int count) {
+  public Category(String category, BigDecimal amount) {
     this.category = category;
-    this.count = count;
+    this.amount = amount;
 	}
 }

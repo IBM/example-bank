@@ -71,7 +71,7 @@ class Analysis extends HTMLElement {
                 
                 spending.forEach(entry => {
                     labels.push(entry.category)
-                    values.push(entry.count)
+                    values.push(entry.amount)
                 })
 
                 let data = {

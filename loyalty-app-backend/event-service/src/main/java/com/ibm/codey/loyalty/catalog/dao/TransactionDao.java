@@ -1,5 +1,6 @@
 package com.ibm.codey.loyalty.catalog.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class TransactionDao {
             List<Category> response = new ArrayList<>();
             for (Object[] row: rows) {
                 if (row.length == 2) {
-                    response.add(new Category(row[0].toString(), Integer.parseInt(row[1].toString())));
+                    response.add(new Category(row[0].toString(), new BigDecimal(row[1].toString())));
                 }
             }
 
