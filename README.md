@@ -44,23 +44,34 @@ The loyalty system includes several microservices for handling user authenticati
 
 ![screenshot](images/pattern-flow-diag.png)
 
+
 ## Introduction to the Mobile Simulator
 
-The JavaScript simulator app presents a view of a mobile app but run by a Node.js service that gets deployed to the OpenShift project along with the other services.
 
-![simulator_main](images/simulator_main.png)
+
+The JavaScript simulator app presents a Web based view of a mobile app run by a Node service running inside the OpenShift cluster. <br>
+
+| | | | |
+|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+|<img width="1000" alt="sim1" src="images/sim1.png">  1. Login screen | <img width="1000" alt="sim2" src="images/sim2.png">  2. Point dashboard  | <img width="1000" alt="sim3" src="images/sim3.png">  3. Event list | <img width="1000" alt="sim4" src="images/sim4.png">  4. Reservations |
+
+
+<strong>Login screen</strong><br>
 
 From the dropdown menu inside the simulated phone app, pick one of the available accounts, and click **sign in** to see that user's point accumulation.
 
-![simulator_katy](images/simulator_katy.png)
+<strong>User/point dashboard</strong><br>
 
-This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcoming event:
+This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcoming event.
 
-![simulator_events.png](images/simulator_events.png)
+<strong>Event list</strong><br>
 
-Once an event has been added to a user's list of reservations, they can then check in from list of upcoming events that is displayed by clicking on the middle button:
+List of available events to register for (managed by PostgreSQL instance inside the cluster.)
 
-![simulator_check_in](images/simulator_checkin.png)
+<strong>Registered events</strong><br>
+
+Once an event has been added to a user's list of reservations, they can then check in from list of upcoming events that is displayed by clicking on the middle button.
+
 
 ## User authentication
 
@@ -82,7 +93,7 @@ The mobile app simulator is integrated with the App ID instance and whenever a u
 
 Whenever a request with a token in the authorization header is sent, the Liberty microservice uses the App ID integration to make sure that the token is valid. Then it continues to process the request. The liberty microservice also makes use of the subject ID or user ID in the token to identify which user is making the request. For example, when a user asks for his number of points earned, it needs to pull the right profile from the database. This is where the user ID in the token payload can be made use of.
 
-## Deployment
+# Deployment
 
 There are two options for deployment: an automated deployment process driven by Tekton pipelines, and a manual process driven by CLI. In either case, the following common steps should be completed first:
 
