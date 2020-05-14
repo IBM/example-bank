@@ -19,15 +19,15 @@ class Login extends HTMLElement {
         console.log('login.createAccount');
 
         /* where to make a data call for points/events */
-
-        var firstname = this.getAttribute('firstname');
-        var surname = this.getAttribute('surname');
-        var password = this.getAttribute('password')
-        var email = this.getAttribute('username')
+        let sr = this.shadowRoot
+        var firstname = sr.getElementById('firstname').innerHTML;
+        var surname = sr.getElementById('surname').innerHTML;
+        var email = sr.getElementById('email').innerHTML;
 
         var phoneview = document.getElementById("phoneview");
         var mobileview = phoneview.getMobileView();
         this.MODE = this.getAttribute('mode')
+        let previousMobileView = mobileview.innerHTML
         mobileview.innerHTML = "";
 
         if(this.MODE=='INTEGRATED'){
@@ -37,7 +37,7 @@ class Login extends HTMLElement {
             element.setAttribute("status", "Creating account...")
             mobileview.appendChild(element)
 
-            createAccountAppId(firstname, surname, password, email, (json) => {
+            createAccountAppId(firstname, surname, firstname + "" + surname, email, (json) => {
                 console.log(json)
                 if (json.status == "user created successfully") {
 
@@ -56,8 +56,13 @@ class Login extends HTMLElement {
                         })
                         // edge case when unable to sign in
                     })
+                } else { 
+                    // edge case when failed to register with app id
+                    element.setAttribute("status", json.message)
+                    setTimeout(() => {
+                        mobileview.innerHTML = previousMobileView
+                    }, 2000)
                 }
-                // edge case when failed to register with app id
         })
       }else{
           console.log('LOGIN RUNNING IN DEV MODE');
@@ -113,7 +118,7 @@ class Login extends HTMLElement {
 
     connectedCallback(){
 
-        var ids = ['firstname', 'surname', 'password', 'username'];
+        var ids = ['firstname', 'surname', 'password', 'username', 'email'];
 
         var sr = this.shadowRoot;
         var customElement = this;
@@ -122,6 +127,21 @@ class Login extends HTMLElement {
             var element = sr.getElementById(id);
             var data =  customElement.getAttribute(id);
             element.innerHTML = data;
+        })
+        let firstnameDiv = sr.getElementById('firstname')
+        let surnameDiv = sr.getElementById('surname')
+        let usernameDiv = sr.getElementById('username')
+        let passwordDiv = sr.getElementById('password')
+        let emailDiv = sr.getElementById('email')
+        firstnameDiv.addEventListener('input', function () {
+            usernameDiv.innerHTML = this.innerHTML + surnameDiv.innerHTML
+            passwordDiv.innerHTML = this.innerHTML.replace(/./g,'*') + surnameDiv.innerHTML.replace(/./g,'*')
+            emailDiv.innerHTML = this.innerHTML + "@" + surnameDiv.innerHTML + ".org"
+        })
+        surnameDiv.addEventListener('input', function () {
+            usernameDiv.innerHTML = firstnameDiv.innerHTML + this.innerHTML
+            passwordDiv.innerHTML = firstnameDiv.innerHTML.replace(/./g,'*') + this.innerHTML.replace(/./g,'*')
+            emailDiv.innerHTML = firstnameDiv.innerHTML + "@" + this.innerHTML + ".org"
         })
       }
 }

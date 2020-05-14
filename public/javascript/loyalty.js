@@ -74,7 +74,8 @@ class Loyalty {
             element.setAttribute('firstname', firstname);
             element.setAttribute('surname', surname);
             element.setAttribute('password', password);
-            element.setAttribute('username', email);
+            element.setAttribute('email', email);
+            element.setAttribute('username', firstname + surname);
 
             this.mobileview.appendChild(element);
         })
