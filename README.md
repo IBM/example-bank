@@ -104,11 +104,13 @@ There are two options for deployment: an automated deployment process driven by 
 
 ### Automated deployment
 
-The steps to use the Tekton pipelines - [here.](https://developer.ibm.com/tutorials/tekton-pipeline-deploy-a-mobile-app-backend-openshift-4/)
+The steps to use the Tekton pipelines [here.](https://developer.ibm.com/tutorials/tekton-pipeline-deploy-a-mobile-app-backend-openshift-4/)
 
 ### App ID Configuration
 
 Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once created, do the following to configure the instance for this pattern.
+
+**Note** The `.env.template` file referred to in the instructions is part of the code available in GitHub after running `git clone https://github.com/IBM/loyalty.git`. 
 
 * Allow Sign-up and Sign-in using username and password by going to the tab `Cloud Directory` > `Settings`
 
@@ -120,14 +122,21 @@ Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once
 
 * Add an application in the `Applications` tab. Select "Regular web application" 
 
+![add-application](images/new-app.png)
 
-Take note of the `clientId`, `secret`, `oAuthServerUrl` and place them in the `.env.template` file of this repo. The values belong in `APP_ID_CLIENT_ID`, `APP_ID_CLIENT_SECRET`, `APP_ID_TOKEN_URL` respectively.
 
-![add-application](images/add-application.png)
+* Create the `admin` role.
+
+![add-application](images/create-role.png)
 
 * Create Service credentials with the `Writer` Role so that the simulator can create simulated users with the App ID instance. Take note of the `apikey` and `managementUrl` and place them in the `.env.template` file. The values belong in `APP_ID_IAM_APIKEY` and `APP_ID_MANAGEMENT_URL` respectively.
 
 ![writer-credentials](images/writer-credentials.png)
+
+
+Take note of the `clientId`, `secret`, `oAuthServerUrl` and place them in the `.env.template` file of this repo. The values belong in `APP_ID_CLIENT_ID`, `APP_ID_CLIENT_SECRET`, `APP_ID_TOKEN_URL` respectively.
+
+![add-application](images/add-application.png)
 
 * Rename `.env.template` file to `.env` file
 
@@ -257,7 +266,9 @@ cd loyalty-app-backend
 1. Follow the instructions in the README.md file to build the microservices with Maven.
 2. Build the images and push them to an image repository like Docker Hub that is accessible to OpenShift. 
 
-**Note:** *If you are using the IBM Container Registry (ICR) to store images, IBM OpenShift clusters are provisioned with a image pull secret for ICR images only in the default namespace/project.  Deployments to other prjects from ICR will require imagePullSecrets to be created.*
+**Note 1:** All images referred to in the deployment scripts are pre-built and in Docker hub. You can use the deployments as is without rebuilding the images.
+
+**Note 2:** *If you are using the IBM Container Registry (ICR) to store images, IBM OpenShift clusters are provisioned with a image pull secret for ICR images only in the default namespace/project.  Deployments to other prjects from ICR will require imagePullSecrets to be created.*
 
 Modify the deployment.yaml image path to point to the image and deploy both services:
 
