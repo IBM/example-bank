@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: loyalty-user-service
-        image: ykoyfman/loyalty-user-service:1.0-SNAPSHOT
+        image: anthonyamanse/user-service:with-auth
         imagePullPolicy: Always
         ports:
         - name: http-server

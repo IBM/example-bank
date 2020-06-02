@@ -29,7 +29,7 @@ spec:
         app: loyalty-mobile-simulator
     spec:
       containers:
-        - image: ykoyfman/simulator:1.0-SNAPSHOT
+        - image: anthonyamanse/simulator:1.2-SNAPSHOT
           imagePullPolicy: Always
           name: loyalty-mobile-simulator
           env:

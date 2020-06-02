@@ -2,7 +2,6 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: process-transaction
-  namespace: default
   # local to cluster only
   labels:
     serving.knative.dev/visibility: cluster-local
