@@ -32,44 +32,12 @@ spec:
         - image: anthonyamanse/simulator:1.2-SNAPSHOT
           imagePullPolicy: Always
           name: loyalty-mobile-simulator
+          envFrom:
+            - secretRef:
+                name: mobile-simulator-secrets
           env:
             - name: PORT
               value: '8080'
-            - name: APP_ID_IAM_APIKEY
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_IAM_APIKEY
-            - name: APP_ID_MANAGEMENT_URL
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_MANAGEMENT_URL
-            - name: APP_ID_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_CLIENT_ID
-            - name: APP_ID_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_CLIENT_SECRET
-            - name: APP_ID_TOKEN_URL
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_TOKEN_URL
-            - name: PROXY_USER_MICROSERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: PROXY_USER_MICROSERVICE
-            - name: PROXY_EVENT_MICROSERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: PROXY_EVENT_MICROSERVICE
           ports:
             - containerPort: 8080
 

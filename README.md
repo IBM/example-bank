@@ -326,6 +326,16 @@ docker push <your-repository/image-name>
 oc apply -f loyalty-knative-service/deployment.yaml
 ```
 
+- Check Knative Serving status and also make sure the URL matches the environment variable `KNATIVE_SERVICE_URL` defined in `loyalty-app-backend/event-service/deployment.yaml`
+
+```
+oc get kservice # or kn service list - if you have kn cli installed
+# NAME                  URL                                                    LATEST                      AGE   CONDITIONS   READY   REASON
+# process-transaction   http://process-transaction.example-loyalty.svc.cluster.local   process-transaction-9chv6   34d   3 OK / 3     True
+```
+
+> The serverless application can be reached at `http://process-transaction.example-loyalty.svc.cluster.local` in the example above. If it doesn't match with the one you deployed in the step [User and event management services](#user-and-event-management-services), fix the `KNATIVE_SERVICE_URL` value in the `loyalty-app-backend/event-service/deployment.yaml` file and redeploy it again with `oc apply`
+
 ### Access the application
 
 Once deployed, you can list the routes.  You should see at least one route - for the mobile simulator service, ending in `.cloud`:
