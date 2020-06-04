@@ -44,23 +44,34 @@ The loyalty system includes several microservices for handling user authenticati
 
 ![screenshot](images/pattern-flow-diag.png)
 
+
 ## Introduction to the Mobile Simulator
 
-The JavaScript simulator app presents a view of a mobile app but run by a Node.js service that gets deployed to the OpenShift project along with the other services.
 
-![simulator_main](images/simulator_main.png)
+
+The JavaScript simulator app presents a Web based view of a mobile app run by a Node service running inside the OpenShift cluster. <br>
+
+| | | | |
+|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+|<img width="1000" alt="sim1" src="images/sim1.png">  1. Login screen | <img width="1000" alt="sim2" src="images/sim2.png">  2. Point dashboard  | <img width="1000" alt="sim3" src="images/sim3.png">  3. Event list | <img width="1000" alt="sim4" src="images/sim4.png">  4. Reservations |
+
+
+<strong>Login screen</strong><br>
 
 From the dropdown menu inside the simulated phone app, pick one of the available accounts, and click **sign in** to see that user's point accumulation.
 
-![simulator_katy](images/simulator_katy.png)
+<strong>User/point dashboard</strong><br>
 
-This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcomming event:
+This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcoming event.
 
-![simulator_events.png](images/simulator_events.png)
+<strong>Event list</strong><br>
 
-Once an event has been added to a user's list of reservations, they can then check in from list of upcoming events that is displayed by clicking on the middle button:
+List of available events to register for (managed by PostgreSQL instance inside the cluster.)
 
-![simulator_check_in](images/simulator_checkin.png)
+<strong>Registered events</strong><br>
+
+Once an event has been added to a user's list of reservations, they can then check in from list of upcoming events that is displayed by clicking on the middle button.
+
 
 ## User authentication
 
@@ -82,9 +93,9 @@ The mobile app simulator is integrated with the App ID instance and whenever a u
 
 Whenever a request with a token in the authorization header is sent, the Liberty microservice uses the App ID integration to make sure that the token is valid. Then it continues to process the request. The liberty microservice also makes use of the subject ID or user ID in the token to identify which user is making the request. For example, when a user asks for his number of points earned, it needs to pull the right profile from the database. This is where the user ID in the token payload can be made use of.
 
-## Deployment
+# Deployment
 
-There two options for deploymen: an automated deployment process driven by Tekton pipelines, and a manual process driven by CLI. In either case, the following common steps should be completed first:
+There are two options for deployment: an automated deployment process driven by Tekton pipelines, and a manual process driven by CLI. In either case, the following common steps should be completed first:
 
 1. Create an OpenShift 4.3 cluster.
 2. Complete the PostgreSQL database deployment process (see below).
@@ -93,11 +104,13 @@ There two options for deploymen: an automated deployment process driven by Tekto
 
 ### Automated deployment
 
-The steps to use the Tekton pipelines - [here.](https://developer.ibm.com/tutorials/tekton-pipeline-deploy-a-mobile-app-backend-openshift-4/)
+The steps to use the Tekton pipelines [here.](https://developer.ibm.com/tutorials/tekton-pipeline-deploy-a-mobile-app-backend-openshift-4/)
 
 ### App ID Configuration
 
 Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once created, do the following to configure the instance for this pattern.
+
+**Note** The `.env.template` file referred to in the instructions is part of the code available in GitHub after running `git clone https://github.com/IBM/loyalty.git`. 
 
 * Allow Sign-up and Sign-in using username and password by going to the tab `Cloud Directory` > `Settings`
 
@@ -107,13 +120,23 @@ Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once
 
 ![disable-email](images/disable-email.png)
 
-* Add an application in the `Applications` tab. Take note of the `clientId`, `secret`, `oAuthServerUrl` and place them in the `.env.template` file of this repo. The values belong in `APP_ID_CLIENT_ID`, `APP_ID_CLIENT_SECRET`, `APP_ID_TOKEN_URL` respectively.
+* Add an application in the `Applications` tab. Select "Regular web application" 
 
-![add-application](images/add-application.png)
+![add-application](images/new-app.png)
 
-* Create Service credenitals with the `Writer` Role so that the simulator can create simulated users with the App ID instance. Take note of the `apikey` and `managementUrl` and place them in the `.env.template` file. The values belong in `APP_ID_IAM_APIKEY` and `APP_ID_MANAGEMENT_URL` respectively.
+
+* Create the `admin` role.
+
+![add-application](images/create-role.png)
+
+* Create Service credentials with the `Writer` Role so that the simulator can create simulated users with the App ID instance. Take note of the `apikey` and `managementUrl` and place them in the `.env.template` file. The values belong in `APP_ID_IAM_APIKEY` and `APP_ID_MANAGEMENT_URL` respectively.
 
 ![writer-credentials](images/writer-credentials.png)
+
+
+Take note of the `clientId`, `secret`, `oAuthServerUrl` and place them in the `.env.template` file of this repo. The values belong in `APP_ID_CLIENT_ID`, `APP_ID_CLIENT_SECRET`, `APP_ID_TOKEN_URL` respectively.
+
+![add-application](images/add-application.png)
 
 * Rename `.env.template` file to `.env` file
 
@@ -164,7 +187,7 @@ The database schema allows us to manage user profiles and track their attendence
 
 ![screenshot](images/schema-1.png)
 
-In this pattern, the database is created in an database instance created inside the OpenShift cluster. See [operator tutorial](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/) and database load as described below. Take note of these important elements of the database configuration:
+In this pattern, the database is created in a database instance created inside the OpenShift cluster. See [operator tutorial](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/) and database load as described below. Take note of these important elements of the database configuration:
 
 1. Database name
 2. Username
@@ -200,7 +223,7 @@ Build and deploy the image to load the database.
 oc apply -f job.yaml
 ```
 
-You can verify the successfull deployment this way:
+You can verify the successful deployment this way:
 
 1. Find the Jobs run:
 
@@ -243,7 +266,9 @@ cd loyalty-app-backend
 1. Follow the instructions in the README.md file to build the microservices with Maven.
 2. Build the images and push them to an image repository like Docker Hub that is accessible to OpenShift. 
 
-**Note:** *If you are using the IBM Container Registry (ICR) to store images, IBM OpenShift clusters are provisioned with a image pull secret for ICR images only in the default namespace/project.  Deployments to other prjects from ICR will require imagePullSecrets to be created.*
+**Note 1:** All images referred to in the deployment scripts are pre-built and in Docker hub. You can use the deployments as is without rebuilding the images.
+
+**Note 2:** *If you are using the IBM Container Registry (ICR) to store images, IBM OpenShift clusters are provisioned with a image pull secret for ICR images only in the default namespace/project.  Deployments to other prjects from ICR will require imagePullSecrets to be created.*
 
 Modify the deployment.yaml image path to point to the image and deploy both services:
 
@@ -379,7 +404,7 @@ kubectl create secret generic loyalty-appid-secret --from-literal=APPID_TENANTID
 kubectl create secret generic loyalty-iam-secret --from-literal=IAM_APIKEY=<IAM_KEY> --from-literal=IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
 ```
 
-Here are the steps to retreive this token:
+Here are the steps to retrieve this token:
 
 Via UI console:
 
@@ -415,7 +440,7 @@ loyalty-database-load                     1/1           6s         3d
 
 ## Data cleanup
 
-Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectivly anonymized the event check-in data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
+Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectively anonymized the event check-in data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
 
 The erasure service operates as a Kubernetes `CronJob` that checks that the user has been deleted from our database, and also removes them from App ID, effectively unregistering the user.
 
