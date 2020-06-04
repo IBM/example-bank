@@ -32,7 +32,7 @@ spec:
         - name: USER_SERVICE_URL
           value: "http://loyalty-user-service:9080/loyalty/v1/users"
         - name: KNATIVE_SERVICE_URL
-          value: "http://process-transaction"
+          value: "http://process-transaction.example-loyalty.svc.cluster.local"
         - name: WLP_LOGGING_CONSOLE_LOGLEVEL
           value: INFO
 ---

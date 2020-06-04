@@ -292,9 +292,53 @@ docker push <image>
 
 ``` 
 oc apply -f deployment.yaml
+```
+
+
+### Process Transaction - Serverless Application (Knative Serving)
+
+This part requires the OpenShift Serverless installed in your OpenShift cluster. To install, you can follow through these instructions
+
+- [Installing the OpenShift Serverless Operator](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.3/html/serverless_applications/installing-openshift-serverless-1#serverless-install-web-console_installing-openshift-serverless)
+- [Installing Knative Serving](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.3/html/serverless_applications/installing-openshift-serverless-1#installing-knative-serving)
+
+After installing Knative Serving, you can now proceed in deploying the serverless application.
+
+This example serverless application handles the awarding of points for every transaction made. The application is only ran whenever there are new transactions.
+
+- Build and push the image on your own repository
+```
+docker build -t <your-repository/image-name> loyalty-knative-service
+docker push <your-repository/image-name>
+```
+
+- Modify `loyalty-knative-service/deployment.yaml` file to use the image you just built
 
 ```
-	Once deployed, you can list the routes.  You should see at least one route - for the mobile simulator service, ending in `.cloud`:
+# spec:
+#   containers:
+#     - image: <your-repository/image-name>
+```
+
+- Deploy the knative service
+
+```
+oc apply -f loyalty-knative-service/deployment.yaml
+```
+
+- Check Knative Serving status and also make sure the URL matches the environment variable `KNATIVE_SERVICE_URL` defined in `loyalty-app-backend/event-service/deployment.yaml`
+
+```
+oc get kservice # or kn service list - if you have kn cli installed
+# NAME                  URL                                                    LATEST                      AGE   CONDITIONS   READY   REASON
+# process-transaction   http://process-transaction.example-loyalty.svc.cluster.local   process-transaction-9chv6   34d   3 OK / 3     True
+```
+
+> The serverless application can be reached at `http://process-transaction.example-loyalty.svc.cluster.local` in the example above. If it doesn't match with the one you deployed in the step [User and event management services](#user-and-event-management-services), fix the `KNATIVE_SERVICE_URL` value in the `loyalty-app-backend/event-service/deployment.yaml` file and redeploy it again with `oc apply`
+
+### Access the application
+
+Once deployed, you can list the routes.  You should see at least one route - for the mobile simulator service, ending in `.cloud`:
 
 ```	
 $ oc get routes

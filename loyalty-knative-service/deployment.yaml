@@ -21,21 +21,8 @@ spec:
           envFrom:
             - secretRef:
                 name: loyalty-oidc-adminuser
+            - secretRef:
+                name: mobile-simulator-secrets
           env:
             - name: TRANSACTION_SERVICE_URL
               value: "http://loyalty-event-service:9080/loyalty/v1/transactions"
-            - name: APP_ID_TOKEN_URL
-              valueFrom:
-                secretKeyRef:
-                  name: loyalty-oidc-secret
-                  key: OIDC_ISSUERIDENTIFIER
-            - name: APP_ID_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: loyalty-oidc-secret
-                  key: OIDC_AUDIENCES
-            - name: APP_ID_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: loyalty-oidc-secret
-                  key: OIDC_SECRET
