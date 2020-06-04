@@ -292,9 +292,43 @@ docker push <image>
 
 ``` 
 oc apply -f deployment.yaml
+```
+
+
+### Process Transaction - Serverless Application (Knative Serving)
+
+This part requires the OpenShift Serverless installed in your OpenShift cluster. To install, you can follow through these instructions
+
+- [Installing the OpenShift Serverless Operator](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.3/html/serverless_applications/installing-openshift-serverless-1#serverless-install-web-console_installing-openshift-serverless)
+- [Installing Knative Serving](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.3/html/serverless_applications/installing-openshift-serverless-1#installing-knative-serving)
+
+After installing Knative Serving, you can now proceed in deploying the serverless application.
+
+This example serverless application handles the awarding of points for every transaction made. The application is only ran whenever there are new transactions.
+
+- Build and push the image on your own repository
+```
+docker build -t <your-repository/image-name> loyalty-knative-service
+docker push <your-repository/image-name>
+```
+
+- Modify `loyalty-knative-service/deployment.yaml` file to use the image you just built
 
 ```
-	Once deployed, you can list the routes.  You should see at least one route - for the mobile simulator service, ending in `.cloud`:
+# spec:
+#   containers:
+#     - image: <your-repository/image-name>
+```
+
+- Deploy the knative service
+
+```
+oc apply -f loyalty-knative-service/deployment.yaml
+```
+
+### Access the application
+
+Once deployed, you can list the routes.  You should see at least one route - for the mobile simulator service, ending in `.cloud`:
 
 ```	
 $ oc get routes
