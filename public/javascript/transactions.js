@@ -33,9 +33,9 @@ class Transactions extends HTMLElement {
         var points = sr.getElementById('POINTS');
         var transactionComponent = this;
 
-       
+        const reverseChronology = this.testdata.sort((a,b) => new moment(b.date).format('YYYYMMDD') - new moment(a.date).format('YYYYMMDD'));
 
-        this.testdata.forEach(function(item){
+        reverseChronology.forEach(function(item){
 
             var date = moment(item.date).format("MMM Do YYYY");
             transactionComponent.balance = transactionComponent.balance + item.amount;
@@ -81,7 +81,7 @@ class Transactions extends HTMLElement {
       {
         "amount": 20,
         "category": "Meals",
-        "date": "2020-04-27T22:09:39.183Z",
+        "date": "2020-04-22T22:09:39.183Z",
         "pointsEarned":20,
         "processed": true,
         "transactionId": "c2eb0fb9-2af0-43a3-820d-fa210203f698",
@@ -91,7 +91,7 @@ class Transactions extends HTMLElement {
       {
         "amount": 127,
         "category": "Groceries",
-        "date": "2020-04-27T22:09:39.183Z",
+        "date": "2020-04-20T22:09:39.183Z",
         "pointsEarned": 200,
         "processed": true,
         "transactionId": "c2eb0fb9-2af0-43a3-820d-fa210203f698",
@@ -122,7 +122,7 @@ class Transactions extends HTMLElement {
       {
         "amount": 127,
         "category": "Groceries",
-        "date": "2020-04-27T22:09:39.183Z",
+        "date": "2020-04-18T22:09:39.183Z",
         "pointsEarned": 200,
         "processed": true,
         "transactionId": "c2eb0fb9-2af0-43a3-820d-fa210203f698",
@@ -132,7 +132,7 @@ class Transactions extends HTMLElement {
       {
         "amount": 5.75,
         "category": "Cafe",
-        "date": "2020-04-27T22:09:39.183Z",
+        "date": "2020-04-15T22:09:39.183Z",
         "pointsEarned":34,
         "processed": true,
         "transactionId": "c2eb0fb9-2af0-43a3-820d-fa210203f698",
