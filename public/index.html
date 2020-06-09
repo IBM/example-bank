@@ -23,15 +23,16 @@
                 MICROSERVICES RUNNING ON AN IBM CLOUD
                 OPENSHIFT 4 INSTANCE.
             </div>
-            <div class="instruction">CLICK BELOW FOR MORE RESOURCES …</div>
             <asset-element link="https://developer.ibm.com/articles/intro-to-openshift-4/" assetimage="./images/lightbulb.svg" text="Background"></asset-element>
             <asset-element link="https://github.com/IBM/loyalty#architecture" assetimage="./images/cloud.svg" text="Cloud Architecture"></asset-element>
             <asset-element link="https://developer.ibm.com/articles/threat-modeling-microservices-openshift-4/" assetimage="./images/threat.svg" text="Introduction to threat modelling"></asset-element>
             <asset-element link="https://developer.ibm.com/patterns/privacy-backend-loyalty-app-openshift-4/" assetimage="./images/secure.svg"
                 text="Building a JEE loyalty app on openshift 4 code pattern"></asset-element>
-            <!-- <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh">
+            <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh"></asset-element>
+            <asset-element assetimage="./images/flash.svg" text="Extending apps with OpenShift Serverless"></asset-element>
+            <asset-element assetimage="./images/admin.svg" text="Building OpenShift Pipelines">
             </asset-element>
-            <asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element> -->
+            <!-- asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element> -->
         </div>
         <phone-element id="phoneview"></phone-element>            
         </div>
@@ -160,6 +161,7 @@
         border: 2px solid var(--loyalty-divide-color);
         border-radius: 6px;
         outline: none;
+        background: white;
     }
 
     .tile:hover{
@@ -300,6 +302,7 @@
             border: 2px solid var(--loyalty-sensor-color);
             margin: 10px;
             outline: 0;
+            background: white;
         }
 
         .viewtitle {
@@ -391,12 +394,13 @@
             width: 120px;
             height: 30px;
             border-radius: 4px;
-            background: var(--loyalty-button-color);
+            background: white;
             color: white;
             font-weight: bold;
             border: none;
             margin: 30px;
             outline: 0;
+
         }
 
         .signup:disabled {
@@ -533,10 +537,9 @@
 
         .signup {
             width: 70px;
-            ;
             height: 30px;
             border-radius: 4px;
-            background: var(--loyalty-button-color);
+            background: white;
             color: white;
             font-weight: bold;
             border: none;
@@ -684,6 +687,34 @@
     </div>
 </template>
 
+<template id="navigationbutton">
+    <style>
+
+    .navbutton {
+            margin: 10px;
+            border: none;
+            width: 60px;
+            height: 40px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+            align-content: center;
+            outline: none;
+            background: white;
+        }
+
+        .navimg {
+            height: 36px;
+        }
+
+    </style>
+    <button id="navbutton"class="navbutton">
+        <img id="navbuttonimage" class="navimg">
+    </button>
+</template>
+
 <template id="navigationview">
     <style>
         .navigationview {
@@ -700,9 +731,7 @@
             border-top: 2px solid var(--loyalty-divide-color);
         }
 
-        .navimg {
-            height: 36px;
-        }
+
 
         .iconrow {
             display: flex;
@@ -727,14 +756,10 @@
         }
     </style>
     <div class="navigation">
-        <div class="iconrow">
-            
-            <button id="transactionsbutton" class="navbutton"><img class="navimg"
-                    src="./images/transactions-selected.svg"></button>
-            <button id="statsbutton" class="navbutton"><img class="navimg"
-                    src="./images/statistics-deselected.svg"></button>
-            <button id="accountbutton" class="navbutton"><img class="navimg"
-                    src="./images/account-deselected.svg"></button>
+        <div id="buttonrow" class="iconrow">
+            <navigationbutton-element id="transactions" imagename="transactions" viewname="transactions" mode="active"></navigationbutton-element>
+            <navigationbutton-element id="statistics" imagename="statistics" viewname="statistics" mode="inactive"></navigationbutton-element>
+            <navigationbutton-element id="account" imagename="account" viewname="account" mode="inactive"></navigationbutton-element>
         </div>
     </div>
 </template>
@@ -885,7 +910,7 @@
         }
 
         .transactiontotalamount{
-            font-size:26px;
+            font-size:20px;
             font-weight: bold;
             color:var(--loyalty-phone-color);
         }
@@ -1039,7 +1064,7 @@
 </template>
 
 
-<template id="analysis">
+<template id="statistics">
     <style>
     .viewtitle {
         display: flex;
@@ -1090,13 +1115,19 @@
         }
 
         .icon {
-            width: 40px;
+            width: 30px;
         }
 
         .linkbar {
             display: flex;
             flex-direction: row;
-            margin-top: 20px;
+            margin-top: 10px;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .linkbar:hover{
+            background: var(--loyalty-highlight-color);
         }
 
         .linktext {
@@ -1108,7 +1139,7 @@
             margin: 10px;
             text-transform: uppercase;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
         }
     </style>
     <div class="linkbar">
@@ -1172,10 +1203,11 @@
 <script src="./javascript/welcome.js"></script>
 <script src="./javascript/login.js"></script>
 <script src="./javascript/account.js"></script>
+<script src="./javascript/navigationbutton.js"></script>
 <script src="./javascript/navigation.js"></script>
 <script src="./javascript/transaction.js"></script>
 <script src="./javascript/transactions.js"></script>
-<script src="./javascript/analysis.js"></script>
+<script src="./javascript/statistics.js"></script>
 <script src="./javascript/asset.js"></script>
 <script src="./javascript/spinner.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>

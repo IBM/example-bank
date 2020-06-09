@@ -1,4 +1,4 @@
-class Analysis extends HTMLElement {
+class Statistics extends HTMLElement {
 
     static get observedAttributes() {
         return ['events', 'points', 'mode'];
@@ -17,7 +17,7 @@ class Analysis extends HTMLElement {
         console.log('INITIALIZED ACCOUNT VIEW');
         var customElement = this;
 
-        let template = document.getElementById('analysis');
+        let template = document.getElementById('statistics');
         let templateContent = template.content;
 
         const shadow = this.attachShadow({
@@ -144,7 +144,7 @@ class Analysis extends HTMLElement {
 }
 
 try {
-    customElements.define('analysis-element', Analysis);
+    customElements.define('statistics-element', Statistics);
 } catch (err) {
     const h3 = document.createElement('h3')
     h3.innerHTML = err

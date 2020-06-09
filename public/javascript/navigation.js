@@ -1,76 +1,13 @@
 class Navigation extends HTMLElement {
 
-    
-    RESERVATION = 0
-    EVENTS = 1
-    ACCOUNT = 2
-    
-    SELECTEDVIEW = 0;
-
-    clickAccount() {
-        console.log('click account');
-
-        var accountimg = this.accountsbutton.childNodes[0];
-        accountimg.src = './images/account-selected.svg';
-
-        var resimg = this.transactionsbutton.childNodes[0];
-        resimg.src = './images/transactions-deselected.svg';
-
-        var eventimg = this.statsbutton.childNodes[0];
-        eventimg.src = './images/statistics-deselected.svg';
-
-        this.SELECTEDVIEW = this.ACCOUNT;
-
-        var event = new Event('build');
-        this.dispatchEvent(event);
-
-        var mobileview = this.getMobileView();
-        mobileview.innerHTML = "<account-element></account-element>"
-    }
-
-    clickTransactions() {
-
-        var accountimg = this.accountsbutton.childNodes[0];
-        accountimg.src = './images/account-deselected.svg';
-
-        var resimg = this.transactionsbutton.childNodes[0];
-        resimg.src = './images/transactions-selected.svg';
-
-        var eventimg = this.statsbutton.childNodes[0];
-        eventimg.src = './images/statistics-deselected.svg';
-
-        console.log('click reservation');
-
-        this.SELECTEDVIEW = this.RESERVATION;
-
-        var mobileview = this.getMobileView();
-        mobileview.innerHTML = "<transactions-element mode='INTEGRATED'></transactions-element>";
-    }
-
-    clickStats() {
-        console.log('click events');
-
-        var accountimg = this.accountsbutton.childNodes[0];
-        accountimg.src = './images/account-deselected.svg';
-
-        var resimg = this.transactionsbutton.childNodes[0];
-        resimg.src = './images/transactions-deselected.svg';
-
-        var eventimg = this.statsbutton.childNodes[0];
-        eventimg.src = './images/statistics-selected.svg';
-
-        this.SELECTEDVIEW = this.EVENTS;
-
-        var mobileview = this.getMobileView();
-        mobileview.innerHTML = "<analysis-element></analysis-element>";
-    }
+    activeview = '';
 
     getMobileView(){
         var sr = this.shadowRoot;
 
          // I don't like this being hard coded, but have stuggled to find a dynamic way for exampe: .childNodes.item("mobileview");
 
-        var mobileview = sr.host.parentElement.childNodes[3]; 
+        var mobileview = sr.host.parentElement.childNodes[3];
         return mobileview;
     }
 
@@ -84,23 +21,42 @@ class Navigation extends HTMLElement {
                 mode: 'open'
             })
             .appendChild(templateContent.cloneNode(true));
+    }
 
+    setAllButtonsDisabled(){
         var sr = this.shadowRoot;
+        this.buttonRow = sr.getElementById('buttonrow');
 
-        this.accountsbutton = sr.getElementById('accountbutton');
-        this.transactionsbutton = sr.getElementById('transactionsbutton');
-        this.statsbutton = sr.getElementById('statsbutton');
+        const buttonlist = Array.from(this.buttonRow.children);
 
-        this.accountsbutton.addEventListener('click', e => {
-            this.clickAccount();
-        });
 
-        this.transactionsbutton.addEventListener('click', e => {
-            this.clickTransactions();
-        });
+        buttonlist.forEach(function(node){
+            node.setDisabled();
+        })
+    }
 
-        this.statsbutton.addEventListener('click', e => {
-            this.clickStats();
+    connectedCallback(){
+        var sr = this.shadowRoot;
+        this.buttonRow = sr.getElementById('buttonrow');
+
+        var navelement = this;
+
+        this.buttonRow.addEventListener('NAV', e => {
+
+            console.log(e)
+
+            var id = e.detail.eventData.id;
+
+            // console.log('HOMESCREEN RECIEVED EVENT FROM NAV BUTTON: ' + id.toLocaleUpperCase());
+
+            this.setAllButtonsDisabled();
+
+            var button = sr.getElementById(id);
+            button.setEnabled();
+            navelement.activeview = id;
+
+            var mobileview = this.getMobileView();
+            mobileview.innerHTML = "<" + id + "-element></" + id +"-element>";
         });
     }
 }
