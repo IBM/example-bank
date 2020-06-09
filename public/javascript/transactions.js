@@ -53,7 +53,7 @@ class Transactions extends HTMLElement {
                 let transactionElement = transactionComponent.createTransaction(transaction.transactionName, month + " " + day + " " + year, transaction.amount, transaction.pointsEarned)
                 transactionlist.appendChild(transactionElement)
               })
-    
+
               balance.innerHTML = '$' + transactionComponent.balance.toFixed(2);
               points.innerHTML = transactionComponent.points.toFixed(2);
             } else if (err == 'User not registered') {
@@ -96,7 +96,7 @@ class Transactions extends HTMLElement {
             var transaction = transactionComponent.createTransaction(item.transactionName, month + " " + day + " " + year, item.amount, item.pointsEarned);
             transactionlist.appendChild(transaction);
           })
-          
+
           balance.innerHTML = '$' + transactionComponent.balance;
           points.innerHTML = transactionComponent.points;
         }
