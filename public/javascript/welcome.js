@@ -110,7 +110,22 @@ class Welcome extends HTMLElement {
                 // edge case when unable to sign in
             })
          }else{
-            new Loyalty(this.mode);
+            var accountinfo = {
+                firstname: 'JOHN',
+                surname: 'SMITH'
+            }
+
+            var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+            mobileview.innerHTML = "";
+
+            let element = document.createElement('transactions-element')
+            element.setAttribute('name', fullname);
+            element.setAttribute('mode', this.mode);
+            mobileview.appendChild(element); 
+
+            localStorage.setItem("loyaltyname", fullname);
+
+            phoneview.showNavigation();
          }
     }
 }

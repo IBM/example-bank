@@ -25,7 +25,7 @@ var appEnv = cfenv.getAppEnv();
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 
-var MODE = 'INTEGRATED';
+var MODE = 'DEVMODE';
 
 logger.level = 'debug';
 logger.debug("launching loyalty simulated UI");
