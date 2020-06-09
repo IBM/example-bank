@@ -66,6 +66,7 @@ class Login extends HTMLElement {
         })
       }else{
           console.log('LOGIN RUNNING IN DEV MODE');
+          this.createTransactionsView(firstname, surname)
       }
     }
 

@@ -39,26 +39,6 @@ class Loyalty {
         //         phoneview.showNavigation();
         //     }
         // }
-
-        if(this.mode=='DEVMODE'){
-
-            var accountinfo = {
-                firstname: 'JOHN',
-                surname: 'SMITH'
-            }
-
-            var fullname = accountinfo.firstname + ' ' + accountinfo.surname
-
-            // var phoneview = document.getElementById("phoneview");
-            // var mobileview = phoneview.getMobileView();
-            
-            let element = document.createElement('transactions-element')
-            element.setAttribute('name', fullname);
-            element.setAttribute('mode', this.mode);
-            this.mobileview.appendChild(element)
-
-            phoneview.showNavigation();
-        }
     }
 
     signup() {
@@ -70,15 +50,31 @@ class Loyalty {
 
         var element = document.createElement('login-element');
         element.setAttribute('mode', this.mode);
-        getRandomUser((firstname, surname, password, email) => {
-            element.setAttribute('firstname', firstname);
-            element.setAttribute('surname', surname);
-            element.setAttribute('password', password);
-            element.setAttribute('email', email);
-            element.setAttribute('username', firstname + surname);
+        if (this.mode == 'INTEGRATED') {
+            getRandomUser((firstname, surname, password, email) => {
+                element.setAttribute('firstname', firstname);
+                element.setAttribute('surname', surname);
+                element.setAttribute('password', password);
+                element.setAttribute('email', email);
+                element.setAttribute('username', firstname + surname);
 
-            this.mobileview.appendChild(element);
-        })
+                this.mobileview.appendChild(element);
+            })
+        } else {
+            var accountinfo = {
+                firstname: 'JOHN',
+                surname: 'SMITH'
+            }
+
+            var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+            
+            element.setAttribute('firstname', accountinfo.firstname);
+            element.setAttribute('surname', accountinfo.surname);
+            element.setAttribute('password', accountinfo.firstname + accountinfo.surname);
+            element.setAttribute('email', accountinfo.firstname + "@" + accountinfo.surname + ".org");
+            element.setAttribute('username', accountinfo.firstname + accountinfo.surname);
+            this.mobileview.appendChild(element)
+        }
 
         /* same as mobileview.innerHTML =
         '<login-element firstname="John surname="Lennon" password="######" username="john@email.com"></login-element>' */
@@ -112,4 +108,4 @@ class Loyalty {
 }
 
 // var loyalty = new Loyalty();
-var loyalty = new Loyalty('INTEGRATED');
+var loyalty = new Loyalty('DEVMODE');

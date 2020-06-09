@@ -44,7 +44,7 @@ class Navigation extends HTMLElement {
         this.SELECTEDVIEW = this.RESERVATION;
 
         var mobileview = this.getMobileView();
-        mobileview.innerHTML = "<transactions-element mode='INTEGRATED'></transactions-element>";
+        mobileview.innerHTML = "<transactions-element mode='DEVMODE'></transactions-element>";
     }
 
     clickStats() {

@@ -87,10 +87,13 @@ class Transactions extends HTMLElement {
         } else {
           this.testdata.forEach(function(item){
 
-            var date = moment(item.date).format("MMM Do YYYY");
+            const date = new Date(item.date)
+            const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
+            const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date)
+            const day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(date)
             transactionComponent.balance = transactionComponent.balance + item.amount;
             transactionComponent.points = transactionComponent.points + item.pointsEarned;
-            var transaction = transactionComponent.createTransaction(item.transactionName, date, '$' + item.amount, item.pointsEarned);
+            var transaction = transactionComponent.createTransaction(item.transactionName, month + " " + day + " " + year, item.amount, item.pointsEarned);
             transactionlist.appendChild(transaction);
           })
           
