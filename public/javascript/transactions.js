@@ -38,8 +38,9 @@ class Transactions extends HTMLElement {
         this.mode = this.getAttribute('mode');
 
         if (this.mode == 'INTEGRATED') {
-          getTransactions(loyalty.getCookie('access_token'), (err, transactions) => {
-            console.log(transactions)
+          getTransactions(loyalty.getCookie('access_token'), (err, _transactions) => {
+            console.log(_transactions)
+            let transactions = _transactions.sort((a,b) => new Date(b.date) -new Date(a.date))
             if (err == null) {
               transactions.forEach(transaction => {
                 const date = new Date(transaction.date)
@@ -85,7 +86,8 @@ class Transactions extends HTMLElement {
             }
           })
         } else {
-          this.testdata.forEach(function(item){
+          let reverse = this.testdata.sort((a,b) => new Date(b.date) -new Date(a.date))
+          reverse.forEach(function(item){
 
             const date = new Date(item.date)
             const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
