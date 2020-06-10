@@ -17,7 +17,6 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import com.ibm.codey.loyalty.accounts.json.UserRegistration;
 import com.ibm.codey.loyalty.accounts.json.UserRegistrationInfo;
-import com.ibm.codey.loyalty.catalog.json.EventDefinition;
 
 @Dependent
 @RegisterRestClient
