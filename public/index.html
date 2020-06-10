@@ -30,11 +30,18 @@
                 text="Building a JEE loyalty app on openshift 4 code pattern"></asset-element>
             <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh"></asset-element>
             <asset-element assetimage="./images/flash.svg" text="Extending apps with OpenShift Serverless"></asset-element>
-            <asset-element assetimage="./images/admin.svg" text="Building OpenShift Pipelines">
+            <asset-element assetimage="./images/deploy-rules.svg" text="Building OpenShift Pipelines">
             </asset-element>
             <!-- asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element> -->
         </div>
-        <phone-element id="phoneview"></phone-element>            
+        <phone-element id="phoneview"></phone-element>      
+        <script>
+            var supportTest = 'customElements' in window;
+            console.log('supports web components = ' + supportTest);
+            if(supportTest == false){
+                window.alert('If you see this alert, it means this example is not compatible with your browser. This example uses Web Components - a technology supported in the latest versions of Firefox, Chrome and Safari. Please update your browser to the latest release.');
+            }
+        </script>      
         </div>
     </div>
 </body>
@@ -291,6 +298,7 @@
             border: 2px solid var(--loyalty-button-color);
             margin-top: 10px;
             outline: 0;
+            font-size: 11px;
         }
 
         .signup {
@@ -303,6 +311,8 @@
             margin: 10px;
             outline: 0;
             background: white;
+            text-transform: uppercase;
+            font-size: 11px;
         }
 
         .viewtitle {
@@ -392,15 +402,16 @@
 
         .signup {
             width: 120px;
-            height: 30px;
+            height: 28px;
             border-radius: 4px;
-            background: white;
-            color: white;
+            color: var(--loyalty-sensor-color);
             font-weight: bold;
-            border: none;
-            margin: 30px;
+            border: 2px solid var(--loyalty-sensor-color);
+            margin: 10px;
             outline: 0;
-
+            background: white;
+            text-transform: uppercase;
+            font-size: 11px;
         }
 
         .signup:disabled {
@@ -536,22 +547,21 @@
         }
 
         .signup {
-            width: 70px;
-            height: 30px;
+            width: 120px;
+            height: 28px;
             border-radius: 4px;
-            background: white;
-            color: white;
+            color: var(--loyalty-sensor-color);
             font-weight: bold;
-            border: none;
-            margin: 10;
+            border: 2px solid var(--loyalty-sensor-color);
+            margin: 10px;
             outline: 0;
-            font-size: 9px;
+            background: white;
             text-transform: uppercase;
+            font-size: 11px;
         }
 
         .logout {
             width: 70px;
-            ;
             height: 30px;
             border-radius: 4px;
             background: #1c87c9;
