@@ -36,13 +36,14 @@ class Phone extends HTMLElement {
     
     connectedCallback() {
         var sr = this.shadowRoot;
+        var phone = this;
         var basebutton = sr.getElementById('basebutton');
         var mobileview = sr.getElementById('mobileview');
         var navigation = sr.getElementById('mobilenavigation');
         var apptiles = sr.getElementById('APPTILES');
         basebutton.addEventListener('click', e => {
             mobileview.innerHTML = '<homescreen-element id="HOMESCREEN"></homescreen-element>';
-            navigation.style.display = 'none';
+            phone.hideNavigation();
         });
     }
 }
