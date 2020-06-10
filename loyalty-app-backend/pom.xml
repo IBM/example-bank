@@ -179,7 +179,7 @@
 
     <modules>
         <module>common</module>
-        <module>event-service</module>
+        <module>transaction-service</module>
         <module>user-service</module>
         <module>integration-tests</module>
     </modules>

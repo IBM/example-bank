@@ -42,7 +42,7 @@
         />
     </dataSource>
 
-    <webApplication location="event-service.war" contextRoot="/">
+    <webApplication location="transaction-service.war" contextRoot="/">
       <application-bnd>
         <security-role name="authenticated">
           <special-subject type="ALL_AUTHENTICATED_USERS"/>
