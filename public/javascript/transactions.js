@@ -40,8 +40,8 @@ class Transactions extends HTMLElement {
         if (this.mode == 'INTEGRATED') {
           getTransactions(loyalty.getCookie('access_token'), (err, _transactions) => {
             console.log(_transactions)
-            let transactions = _transactions.sort((a,b) => new Date(b.date) -new Date(a.date))
             if (err == null) {
+              let transactions = _transactions.sort((a,b) => new Date(b.date) -new Date(a.date))
               transactions.forEach(transaction => {
                 const date = new Date(transaction.date)
                 const year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(date)
