@@ -1,6 +1,7 @@
 class Navigation extends HTMLElement {
 
     activeview = '';
+    mode = 'DEVMODE'
 
     getMobileView(){
         var sr = this.shadowRoot;
@@ -56,7 +57,7 @@ class Navigation extends HTMLElement {
             navelement.activeview = id;
 
             var mobileview = this.getMobileView();
-            mobileview.innerHTML = "<" + id + "-element></" + id +"-element>";
+            mobileview.innerHTML = "<" + id + "-element mode=" + this.mode + "></" + id +"-element>";
         });
     }
 }
