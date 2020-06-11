@@ -1,7 +1,5 @@
 class Login extends HTMLElement {
 
-    MODE = 'DEVMODE';
-
     static get observedAttributes() {
         return ['firstname', 'surname'];
       }
@@ -30,44 +28,38 @@ class Login extends HTMLElement {
         let previousMobileView = mobileview.innerHTML
         mobileview.innerHTML = "";
 
-        if(this.MODE=='INTEGRATED'){
+        // create loading spinner first
+        var element = document.createElement('loading-spinner-element');
+        element.setAttribute("status", "Creating account...")
+        mobileview.appendChild(element)
 
-            // create loading spinner first
-            var element = document.createElement('loading-spinner-element');
-            element.setAttribute("status", "Creating account...")
-            mobileview.appendChild(element)
+        createAccountAppId(firstname, surname, firstname + "" + surname, email, (json) => {
+            console.log(json)
+            if (json.status == "user created successfully") {
 
-            createAccountAppId(firstname, surname, firstname + "" + surname, email, (json) => {
-                console.log(json)
-                if (json.status == "user created successfully") {
-
-                    element.setAttribute("status", "Logging in...")
-                    let usernamepassword = firstname + "" + surname
-                    loginWithAppId(usernamepassword, usernamepassword, (jsonWithTokens) => {
-                        // when creation of account
-                        // and login complete, create the profile
-                        element.setAttribute("status", "Creating user profile...")
-                        createProfile(jsonWithTokens.access_token, success => {
-                            // then show account view
-                            if (success) {
-                                this.createTransactionsView(firstname, surname)
-                            }
-                            // else edge case when failed to create user profile
-                        })
-                        // edge case when unable to sign in
+                element.setAttribute("status", "Logging in...")
+                let usernamepassword = firstname + "" + surname
+                loginWithAppId(usernamepassword, usernamepassword, (jsonWithTokens) => {
+                    // when creation of account
+                    // and login complete, create the profile
+                    element.setAttribute("status", "Creating user profile...")
+                    createProfile(jsonWithTokens.access_token, success => {
+                        // then show account view
+                        if (success) {
+                            this.createTransactionsView(firstname, surname)
+                        }
+                        // else edge case when failed to create user profile
                     })
-                } else { 
-                    // edge case when failed to register with app id
-                    element.setAttribute("status", json.message)
-                    setTimeout(() => {
-                        mobileview.innerHTML = previousMobileView
-                    }, 2000)
-                }
+                    // edge case when unable to sign in
+                })
+            } else { 
+                // edge case when failed to register with app id
+                element.setAttribute("status", json.message)
+                setTimeout(() => {
+                    mobileview.innerHTML = previousMobileView
+                }, 2000)
+            }
         })
-      }else{
-          console.log('LOGIN RUNNING IN DEV MODE');
-          this.createTransactionsView(firstname, surname)
-      }
     }
 
     createTransactionsView(firstname, surname) {

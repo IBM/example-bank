@@ -1,8 +1,5 @@
 class Home extends HTMLElement {
 
-    mode = 'DEVMODE';
-    // mode = 'INTEGRATED';
-
     constructor() {
         super();
 
@@ -28,20 +25,15 @@ class Home extends HTMLElement {
       
         console.log('CREATING A CREDIT CARD CHARGE OF $' + charge + ' ON ' + entity );
 
-        if (this.mode == 'INTEGRATED') {
-            createTransaction(access_token, entity, entity, charge,
-                (success) => {
-                    if (success) {
-                        let text = 'CREDIT CARD $' + charge + ' ON ' + entity ;
-                        this.showNotification(shadowRoot, text)
-                    } else {
-                        this.showNotification(shadowRoot, "Failed creating transaction. Please check logs")
-                    }
-            })
-        } else {
-            let text = 'CREDIT CARD $' + charge + ' ON ' + entity ;
-            this.showNotification(shadowRoot, text)
-        }
+        createTransaction(access_token, entity, entity, charge,
+            (success) => {
+                if (success) {
+                    let text = 'CREDIT CARD $' + charge + ' ON ' + entity ;
+                    this.showNotification(shadowRoot, text)
+                } else {
+                    this.showNotification(shadowRoot, "Failed creating transaction. Please check logs")
+                }
+        })
     }
 
     showNotification(shadowRoot, notificationText) {
@@ -78,8 +70,6 @@ class Home extends HTMLElement {
                 default:
                     let access_token = loyalty.getCookie('access_token')
                     if (access_token != "") {
-                        homescreen.generateTransaction(access_token, sr, e)
-                    } else if (this.mode == "DEVMODE") {
                         homescreen.generateTransaction(access_token, sr, e)
                     } else {
                         homescreen.showNotification(sr, 'Please log in using the Bank app.')
