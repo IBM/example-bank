@@ -1,11 +1,8 @@
 class Loyalty {
 
-    mode = 'INTEGRATED';
     mobileview;
 
-    constructor(mode) {
-
-        this.mode = mode;
+    constructor() {
 
         console.log('INITIALIZING LOYALTY APP');      
 
@@ -49,32 +46,15 @@ class Loyalty {
         this.mobileview.innerHTML = "";
 
         var element = document.createElement('login-element');
-        element.setAttribute('mode', this.mode);
-        if (this.mode == 'INTEGRATED') {
-            getRandomUser((firstname, surname, password, email) => {
-                element.setAttribute('firstname', firstname);
-                element.setAttribute('surname', surname);
-                element.setAttribute('password', password);
-                element.setAttribute('email', email);
-                element.setAttribute('username', firstname + surname);
+        getRandomUser((firstname, surname, password, email) => {
+            element.setAttribute('firstname', firstname);
+            element.setAttribute('surname', surname);
+            element.setAttribute('password', password);
+            element.setAttribute('email', email);
+            element.setAttribute('username', firstname + surname);
 
-                this.mobileview.appendChild(element);
-            })
-        } else {
-            var accountinfo = {
-                firstname: 'JOHN',
-                surname: 'SMITH'
-            }
-
-            var fullname = accountinfo.firstname + ' ' + accountinfo.surname
-            
-            element.setAttribute('firstname', accountinfo.firstname);
-            element.setAttribute('surname', accountinfo.surname);
-            element.setAttribute('password', accountinfo.firstname + accountinfo.surname);
-            element.setAttribute('email', accountinfo.firstname + "@" + accountinfo.surname + ".org");
-            element.setAttribute('username', accountinfo.firstname + accountinfo.surname);
-            this.mobileview.appendChild(element)
-        }
+            this.mobileview.appendChild(element);
+        })
 
         /* same as mobileview.innerHTML =
         '<login-element firstname="John surname="Lennon" password="######" username="john@email.com"></login-element>' */
@@ -108,4 +88,4 @@ class Loyalty {
 }
 
 // var loyalty = new Loyalty();
-var loyalty = new Loyalty('DEVMODE');
+var loyalty = new Loyalty();
