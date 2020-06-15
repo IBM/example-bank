@@ -1,6 +1,5 @@
-// let SECURE_USER_BACKEND_URL='http://loyalty-user-service-default.anthony-cluster-dev-os-f2c6cdc6801be85fd188b09d006f13e3-0001.us-south.containers.appdomain.cloud'
 let SECURE_USER_BACKEND_URL='/proxy_user'
-let SECURE_EVENT_BACKEND_URL='/proxy_event'
+let SECURE_EVENT_BACKEND_URL='/proxy_transaction'
 // DEVMODE
 let mode = 'INTEGRATED'
 function createProfile(access_token, callback) {

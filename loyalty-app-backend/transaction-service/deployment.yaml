@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loyalty-event-service
+  name: loyalty-transaction-service
   labels:
-    app: loyalty-event-service
+    app: loyalty-transaction-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: loyalty-event-service
+      app: loyalty-transaction-service
   template:
     metadata:
       labels:
-        app: loyalty-event-service
+        app: loyalty-transaction-service
       annotations:
         sidecar.istio.io/inject: "false"
     spec:
       containers:
-      - name: loyalty-event-service
+      - name: loyalty-transaction-service
         image: anthonyamanse/transaction-service:with-auth-1.1
         imagePullPolicy: Always
         ports:
@@ -39,22 +39,22 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: loyalty-event-service
+  name: loyalty-transaction-service
   labels:
-    app: loyalty-event-service
+    app: loyalty-transaction-service
 spec:
   ports:
   - port: 9080
     targetPort: 9080
   selector:
-    app: loyalty-event-service
+    app: loyalty-transaction-service
 ---
 apiVersion: v1
 kind: Route
 metadata:
-  name: loyalty-event-service
+  name: loyalty-transaction-service
 spec:
   to:
     kind: Service
-    name: loyalty-event-service
+    name: loyalty-transaction-service
 

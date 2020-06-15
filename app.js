@@ -43,9 +43,9 @@ if (!DEVMODE) {
     // proxy for testing locally
     let proxy = require('express-http-proxy')
     let USER_MICROSREVICE = process.env.PROXY_USER_MICROSERVICE
-    let EVENT_MICROSERVICE = process.env.PROXY_EVENT_MICROSERVICE
+    let TRANSACTION_MICROSERVICE = process.env.PROXY_TRANSACTION_MICROSERVICE
     app.use('/proxy_user', proxy(USER_MICROSREVICE))
-    app.use('/proxy_event', proxy(EVENT_MICROSERVICE))
+    app.use('/proxy_transaction', proxy(TRANSACTION_MICROSERVICE))
 }
 
 // start server on the specified port and binding host
