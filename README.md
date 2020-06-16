@@ -27,9 +27,9 @@ OpenShift is RedHat's customized distribution of Kubernetes. With OpenShift, you
 
 ## Project Requirements
 
-In this pattern, we will be looking to build a hypothetical customer loyalty back-end for an organization that wants to encourage developers to attend events and workshops by allowing them to earn points that can be redeemed for freebies like T-shirts, keychains, and hats.
+In this pattern, we will be looking to build a hypothetical credit card loyalty back-end for a financial organization that wants to encourage the use of credit cards by allowing their users to earn points from their transactions.
 
-Customer loyalty programs are common for businesses that want to incentivize customers to "check-in" frequently, allowing businesses to provide services closely matched to user behavior and demand. As regulations come online, users typically have the ability to opt-out of data collection efforts. In addition, users want the ability to delete data.
+Customer loyalty programs are common for businesses that want to incentivize customers to use credit frequently. As regulations come online, users typically have the ability to opt-out of data collection efforts. In addition, users want the ability to delete data.
 
 We have implemented a few important data privacy features inspired by real data privacy regulations:
 
@@ -51,27 +51,29 @@ The loyalty system includes several microservices for handling user authenticati
 
 The JavaScript simulator app presents a Web based view of a mobile app run by a Node service running inside the OpenShift cluster. <br>
 
-| | | | |
-|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
-|<img width="1000" alt="sim1" src="images/sim1.png">  1. Login screen | <img width="1000" alt="sim2" src="images/sim2.png">  2. Point dashboard  | <img width="1000" alt="sim3" src="images/sim3.png">  3. Event list | <img width="1000" alt="sim4" src="images/sim4.png">  4. Reservations |
+| | | | | |
+|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|
+|<img width="1000" alt="sim1" src="images/loyalty-phone.png">  1. Home screen |<img width="1000" alt="sim1" src="images/loyalty-bank.png">  1. Login screen | <img width="1000" alt="sim2" src="images/loyalty-transactions.png">  2. Transactions dashboard  | <img width="1000" alt="sim3" src="images/loyalty-spending.png">  3. Analysis | <img width="1000" alt="sim4" src="images/loyalty-profile.png">  4. Account |
 
+<strong>Home screen</strong><br>
+
+The mobile simulator home screen has a fictitious banking application that the user can create accounts on. The other apps generates transactions for the chosen category. 
 
 <strong>Login screen</strong><br>
 
 From the dropdown menu inside the simulated phone app, pick one of the available accounts, and click **sign in** to see that user's point accumulation.
 
-<strong>User/point dashboard</strong><br>
+<strong>Transactions dashboard</strong><br>
 
-This is the user screen, indicated by the button at the bottom left.  Click on the button all the way to the right to register for an upcoming event.
+This section shows transactions data for the logged in user.
 
-<strong>Event list</strong><br>
+<strong>Analysis</strong><br>
 
-List of available events to register for (managed by PostgreSQL instance inside the cluster.)
+This sections shows how much the users spent on each category based on the transactions generated.
 
-<strong>Registered events</strong><br>
+<strong>Account</strong><br>
 
-Once an event has been added to a user's list of reservations, they can then check in from list of upcoming events that is displayed by clicking on the middle button.
-
+From this page, the user can delete his data.
 
 ## User authentication
 
@@ -183,7 +185,7 @@ The data in the loyalty example app lives in a PostgreSQL database.
 
 #### Loyalty Database design
 
-The database schema allows us to manage user profiles and track their attendence at events.
+The database schema allows us to manage user profiles and track their transactions.
 
 ![screenshot](images/schema-1.png)
 
@@ -252,9 +254,9 @@ CREATE TABLE
 
 ## Check out the code and build images.
 
-### User and event management services
+### User and Transaction services
 
-The user and event management services manage registered users and events using Open Liberty and JPA to handle database operations.
+The user and transaction services manage registered users and transactions using Open Liberty and JPA to handle database operations.
 	
 - Check out the code for all services.
 
@@ -273,7 +275,7 @@ cd loyalty-app-backend
 Modify the deployment.yaml image path to point to the image and deploy both services:
 
 ```
-oc apply -f event-service/deployment.yaml -f user-service/deployment.yaml
+oc apply -f transaction-service/deployment.yaml -f user-service/deployment.yaml
 ```
 
 Verify the services are running:
@@ -281,7 +283,7 @@ Verify the services are running:
 ```
 $ get services
 NAME                               TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)             AGE
-loyalty-event-service              ClusterIP      172.21.215.251   <none>          9080/TCP            3d23h
+loyalty-transaction-service        ClusterIP      172.21.215.251   <none>          9080/TCP            3d23h
 loyalty-user-service               ClusterIP      172.21.64.7      <none>          9080/TCP            3d23h
 ```
 
@@ -297,10 +299,10 @@ APP_ID_CLIENT_ID=<client_id>
 APP_ID_CLIENT_SECRET=<client_secret>
 APP_ID_TOKEN_URL=https://us-south.appid.cloud.ibm.com/oauth/v4/<id>
 PROXY_USER_MICROSERVICE=loyalty-user-service:9080
-PROXY_EVENT_MICROSERVICE=loyalty-event-service:9080
+PROXY_TRANSACTION_MICROSERVICE=loyalty-transaction-service:9080
 ```
 
-This uses the .env file to create a secret used by the node process at runtime to communicate with the event and user services.
+This uses the .env file to create a secret used by the node process at runtime to communicate with the transaction and user services.
 
 ```
 kubectl create secret generic mobile-simulator-secrets --from-env-file=.env
@@ -351,7 +353,7 @@ docker push <your-repository/image-name>
 oc apply -f loyalty-knative-service/deployment.yaml
 ```
 
-- Check Knative Serving status and also make sure the URL matches the environment variable `KNATIVE_SERVICE_URL` defined in `loyalty-app-backend/event-service/deployment.yaml`
+- Check Knative Serving status and also make sure the URL matches the environment variable `KNATIVE_SERVICE_URL` defined in `loyalty-app-backend/transaction-service/deployment.yaml`
 
 ```
 oc get kservice # or kn service list - if you have kn cli installed
@@ -359,7 +361,7 @@ oc get kservice # or kn service list - if you have kn cli installed
 # process-transaction   http://process-transaction.example-loyalty.svc.cluster.local   process-transaction-9chv6   34d   3 OK / 3     True
 ```
 
-> The serverless application can be reached at `http://process-transaction.example-loyalty.svc.cluster.local` in the example above. If it doesn't match with the one you deployed in the step [User and event management services](#user-and-event-management-services), fix the `KNATIVE_SERVICE_URL` value in the `loyalty-app-backend/event-service/deployment.yaml` file and redeploy it again with `oc apply`
+> The serverless application can be reached at `http://process-transaction.example-loyalty.svc.cluster.local` in the example above. If it doesn't match with the one you deployed in the step [User and transaction services](#user-and-transaction-services), fix the `KNATIVE_SERVICE_URL` value in the `loyalty-app-backend/transaction-service/deployment.yaml` file and redeploy it again with `oc apply`
 
 ### Access the application
 
@@ -440,7 +442,7 @@ loyalty-database-load                     1/1           6s         3d
 
 ## Data cleanup
 
-Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectively anonymized the event check-in data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
+Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectively anonymized the transactions data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
 
 The erasure service operates as a Kubernetes `CronJob` that checks that the user has been deleted from our database, and also removes them from App ID, effectively unregistering the user.
 
