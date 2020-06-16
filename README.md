@@ -197,20 +197,22 @@ In this pattern, the database is created in a database instance created inside t
 
 These will be used to create a Kubernetes secret that's used by all the services in the cluster.
 
-## Loading the data model
+## Loading the Database Schema
 
-To load the data model, we are going to use a `Job` Kubernetes resource. This allows a task to
+To load the schema, we are going to use a `Job` Kubernetes resource. This allows a task to
 be run to completion to perform a task.
 
 Follow instructions [here](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/) to create a database in the
 project where the back-end services are deployed.
 
-After deploying the PostgreSQL database, load the SQL schema for users and event.
+After deploying the PostgreSQL database, create a secret for your database credentials.
 
 ```
 #  kubectl create secret generic loyalty-db-secret --from-literal=DB_SERVERNAME=<db_name> --from-literal=DB_PORTNUMBER=<db_port> --from-literal=DB_DATABASENAME=example --from-literal=DB_USER=<db_user> --from-literal=DB_PASSWORD=<db_password>
 secret/loyalty-db-secret created
 ```
+
+> Default Port is `5432`. Default username and password is `postgres`
 
 Verify the new secret appears in your project:
 
@@ -222,7 +224,7 @@ loyalty-db-secret                     Opaque                                5   
 Build and deploy the image to load the database.
 
 ```
-oc apply -f job.yaml
+oc apply -f data_model/job.yaml
 ```
 
 You can verify the successful deployment this way:
@@ -231,15 +233,19 @@ You can verify the successful deployment this way:
 
 ```
 $ oc get jobs
-NAME                    COMPLETIONS   DURATION   AGE
-loyalty-database-load   1/1           29s        15m
+NAME                   COMPLETIONS   DURATION   AGE
+cc-schema-load         1/1           29s        15m
+
+$ oc get pods
+NAME                    READY   STATUS      RESTARTS   AGE
+cc-schema-load-xcfrs    0/1     Completed   0          15m
 ```
 
 2. Then, check the logs for the job. You will see the output of the
 SQL schema loading steps from the job container.
 
 ```
-$ oc logs loyalty-database-load-2xbp2
+$ oc logs cc-schema-load-xcfrs
 CREATE EXTENSION
 CREATE DATABASE
 You are now connected to database "example" as user "postgres".
@@ -281,10 +287,16 @@ oc apply -f transaction-service/deployment.yaml -f user-service/deployment.yaml
 Verify the services are running:
 
 ```
-$ get services
+$ oc get services
 NAME                               TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)             AGE
 loyalty-transaction-service        ClusterIP      172.21.215.251   <none>          9080/TCP            3d23h
 loyalty-user-service               ClusterIP      172.21.64.7      <none>          9080/TCP            3d23h
+
+$ oc get pods
+NAME                                           READY   STATUS      RESTARTS   AGE
+loyalty-transaction-service-55b9bfb4cd-jzkgq   1/1     Running     0          26s
+loyalty-user-service-55b99c5c44-dpd9k          1/1     Running     0          25s
+...
 ```
 
 ### Mobile Simulator
@@ -292,6 +304,7 @@ loyalty-user-service               ClusterIP      172.21.64.7      <none>       
 - Verify that the `.env` file is correctly set up as described above in the App ID section. This will be used by both the node image at runtime and in creating a Kubernetes secret:
 
 ```
+$ cd .. # if you're not in the root directory of this repo yet
 $ cat .env
 APP_ID_IAM_APIKEY=<key>
 APP_ID_MANAGEMENT_URL=https://us-south.appid.cloud.ibm.com/management/v4/<id>
@@ -310,7 +323,6 @@ kubectl create secret generic mobile-simulator-secrets --from-env-file=.env
 - Build the docker image and push to your image repository.
 
 ```
-cd ..
 docker build -t <repository> .
 docker push <image>
 ```
@@ -345,6 +357,21 @@ docker push <your-repository/image-name>
 # spec:
 #   containers:
 #     - image: <your-repository/image-name>
+```
+
+- Create an admin scoped user
+
+A user with an admin scoped is required to access the API that rewards the transactions with points from the transactions microservice. Create one from the App ID dashboard
+
+| | | |
+|:-------------------------:|:-------------------------:|:-------------------------:|
+|<img width="1000" alt="sim1" src="images/loyalty-user-test.png">  1. Create a user |<img width="1000" alt="sim1" src="images/loyalty-user-role.png">  2. Click on `+` sign to add a role | <img width="1000" alt="sim2" src="images/loyalty-user-role-added.png">  3. Choose `admin` role  |
+
+
+ - Create a secret for the username and password you just created
+
+```
+kubectl create secret generic loyalty-oidc-adminuser --from-literal=APP_ID_ADMIN_USER=<your-username> --from-literal=APP_ID_ADMIN_PASSWORD=<your-password>
 ```
 
 - Deploy the knative service
