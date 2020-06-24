@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: loyalty-transaction-service
-        image: anthonyamanse/transaction-service:with-auth-1.1
+        image: anthonyamanse/transaction-service:example-loyalty-1.0
         imagePullPolicy: Always
         ports:
         - name: http-server

@@ -25,4 +25,4 @@ spec:
                 name: mobile-simulator-secrets
           env:
             - name: TRANSACTION_SERVICE_URL
-              value: "http://loyalty-event-service:9080/loyalty/v1/transactions"
+              value: "http://loyalty-transaction-service:9080/loyalty/v1/transactions"
