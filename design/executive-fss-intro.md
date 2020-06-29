@@ -1,12 +1,12 @@
 #### IBM Financial Services Public Cloud
 
-Financial services businesses are about to be able to safely build sensitive and confidential data, and critical business applications, on the public cloud with the introduction of [the World’s First FSS Ready Public Cloud](https://www.ibm.com/cloud/blog/ibm-fss-ready-public-cloud-uncompromising-security-and-compliance) from IBM.
+Financial services businesses are now able to safely build sensitive and confidential data, and critical business applications, on the public cloud with the introduction of [the World’s First FSS Ready Public Cloud](https://www.ibm.com/cloud/blog/ibm-fss-ready-public-cloud-uncompromising-security-and-compliance) from IBM.
 
 ![Secure Financial Cloud](financialcloud.png)
 
 It is a breakthrough step for flexible and rapid development of next generation secure and private product offerings.
 
-#### Context
+#### Cloud and the Enterprise
 
 The Cloud has been evolving quickly, in a relatively short time. At first, enterprises began with tentative smaller experiments - creating extensions to apps, or adding new features to classic apps, to learn and understand the technolgy.
 
@@ -28,14 +28,13 @@ It is exciting to see IBM develop a vision and design for the world’s first fi
 
 
 <!-- Call this "IBM Financial Cloud is for Enterprises"?  -->
-#### IBM Heritage 
+#### IBM Fincancial Service Heritage 
 
 IBM will welcome financial services institutions, their suppliers, and independent software vendors (ISVs), to join the financial services-ready public cloud.  As its first collaborator, Bank of America will use the platform built on IBM’s public cloud to host key apps and workloads.
 
-Looking back at IBM's heritage, it makes sense that it would be the IBM that pioneers a financial services ready cloud. IBM has been a trusted partner with banks for over a hundred years. Financial institutions on all corners of the planet still rely on IBM solutions today. It is a heritage unmatched by any other Cloud company.
+IBM has been a trusted partner with banks for over a hundred years. Financial institutions on all corners of the planet still rely on IBM solutions today. It is a heritage unmatched by any other Cloud company. It makes sense that IBM would pioneer a Financial Services Cloud.
 
-<!-- Call this "IBM Financial Cloud is for Developers"?  -->
-#### What this means for developers
+#### IBM Financial Cloud is for Developers
 
 The Financial Services Ready Public Cloud is built on the very same IBM Public Cloud that celebrates the industry leading OpenShift 4.3 platform.
 
