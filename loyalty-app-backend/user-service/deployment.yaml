@@ -13,10 +13,12 @@ spec:
     metadata:
       labels:
         app: loyalty-user-service
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
       - name: loyalty-user-service
-        image: anthonyamanse/user-service:example-loyalty-1.0
+        image: anthonyamanse/user-service:with-auth
         imagePullPolicy: Always
         ports:
         - name: http-server
@@ -39,13 +41,3 @@ spec:
     targetPort: 9080
   selector:
     app: loyalty-user-service
----
-apiVersion: v1
-kind: Route
-metadata:
-  name: loyalty-user-service
-spec:
-  to:
-    kind: Service
-    name: loyalty-user-service
-

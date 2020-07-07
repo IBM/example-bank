@@ -14,11 +14,11 @@ spec:
       labels:
         app: loyalty-transaction-service
       annotations:
-        sidecar.istio.io/inject: "false"
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
       - name: loyalty-transaction-service
-        image: anthonyamanse/transaction-service:example-loyalty-1.0
+        image: anthonyamanse/transaction-service:with-auth-1.1
         imagePullPolicy: Always
         ports:
         - name: http-server
@@ -48,13 +48,3 @@ spec:
     targetPort: 9080
   selector:
     app: loyalty-transaction-service
----
-apiVersion: v1
-kind: Route
-metadata:
-  name: loyalty-transaction-service
-spec:
-  to:
-    kind: Service
-    name: loyalty-transaction-service
-
