@@ -4,7 +4,7 @@ In this pattern, we show how to deploy a microservice based back-end in OpenShif
 
 ## Introduction
 
-As people become more aware of data and concerned about their online privacy, regulations around the world have started requiring software projects to think about how customers' data is handled.  This pattern deploys a set of microservices to act as a back-end for a mobile loyalty app, such as those often used by businesses who want to better understand how people use their services by collecting data. Although inspired by regulations such GDPR (Europe's general data protection regulations), as this is not a real public facing application, we implement a few data privacy features as a way of demonstrating how one might go about building a privacy focused back-end in OpenShift 4.
+As people become more aware of data and concerned about their online privacy, regulations around the world have started requiring software projects to think about how customers' data is handled.  This pattern deploys a set of microservices to act as a back-end for a mobile bank application, such as those often used by businesses who want to better understand how people use their services by collecting data. Although inspired by regulations such GDPR (Europe's general data protection regulations), as this is not a real public facing application, we implement a few data privacy features as a way of demonstrating how one might go about building a privacy focused back-end in OpenShift 4.
 
 The GDPR standard defines requirements around what operations need to be available to users ("subjects"). However, GDPR is technology neutral, so it ends up being the responsibility of the implementors to build the architecture that implements the requirements. In addition, with the move toward microservice architectures and containerization, we have technology such as service mesh that may be useful in the context of a data privacy service.
 
@@ -19,7 +19,7 @@ The GDPR standard defines requirements around what operations need to be availab
 
 1. Log in, or create an cccount on [IBM Cloud](https://cloud.ibm.com)
 2. Provision an OpenShift 4.3 cluster on on [IBM Cloud](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_tutorial)
-3. Create a [project](https://docs.openshift.com/container-platform/4.3/applications/projects/configuring-project-creation.html) called `example-loyalty`.
+3. Create a [project](https://docs.openshift.com/container-platform/4.3/applications/projects/configuring-project-creation.html) called `example-bank`.
 
 ## Why OpenShift?
 
@@ -27,9 +27,9 @@ OpenShift is RedHat's customized distribution of Kubernetes. With OpenShift, you
 
 ## Project Requirements
 
-In this pattern, we will be looking to build a hypothetical credit card loyalty back-end for a financial organization that wants to encourage the use of credit cards by allowing their users to earn points from their transactions.
+In this pattern, we will be looking to build a hypothetical credit card rewards back-end for a financial organization that wants to encourage the use of credit cards by allowing their users to earn points from their transactions.
 
-Customer loyalty programs are common for businesses that want to incentivize customers to use credit frequently. As regulations come online, users typically have the ability to opt-out of data collection efforts. In addition, users want the ability to delete data.
+Credit card rewards programs are common for businesses that want to incentivize customers to use credit frequently. As regulations come online, users typically have the ability to opt-out of data collection efforts. In addition, users want the ability to delete data.
 
 We have implemented a few important data privacy features inspired by real data privacy regulations:
 
@@ -40,7 +40,7 @@ We have implemented a few important data privacy features inspired by real data 
 
 # Architecture
 
-The loyalty system includes several microservices for handling user authentication and transacton mechanics.
+The example bank system includes several microservices for handling user authentication and transacton mechanics.
 
 ![screenshot](images/pattern-flow-diag.png)
 
@@ -112,7 +112,7 @@ The steps to use the Tekton pipelines [here.](https://developer.ibm.com/tutorial
 
 Create an [App ID](https://cloud.ibm.com/catalog/services/app-id) instance. Once created, do the following to configure the instance for this pattern.
 
-**Note** The `.env.template` file referred to in the instructions is part of the code available in GitHub after running `git clone https://github.com/IBM/loyalty.git`. 
+**Note** The `.env.template` file referred to in the instructions is part of the code available in GitHub after running `git clone https://github.com/IBM/example-bank.git`. 
 
 * Allow Sign-up and Sign-in using username and password by going to the tab `Cloud Directory` > `Settings`
 
@@ -146,7 +146,7 @@ Take note of the `clientId`, `secret`, `oAuthServerUrl` and place them in the `.
 
 Open the credentials screen to view the client IDs and keys needed for the back-end to interact with the App ID via its REST API endpoint.
 
-The service credentials have the following fields - some of these are used in the `loyalty-oidc-secret` as described below:
+The service credentials have the following fields - some of these are used in the `bank-oidc-secret` as described below:
 ```
 {
   "apikey": "APIKEY",
@@ -176,14 +176,14 @@ OIDC_AUDIENCES: client ID of the application - see above.
 
 
 ```
-kubectl create secret generic loyalty-oidc-secret --from-literal=OIDC_JWKENDPOINTURL=https://us-south.appid.cloud.ibm.com/oauth/v4/3d17f53d-4600-4f32-bb2c-207f4e2f6060/publickeys --from-literal=OIDC_ISSUERIDENTIFIER=https://us-south.appid.cloud.ibm.com/oauth/v4/3d17f53d-4600-4f32-bb2c-207f4e2f6060 --from-literal=OIDC_AUDIENCES=<client ID>
+kubectl create secret generic bank-oidc-secret --from-literal=OIDC_JWKENDPOINTURL=https://us-south.appid.cloud.ibm.com/oauth/v4/3d17f53d-4600-4f32-bb2c-207f4e2f6060/publickeys --from-literal=OIDC_ISSUERIDENTIFIER=https://us-south.appid.cloud.ibm.com/oauth/v4/3d17f53d-4600-4f32-bb2c-207f4e2f6060 --from-literal=OIDC_AUDIENCES=<client ID>
 ```
 
 ## Database setup
 
-The data in the loyalty example app lives in a PostgreSQL database. 
+The data in the example bank app lives in a PostgreSQL database. 
 
-#### Loyalty Database design
+#### Bank Database design
 
 The database schema allows us to manage user profiles and track their transactions.
 
@@ -208,8 +208,8 @@ project where the back-end services are deployed.
 After deploying the PostgreSQL database, create a secret for your database credentials.
 
 ```
-#  kubectl create secret generic loyalty-db-secret --from-literal=DB_SERVERNAME=<db_name> --from-literal=DB_PORTNUMBER=<db_port> --from-literal=DB_DATABASENAME=example --from-literal=DB_USER=<db_user> --from-literal=DB_PASSWORD=<db_password>
-secret/loyalty-db-secret created
+#  kubectl create secret generic bank-db-secret --from-literal=DB_SERVERNAME=<db_name> --from-literal=DB_PORTNUMBER=<db_port> --from-literal=DB_DATABASENAME=example --from-literal=DB_USER=<db_user> --from-literal=DB_PASSWORD=<db_password>
+secret/bank-db-secret created
 ```
 
 > Default Port is `5432`. Default username and password is `postgres`
@@ -218,7 +218,7 @@ Verify the new secret appears in your project:
 
 ```
 oc get secrets
-loyalty-db-secret                     Opaque                                5         35s
+bank-db-secret                     Opaque                                5         35s
 ```
 
 Build and deploy the image to load the database.
@@ -267,8 +267,8 @@ The user and transaction services manage registered users and transactions using
 - Check out the code for all services.
 
 ```
-git clone https://github.com/IBM/loyalty.git
-cd loyalty-app-backend
+git clone https://github.com/IBM/example-bank.git
+cd bank-app-backend
 ```
 
 1. Follow the instructions in the README.md file to build the microservices with Maven.
@@ -289,13 +289,13 @@ Verify the services are running:
 ```
 $ oc get services
 NAME                               TYPE           CLUSTER-IP       EXTERNAL-IP     PORT(S)             AGE
-loyalty-transaction-service        ClusterIP      172.21.215.251   <none>          9080/TCP            3d23h
-loyalty-user-service               ClusterIP      172.21.64.7      <none>          9080/TCP            3d23h
+transaction-service        ClusterIP      172.21.215.251   <none>          9080/TCP            3d23h
+user-service               ClusterIP      172.21.64.7      <none>          9080/TCP            3d23h
 
 $ oc get pods
-NAME                                           READY   STATUS      RESTARTS   AGE
-loyalty-transaction-service-55b9bfb4cd-jzkgq   1/1     Running     0          26s
-loyalty-user-service-55b99c5c44-dpd9k          1/1     Running     0          25s
+NAME                                   READY   STATUS      RESTARTS   AGE
+transaction-service-55b9bfb4cd-jzkgq   1/1     Running     0          26s
+user-service-55b99c5c44-dpd9k          1/1     Running     0          25s
 ...
 ```
 
@@ -311,8 +311,8 @@ APP_ID_MANAGEMENT_URL=https://us-south.appid.cloud.ibm.com/management/v4/<id>
 APP_ID_CLIENT_ID=<client_id>
 APP_ID_CLIENT_SECRET=<client_secret>
 APP_ID_TOKEN_URL=https://us-south.appid.cloud.ibm.com/oauth/v4/<id>
-PROXY_USER_MICROSERVICE=loyalty-user-service:9080
-PROXY_TRANSACTION_MICROSERVICE=loyalty-transaction-service:9080
+PROXY_USER_MICROSERVICE=user-service:9080
+PROXY_TRANSACTION_MICROSERVICE=transaction-service:9080
 ```
 
 This uses the .env file to create a secret used by the node process at runtime to communicate with the transaction and user services.
@@ -347,11 +347,11 @@ This example serverless application handles the awarding of points for every tra
 
 - Build and push the image on your own repository
 ```
-docker build -t <your-repository/image-name> loyalty-knative-service
+docker build -t <your-repository/image-name> bank-knative-service
 docker push <your-repository/image-name>
 ```
 
-- Modify `loyalty-knative-service/deployment.yaml` file to use the image you just built
+- Modify `bank-knative-service/deployment.yaml` file to use the image you just built
 
 ```
 # spec:
@@ -371,24 +371,24 @@ A user with an admin scoped is required to access the API that rewards the trans
  - Create a secret for the username and password you just created
 
 ```
-kubectl create secret generic loyalty-oidc-adminuser --from-literal=APP_ID_ADMIN_USER=<your-username> --from-literal=APP_ID_ADMIN_PASSWORD=<your-password>
+kubectl create secret generic bank-oidc-adminuser --from-literal=APP_ID_ADMIN_USER=<your-username> --from-literal=APP_ID_ADMIN_PASSWORD=<your-password>
 ```
 
 - Deploy the knative service
 
 ```
-oc apply -f loyalty-knative-service/deployment.yaml
+oc apply -f bank-knative-service/deployment.yaml
 ```
 
-- Check Knative Serving status and also make sure the URL matches the environment variable `KNATIVE_SERVICE_URL` defined in `loyalty-app-backend/transaction-service/deployment.yaml`
+- Check Knative Serving status and also make sure the URL matches the environment variable `KNATIVE_SERVICE_URL` defined in `bank-app-backend/transaction-service/deployment.yaml`
 
 ```
 oc get kservice # or kn service list - if you have kn cli installed
 # NAME                  URL                                                    LATEST                      AGE   CONDITIONS   READY   REASON
-# process-transaction   http://process-transaction.example-loyalty.svc.cluster.local   process-transaction-9chv6   34d   3 OK / 3     True
+# process-transaction   http://process-transaction.example-bank.svc.cluster.local   process-transaction-9chv6   34d   3 OK / 3     True
 ```
 
-> The serverless application can be reached at `http://process-transaction.example-loyalty.svc.cluster.local` in the example above. If it doesn't match with the one you deployed in the step [User and transaction services](#user-and-transaction-services), fix the `KNATIVE_SERVICE_URL` value in the `loyalty-app-backend/transaction-service/deployment.yaml` file and redeploy it again with `oc apply`
+> The serverless application can be reached at `http://process-transaction.example-bank.svc.cluster.local` in the example above. If it doesn't match with the one you deployed in the step [User and transaction services](#user-and-transaction-services), fix the `KNATIVE_SERVICE_URL` value in the `bank-app-backend/transaction-service/deployment.yaml` file and redeploy it again with `oc apply`
 
 ### Access the application
 
@@ -396,12 +396,12 @@ Once deployed, you can list the routes.  You should see at least one route - for
 
 ```	
 $ oc get routes
-NAME                               HOST/PORT                                                                                                                    PATH      SERVICES                PORT      TERMINATION   WILDCARD
-loyalty-mobile-simulator-service   loyalty-mobile-simulator-service-pattern.koyfman-feb10-f2c6cdc6801be85fd188b09d006f13e3-0000.us-south.containers.appdomain.cloud             loyalty-event-service   <all>                   None
+NAME                       HOST/PORT                                                                                                                    PATH      SERVICES                PORT      TERMINATION   WILDCARD
+mobile-simulator-service   mobile-simulator-service-pattern.koyfman-feb10-f2c6cdc6801be85fd188b09d006f13e3-0000.us-south.containers.appdomain.cloud             transaction-service   <all>                   None
 
 ```
 
-The URL of the mobile simulator is: `loyalty-mobile-simulator-service-pattern.koyfman-feb10-f2c6cdc6801be85fd188b09d006f13e3-0000.us-south.containers.appdomain.cloud`
+The URL of the mobile simulator is: `mobile-simulator-service-pattern.koyfman-feb10-f2c6cdc6801be85fd188b09d006f13e3-0000.us-south.containers.appdomain.cloud`
 
 ### Erasure service
 
@@ -410,27 +410,27 @@ The erasure service is a Kubernetes `CronJob` that runs daily to anonymize data 
 - Build and push image
 
 ```
-cd loyalty-user-cleanup-utility
+cd bank-user-cleanup-utility
 
 mvn package
-docker build -t <your_repo>/loyalty-user-cleanup-utility:1.0-SNAPSHOT .
-docker push <your_repo>//loyalty-user-cleanup-utility:1.0-SNAPSHOT
+docker build -t <your_repo>/bank-user-cleanup-utility:1.0-SNAPSHOT .
+docker push <your_repo>/bank-user-cleanup-utility:1.0-SNAPSHOT
 ```
 
 - Update the image name in the `job.yaml` file to point at the image in the repository used above.
 
 - Create secrets for the erasure service.
 
-The erasure service requires three secrets to communicate with the PostgreSQL database and App ID. The `loyalty-db-secret` was defined previously, as it's used by the other services. The two secrets are:
+The erasure service requires three secrets to communicate with the PostgreSQL database and App ID. The `bank-db-secret` was defined previously, as it's used by the other services. The two secrets are:
 
-1. `loyalty-appid-secret`: This secret defines environment variables for connecting the App ID, and includes the following parameters:
+1. `bank-appid-secret`: This secret defines environment variables for connecting the App ID, and includes the following parameters:
 ```
-kubectl create secret generic loyalty-appid-secret --from-literal=APPID_TENANTID=<tenant id> --from-literal=APPID_SERVICE_URL=https://us-south.appid.cloud.ibm.com
+kubectl create secret generic bank-appid-secret --from-literal=APPID_TENANTID=<tenant id> --from-literal=APPID_SERVICE_URL=https://us-south.appid.cloud.ibm.com
 ```
 
-2. `loyalty-iam-secret`: This secret uses the IAM key to allow the service to authenticate to AppId.
+2. `bank-iam-secret`: This secret uses the IAM key to allow the service to authenticate to AppId.
 ```
-kubectl create secret generic loyalty-iam-secret --from-literal=IAM_APIKEY=<IAM_KEY> --from-literal=IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
+kubectl create secret generic bank-iam-secret --from-literal=IAM_APIKEY=<IAM_KEY> --from-literal=IAM_SERVICE_URL=https://iam.cloud.ibm.com/identity/token
 ```
 
 Here are the steps to retrieve this token:
@@ -455,7 +455,7 @@ Note that the CronJob won't run immediately upon, since it's scheduled to run ev
 To run it on-demand, create a `Job` resources from the `CronJob`:
 
 ```
-oc create job --from=cronjob/loyalty-user-cleanup-utility delete-now
+oc create job --from=cronjob/bank-user-cleanup-utility delete-now
 ```
 
 When you list `jobs` you will see the completed delete-now job, as well as completed database load job. If you check the logs of the delete job, you'll see which users have been processed by the job.
@@ -464,12 +464,12 @@ When you list `jobs` you will see the completed delete-now job, as well as compl
 $ oc get jobs
 NAME                                      COMPLETIONS   DURATION   AGE
 delete-now                                1/1           33s        45h
-loyalty-database-load                     1/1           6s         3d
+cc-schema-load                     1/1           6s         3d
 ```
 
 ## Data cleanup
 
-Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the loyalty app to the real user identity (name, etc.), we've effectively anonymized the transactions data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
+Data erasure is a two-phase operation, one synchronous and one scheduled. When an authenticated `DELETE` REST call is made for a given user, the unique ID that ties the database user entry to AppId is cleared from the local in-cluster Postgres instance. As this is the only way to connect the data the bank app to the real user identity (name, etc.), we've effectively anonymized the transactions data. The Java `User` service then flags the account as deleted, which can be useful for logging purposes.
 
 The erasure service operates as a Kubernetes `CronJob` that checks that the user has been deleted from our database, and also removes them from App ID, effectively unregistering the user.
 

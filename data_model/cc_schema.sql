@@ -1,8 +1,8 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE DATABASE example;
 \connect example;
-CREATE SCHEMA IF NOT EXISTS loyalty;
-set search_path to loyalty;
+CREATE SCHEMA IF NOT EXISTS bank;
+set search_path to bank;
 
   CREATE TABLE IF NOT EXISTS users (
       user_id VARCHAR,
