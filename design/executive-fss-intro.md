@@ -1,63 +1,29 @@
-#### IBM Financial Services Public Cloud
+#### IBM Financial Services Ready Public Cloud
 
 Financial services businesses are now able to safely build sensitive and confidential data, and critical business applications, on the public cloud with the introduction of [the World’s First FSS Ready Public Cloud](https://www.ibm.com/cloud/blog/ibm-fss-ready-public-cloud-uncompromising-security-and-compliance) from IBM.
 
-![Secure Financial Cloud](financialcloud.png)
+**This pioneering platform brings on demand public cloud flexibility to financal segment developers so they can confidently and securely modernize, architect, and create apps with virtual machines, containers, microservices, along with a catalog of reliable services.**
 
-It is a breakthrough step for flexible and rapid development of next generation secure and private product offerings.
+Industry is entering a point of inflection, where the need for creating secure apps on public clouds is urgently becoming necessary. 
 
-#### Cloud and the Enterprise
-
-The Cloud has been evolving quickly, in a relatively short time. At first, enterprises began with tentative smaller experiments - creating extensions to apps, or adding new features to classic apps, to learn and understand the technolgy.
-
-More recently enterprises have been convinced of the benefits of scale and economics - moving bigger legacy applications to the cloud, modernizing monolithic apps into efficient microservices, and building brand new concepts natively on the cloud. 
-
-Today, the Cloud is established as the smart way to steer the future of a business with innovation, and agility.
-
-![Secure Financial Cloud](stages.png)
-
-Established enterprise businesses are very careful when handling sensitive data. Industry is entering a point of inflection, where the need for creating secure apps on public clouds is urgently becoming necessary. 
-
-The current pandemic has highlighted just how essential the public cloud is for enterprises, with many businesses forced to accelerate their adoption of cloud technology because their employees are working from home. Without the cloud, many businesses would have found some operations more challenging at this time. This has quickly widened awareness of the benefits of cloud development, that some enterprises maybe wouldn't otherwise have seen the benefits of.
-
-For some businesses, moving sensitive data or processing away from traditional back-end systems to the cloud is new territory, posing new considerations. High profile data breaches have occurred even with traditional systems. With the introduction of quality standards like PCI, HIPAA, GDPR, SOC1, and SOC2 Type 2, consumers are continually growing more aware of the value of security and privacy rights within their personal applications, which is a healthy thing.
-
-It is exciting to see IBM develop a vision and design for the world’s first financial services-ready public cloud to address FSS institutions’ requirements for regulatory compliance, security and resiliency.  
-
-#### IBM and Fincancial Services  
-
-IBM welcome financial services institutions, their suppliers, and independent software vendors (ISVs), to join the financial services-ready public cloud. As its first collaborator, Bank of America will use the platform built on IBM’s public cloud to host key apps and workloads.
-
-IBM has been a trusted partner with banks for around a hundred years. Financial institutions on all corners of the planet still rely on IBM solutions today. It is a heritage unmatched by any other Cloud company. It makes sense that IBM would pioneer a Financial Services Cloud.
+Recently, many businesses forced to accelerate their adoption of cloud technology because their employees are working from home. Without the cloud, many businesses would have found some operations more challenging at this time.
 
 #### IBM Financial Cloud is for Developers
+
+![Secure Financial Cloud](finance-cloud-for-developers.png)
+
+IBM Public Cloud is already an industry leading secure foundation for building enterprise grade applications on, with a full range of [security and privacy offerings and approaches](https://developer.ibm.com/articles/threat-modeling-microservices-openshift-4/) and state of the art [keep your own key cryptography](https://www.ibm.com/cloud/blog/announcements/keep-your-own-key-for-kubernetes-apps-with-highly-sensitive-data).
+
+The new Financial Services Ready Public Cloud introduces the IBM Cloud Policy Framework - a necessary streamlined approach to reliably and efficiently create compliance regulated apps. IBM Cloud has worked with Bank of America to establish a collaborative platform that financial apps can follow a controlled approach to be built on.
+
+Building on IBM's strong history within the financial industry, the FSS Ready Cloud is growing momentum with a trusted financial ecosystem including BNP Paribas and with ISVs and partners like VMWare. This ecosystem is refining the approach and strengthening the platform with each publicly hosted offering.
 
 The diagram below shows how the Financial Services Ready Public Cloud is built on the same IBM Public Cloud that celebrates the industry leading OpenShift 4.3 platform.
 
 ![Secure Financial Cloud](layers.png)
 
-Banking institutions and financial services want to achieve regulatory compliance, and have full control over their data. Early implementations on the Finance Ready Public Cloud, are focusing on app migration with VM Ware in early engagements. This helps establish the policy framework and regulation work on the public platform.
-
-There is significant interest in financial container based solutions. This is also an area of interest for IBM Developer engineering teams. It is an exciting, ambitious, and necessary evolutionary step.
-
-IBM Developer has published a series of resources that explore building apps securely with OpenShift. This series offers clear examples and tutorials on cloud native technologies, with an emphasis on security concerns like intra-microservice security, identity management, and even adding security steps to a pipeline. This series will be enhanced with Financial Services Ready aspects as the platform evolves.
-
-- [An introduction to OpenShift 4](https://developer.ibm.com/articles/intro-to-openshift-4/)
-
-- [Three key features for developers on OpenShift 4 on IBM Cloud](https://developer.ibm.com/videos/three-key-features-openshift-4-on-ibm-cloud/)
-
-- [Focus on data privacy with a back end for a mobile loyalty app](https://developer.ibm.com/patterns/privacy-backend-loyalty-app-openshift-4/)
-
-- [Fun with Operator Hub](https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/)
-
-- [Build a Tekton Pipeline to deploy a mobile app back end to OpenShift 4](https://developer.ibm.com/tutorials/tekton-pipeline-deploy-a-mobile-app-backend-openshift-4/)
-
-- [Threat modeling in the context of microservice architectures](https://developer.ibm.com/articles/threat-modeling-microservices-openshift-4/)
-
-- [Deploy a sample currency exchange app to OpenShift using Red Hat Universal Base Image](https://developer.ibm.com/patterns/deploy-to-openshift-4-redhat-universal-base-image/)
 
 
-OpenShift 4.3 in particular, curates a well considered, cutting edge collection of technologies that perfectly mix devops, serverless, service mesh and containers. 
 
 
 #### Next steps
