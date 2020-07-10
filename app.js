@@ -32,7 +32,7 @@ var log4js = require('log4js');
 var logger = log4js.getLogger();
 
 logger.level = 'debug';
-logger.debug("launching loyalty simulated UI");
+logger.debug("launching bank simulated UI");
 
 app.use(require("body-parser").json());
 app.use(require("body-parser").urlencoded({extended: false}));

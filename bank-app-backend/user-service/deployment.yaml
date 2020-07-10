@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      containers:
+      - name: user-service
+        image: anthonyamanse/user-service:example-bank-1.0
+        imagePullPolicy: Always
+        ports:
+        - name: http-server
+          containerPort: 9080
+        envFrom:
+        - secretRef:
+            name: bank-db-secret
+        - secretRef:
+            name: bank-oidc-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  labels:
+    app: user-service
+spec:
+  ports:
+  - port: 9080
+    targetPort: 9080
+  selector:
+    app: user-service
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: user-service
+spec:
+  to:
+    kind: Service
+    name: user-service
+

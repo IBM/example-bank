@@ -2,9 +2,9 @@
   apiVersion: v1
   kind: Service
   metadata:
-    name: loyalty-mobile-simulator-service
+    name: mobile-simulator-service
     labels:
-      app: loyalty-mobile-simulator
+      app: mobile-simulator
   spec:
     ports:
       - port: 80
@@ -12,26 +12,26 @@
         targetPort: 8080
     type: LoadBalancer
     selector:
-      app: loyalty-mobile-simulator
+      app: mobile-simulator
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: loyalty-mobile-simulator-deployment
+  name: mobile-simulator-deployment
   labels:
-    app: loyalty-mobile-simulator
+    app: mobile-simulator
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: loyalty-mobile-simulator
+        app: mobile-simulator
     spec:
       containers:
-        - image: anthonyamanse/mobile-simulator:example-loyalty-1.0
+        - image: anthonyamanse/mobile-simulator:example-bank-1.0
           imagePullPolicy: Always
-          name: loyalty-mobile-simulator
+          name: mobile-simulator
           envFrom:
             - secretRef:
                 name: mobile-simulator-secrets
@@ -45,9 +45,9 @@ spec:
 apiVersion: v1
 kind: Route
 metadata:
-  name: loyalty-mobile-simulator-service
+  name: mobile-simulator-service
 spec:
   to:
     kind: Service
-    name: loyalty-mobile-simulator-service
+    name: mobile-simulator-service
 

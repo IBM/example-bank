@@ -5,7 +5,7 @@ function createProfile(access_token, callback) {
     let jsonRequestBody = {}
     jsonRequestBody.consentGiven = true
 
-    fetch(SECURE_USER_BACKEND_URL + '/loyalty/v1/users', {
+    fetch(SECURE_USER_BACKEND_URL + '/bank/v1/users', {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + access_token,
@@ -22,7 +22,7 @@ function createProfile(access_token, callback) {
 }
 
 function getUserStats(access_token, callback) {
-    fetch(SECURE_USER_BACKEND_URL + '/loyalty/v1/userEvents/self/info', {
+    fetch(SECURE_USER_BACKEND_URL + '/bank/v1/userEvents/self/info', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + access_token
@@ -44,7 +44,7 @@ function getUserStats(access_token, callback) {
 }
 
 function getUserEvents(access_token, callback) {
-    fetch(SECURE_USER_BACKEND_URL + '/loyalty/v1/userEvents/self', {
+    fetch(SECURE_USER_BACKEND_URL + '/bank/v1/userEvents/self', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + access_token
@@ -76,7 +76,7 @@ function getUserEventsWithData(access_token, callback) {
                 queryParams += 'id=' + element + '&'
             });
 
-            fetch(SECURE_EVENT_BACKEND_URL + '/loyalty/v1/events?' + queryParams, {
+            fetch(SECURE_EVENT_BACKEND_URL + '/bank/v1/events?' + queryParams, {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + access_token
@@ -101,7 +101,7 @@ function getUserEventsWithData(access_token, callback) {
 }
 
 function getEvents(access_token, callback) {
-    fetch(SECURE_EVENT_BACKEND_URL + '/loyalty/v1/events', {
+    fetch(SECURE_EVENT_BACKEND_URL + '/bank/v1/events', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + access_token
@@ -126,7 +126,7 @@ function checkInEvent(access_token, eventId, callback) {
     let jsonRequestBody = {}
     jsonRequestBody.eventId = eventId
 
-    fetch(SECURE_USER_BACKEND_URL + '/loyalty/v1/userEvents', {
+    fetch(SECURE_USER_BACKEND_URL + '/bank/v1/userEvents', {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + access_token,
@@ -144,7 +144,7 @@ function checkInEvent(access_token, eventId, callback) {
 }
 
 function deleteUserProfile(access_token, callback) {
-    fetch(SECURE_USER_BACKEND_URL + '/loyalty/v1/users/self', {
+    fetch(SECURE_USER_BACKEND_URL + '/bank/v1/users/self', {
         method: 'DELETE',
         headers: {
             'Authorization': 'Bearer ' + access_token
@@ -160,7 +160,7 @@ function deleteUserProfile(access_token, callback) {
 }
 
 function getTransactions(access_token, callback) {
-    fetch(SECURE_EVENT_BACKEND_URL + '/loyalty/v1/transactions', {
+    fetch(SECURE_EVENT_BACKEND_URL + '/bank/v1/transactions', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + access_token
@@ -182,7 +182,7 @@ function getTransactions(access_token, callback) {
 }
 
 function getSpending(access_token, callback) {
-    fetch(SECURE_EVENT_BACKEND_URL + '/loyalty/v1/transactions/spending', {
+    fetch(SECURE_EVENT_BACKEND_URL + '/bank/v1/transactions/spending', {
         method: 'GET',
         headers: {
             'Authorization': 'Bearer ' + access_token
@@ -206,7 +206,7 @@ function getSpending(access_token, callback) {
 function createTransaction(access_token, transactionName, category, amount, callback) {
     let jsonRequestBody = { transactionName, category, amount }
 
-    fetch(SECURE_EVENT_BACKEND_URL + '/loyalty/v1/transactions', {
+    fetch(SECURE_EVENT_BACKEND_URL + '/bank/v1/transactions', {
         method: 'POST',
         headers: {
             'Authorization': 'Bearer ' + access_token,
