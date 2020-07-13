@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: cc-schema-load
-          image: ykoyfman/cc-schema:2.0
+          image: ykoyfman/bank-schema:1.0
           imagePullPolicy: Always
           envFrom:
             - secretRef:

@@ -13,7 +13,7 @@ spec:
           restartPolicy: Never
           containers:
           - name: bank-user-cleanup-utility
-            image: bank-user-cleanup-utility:1.0-SNAPSHOT
+            image: ykoyfman/bank-cleanup:1.0
             imagePullPolicy: Always
             envFrom:
             - secretRef:
