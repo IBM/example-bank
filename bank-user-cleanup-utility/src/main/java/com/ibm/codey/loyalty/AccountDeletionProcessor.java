@@ -192,7 +192,7 @@ public class AccountDeletionProcessor {
             for(String id : profileIds) {
                 sj.add("?");
             }
-            String query = "SELECT SUBJECT FROM LOYALTY.USERS WHERE SUBJECT IN " + sj.toString();
+            String query = "SELECT SUBJECT FROM BANK.USERS WHERE SUBJECT IN " + sj.toString();
             // Execute query statement
             log.log(Level.INFO, "Querying database");
             PreparedStatement ps = con.prepareStatement(query);
