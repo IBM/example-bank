@@ -15,6 +15,7 @@ spec:
         # autoscaling.knative.dev/minScale: "1"
         # Limit scaling to 50 pods.
         # autoscaling.knative.dev/maxScale: "50"
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - image: anthonyamanse/knative-transaction-process:with-auth

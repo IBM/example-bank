@@ -5,15 +5,18 @@ metadata:
   labels:
     app: bank-user-cleanup-utility
 spec:
-  schedule: "@hourly"
+  schedule: "* * * * *"
   jobTemplate:
     spec:
       template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "true"
         spec:
-          restartPolicy: Never
+          restartPolicy: OnFailure
           containers:
           - name: bank-user-cleanup-utility
-            image: ykoyfman/bank-cleanup:1.0
+            image: ykoyfman/bank-user-cleanup-utility:mesh
             imagePullPolicy: Always
             envFrom:
             - secretRef:

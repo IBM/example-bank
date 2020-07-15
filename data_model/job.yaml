@@ -6,11 +6,14 @@ metadata:
     app: cc-schema-load
 spec:
   template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
       containers:
         - name: cc-schema-load
-          image: ykoyfman/bank-schema:1.0
+          image: ykoyfman/bank-schema-mesh:1.0
           imagePullPolicy: Always
           envFrom:
             - secretRef:

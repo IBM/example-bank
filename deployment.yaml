@@ -7,10 +7,8 @@
       app: mobile-simulator
   spec:
     ports:
-      - port: 80
-        protocol: TCP
-        targetPort: 8080
-    type: LoadBalancer
+      - port: 8080
+        name: http
     selector:
       app: mobile-simulator
 ---
@@ -27,6 +25,8 @@ spec:
     metadata:
       labels:
         app: mobile-simulator
+      annotations:
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
         - image: anthonyamanse/mobile-simulator:example-bank-1.0
@@ -40,14 +40,4 @@ spec:
               value: '8080'
           ports:
             - containerPort: 8080
-
----
-apiVersion: v1
-kind: Route
-metadata:
-  name: mobile-simulator-service
-spec:
-  to:
-    kind: Service
-    name: mobile-simulator-service
 

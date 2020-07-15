@@ -7,4 +7,4 @@ USER 1001
 
 COPY target/user-cleanup-utility-1.0-SNAPSHOT.jar /opt/app
 COPY target/lib/* /opt/app/lib/
-CMD ["java", "-jar", "/opt/app/user-cleanup-utility-1.0-SNAPSHOT.jar"]
+CMD sleep 30 && java -jar /opt/app/user-cleanup-utility-1.0-SNAPSHOT.jar ; curl -X POST http://localhost:15020/quitquitquit
