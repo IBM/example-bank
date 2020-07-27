@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-from-serving-system-namespace
-  namespace: bank-mesh-new
+  namespace: example-bank
 spec:
   ingress:
   - from:
