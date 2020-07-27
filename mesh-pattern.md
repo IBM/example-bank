@@ -192,7 +192,7 @@ oc apply -f bank-knative-service/deployment.yaml
 The database xsinstance must have the sidecar to handle TLS aspects of mesh traffic.
 
 ```
-$ kubectl patch deployments.apps creditdb -p '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"false"}}}}}'
+$ kubectl patch deployments.apps creditdb -p '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"true"}}}}}'
 ```
 
 Verify that the database pod now contains two containers.
