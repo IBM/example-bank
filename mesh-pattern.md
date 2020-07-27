@@ -1,7 +1,6 @@
 # Microservices with the OpenShift Service Mesh
 
-In this pattern, we show how to enable OpenShift Service Mesh (based on Istio) for the
-banking simulator microservice back-end described here: Final link tbd.
+In this code pattern, we show the steps needed to deploy OpenShift Service Mesh (based on Istio) for the banking simulator microservice back-end described here in the [Building a data privacy focused mobile back-end](https://github.com/IBM/loyalty/blob/main/README.md) code pattern.
 
 ## Introduction
 
