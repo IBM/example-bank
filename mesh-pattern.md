@@ -14,7 +14,7 @@ make the necessary modifications to deployment scripts, Dockerfiles and network 
 - [OpenLiberty](https://openliberty.io)
 - [App ID](https://www.ibm.com/cloud/app-id)
 - [LogDNA](https://www.ibm.com/cloud/log-analysis)
-- [OpenShift ServiceMesh](https://docs.openshift.com/container-platform/4.3/service_mesh
+- [OpenShift ServiceMesh](https://docs.openshift.com/container-platform/4.3/service_mesh)
 - [OpenShift Serverless](https://www.openshift.com/learn/topics/serverless)
 
 ## OpenShift Service Mesh vs. Istio
@@ -41,7 +41,7 @@ The example bank system includes several microservices for handling user authent
 
 ## Step 1: Installing the OSSM Operator
 
-Follow the instructions to install the necessary operators, in this order. (Note OSSM=OpenShift ServiceMesh).
+Follow the instructions to install the necessary operators, in this order. (Note: `OSSM` stands for "OpenShift ServiceMesh").
 
 1. ElasticSearch Operator
 2. Jaeger Operator
@@ -124,6 +124,12 @@ template:
 
 The `sidecar.istio.io/inject: "true"` is the mechanism the service mesh uses to inject the Envoy proxy into the pod. Note that labeling the namespace to enable sidecar injection for all bservices will not work with OpenShift. This allows more fine-grained control of which applications use the Istio proxy. 
 
+Let's apply the changes needed for the front-end simulator and two of the Java services:
+
+```
+oc apply -f bank-app-backend/user-service/deployment.yaml -f bank-app-backend/transaction-service/deployment.yaml -f deployment.yaml
+```
+
 #### Ingress gateway
 
 The istio ingressgateway is needed to pass traffic into the service mesh.
@@ -131,7 +137,7 @@ The istio ingressgateway is needed to pass traffic into the service mesh.
 Excerpt from `bank-istio-gw.yaml`: 
 ```
 apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
+kind: Gatewayn
 metadata:
   name: simulator-gateway
 spec:
@@ -177,6 +183,11 @@ oc apply -f bank-knative-service/network.yaml
 
 Note: The namespace in `bank-knative-service/network.yaml` is `example-bank` - this namespace needs to match the one where services are deployed.
 
+Finally, update the knative service deployment:
+
+```
+oc apply -f bank-knative-service/deployment.yaml
+```
 #### Patch the database service to inject the sidecar proxy. 
 
 The database xsinstance must have the sidecar to handle TLS aspects of mesh traffic.
@@ -187,16 +198,23 @@ $ kubectl patch deployments.apps creditdb -p '{"spec":{"template":{"metadata":{"
 
 Verify that the database pod now contains two containers.
 
-#### Updates for Kubernetes jobs
+#### User deletion CronJob 
 
-Delete the existing user deletion job and apply the new manifest. 
+The user deletion cronjob handles cleanup of users who asked to have their
+data deleted in the simulator. The run frequency is configurable in the `job.yaml` file. There are two changes need for this job to work in the mTLS mesh environment: 
+
+1. Sidecar pod injection annotation:
 
 ```
-oc delete -f bank-user-cleanup-utility/job.yaml
-oc apply -f bank-user-cleanup-utility/job.yaml
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            sidecar.istio.io/inject: "true"
 ```
 
-The changes being introduced are a new Docker images that changes the command being run:
+2. Modify the command in the Dockerfile:
 
 ```
 CMD sleep 30 && java -jar /opt/app/user-cleanup-utility-1.0-SNAPSHOT.jar ; curl -X POST http://localhost:15020/quitquitquit
@@ -204,10 +222,67 @@ CMD sleep 30 && java -jar /opt/app/user-cleanup-utility-1.0-SNAPSHOT.jar ; curl 
 
 The  `sleep 30`  allows the Istio proxy time to initialize and start before the Java app runs - communication to the other services in the mesh will fail if the sidecar is not running.  The `curl` to `localhost:15020` causes the Istio sidecar to exit after the cleanup completes, allowing Kubernetes to move the job to the `Completed` state.
 
+To deploy this version of the deletion job in the service mesh, delete the existing user  job and apply the new manifest. 
 
-#### Create a secure rout with OpenShift
+```
+oc delete -f bank-user-cleanup-utility/job.yaml
+oc apply -f bank-user-cleanup-utility/job.yaml
+```
 
+#### Postgres schema loading job
 
+The Dockerfile and `job.yaml` for the Postgres loading job was similarly updated to inject the sidecar and allow time for it to start, as well as to signal to the Envoy proxy to exit when loading completes:
+
+```
+$ cat data_model/Dockerfile
+FROM postgres
+COPY cc_schema.sql /tmp
+RUN apt-get update && apt-get install -y curl
+CMD /usr/bin/psql postgres://$DB_USER:$DB_PASSWORD@$DB_SERVERNAME:$DB_PORTNUMBER -f /tmp/cc_schema.sql && curl -X POST http://localhost:15020/quitquitquit
+```
+
+Note that since the schema was already loaded in the previous code pattern, we don't need to run it again.
+
+#### Verify that each pod has two containers.  
+
+Each application pod will have two containers, one for the application and one fo the Istio proxy:
+
+```
+$ oc get pods
+NAME                                           READY   STATUS      RESTARTS   AGE
+cc-schema-load-tpw2k                           0/2     Completed   2          12d
+creditdb-c7cc57d4f-smcmn                       2/2     Running     1          12d
+mobile-simulator-deployment-848ff9559b-lldzb   2/2     Running     0          12d
+postgresql-operator-6cddd5f47c-c79x4           1/1     Running     0          12d
+transaction-service-79d48bf9f-6ts48            2/2     Running     0          12d
+user-service-67dcc8c8bd-zsqq7                  2/2     Running     0          12d
+```
+
+You can restart individual deployments with `oc rollout restart deployment/<name>` to allow Kubernetes to reload the container and its proxy.
+
+## Verify deployment and create a secure route with OpenShift
+
+Now, let's expose the application in OpenShift with a secure (TLS enabled) route. 
+
+1. Select the `istio-system` project, go to Networking->Routes, and select "Create Route"
+
+![screenshot](images/new-route-1.png)
+
+2. Set the values as shown in the red boxes here. We are creating a route to the istio ingress gateway that we will be able to access via a `https` URL.
+
+![screenshot](images/new-route-2.png)
+
+3. Certificate setup. In this scenario, we are using the built-in OpenShift certificates for this cluster subdomain. Custom certificates (e.g. from LetsEncrypt) can be uploaded instead if you have a custom domain name. Right now, we can leave them blank.
+
+![screenshot](images/new-route-3.png)
+
+4. Create the new route with the default certificates.
+
+![screenshot](images/new-route-4.png)
+
+5. The application should now be available at this URL:
+
+![screenshot](images/new-route-5.png)
 
 ## License
 
