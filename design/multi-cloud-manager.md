@@ -8,17 +8,17 @@ Enter [IBM Cloud Pak for Multi-Cloud Manager](https://www.ibm.com/cloud/cloud-pa
 
 Here are just a few of the game changing features of CP for MCM:
 
-[Manage](https://www.ibm.com/cloud/cloud-pak-for-management/multicloud) both cloud native and VM environments with actionable data delivered on a single dashboard
+[Manage](https://www.ibm.com/cloud/cloud-pak-for-management/multicloud): both cloud native and VM environments with actionable data delivered on a single dashboard
 
 [Monitor](https://www.ibm.com/cloud/cloud-pak-for-management/orchestrate-hybrid-monitoring): The Kubernetes data collector built into IBM Cloud Pak® for Multicloud Management will gather detailed information about the performance of the Kubernetes cluster, generate alerts on abnormal behavior and automatically import performance and topology information.
 
-[Automate](https://www.ibm.com/cloud/cloud-pak-for-management/use-cases) deployment, management and governance of application workloads in VM and container environments and proactively manage IT infrastructure from a single control plane
+[Automate](https://www.ibm.com/cloud/cloud-pak-for-management/use-cases): deployment, management and governance of application workloads in VM and container environments and proactively manage IT infrastructure from a single control plane
 
 [Test](https://www.ibm.com/cloud/cloud-pak-for-management/orchestrate-hybrid-monitoring): Unforseen scenarios can arise in software systems, in the blink of an eye. So setting up your apps and servers with synthetic agents that periodicially test pages and APIs, and report back immediately with anomolies, is a big help. 
 
 ![Multi-cloud-manager](./mcm.png)
 
-Managing the growth of a digital idea
+#### Managing the growth of a digital idea
 
 Many of the apps you use from your phone every day, although recognizable around the world, may be served from different clouds, or work different ways in other locals. Man years of effort have been shrunk down into a convenient little rectangle on your phone.
 
