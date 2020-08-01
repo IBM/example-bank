@@ -22,9 +22,11 @@ spec:
   steps:
     - name: mvn
       image: gcr.io/cloud-builders/mvn
-      workingDir: /workspace/source/loyalty-app-backend
+      workingDir: /workspace/source/bank-app-backend
       command: ["/usr/bin/mvn"]
       args:
+        - -DskipITs
+        - -Dmaven.test.skip=true
         - -Dmaven.repo.local=$(workspaces.maven-repo.path)
         - -s
         - /var/config/settings.xml

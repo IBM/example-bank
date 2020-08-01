@@ -1,12 +1,12 @@
 ﻿apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
-  name: example-loyalty
+  name: example-bank
 spec:
   resources:
-    - name: loyalty-git
+    - name: bank-git
       type: git
-    - name: event-image
+    - name: transaction-image
       type: image
     - name: user-image
       type: image
@@ -26,28 +26,28 @@ spec:
       resources:
         inputs:
           - name: source
-            resource: loyalty-git
+            resource: bank-git
       taskRef:
         kind: Task
         name: maven
       workspaces:
         - name: maven-repo
           workspace: local-maven-repo
-    - name: build-event
+    - name: build-transaction
       params:
         - name: TLSVERIFY
           value: 'false'
         - name: MAVEN_ARGS_APPEND
-          value: '-pl :event-service -am package'
+          value: '-pl :transaction-service -am package'
         - name: PATH_CONTEXT
-          value: loyalty-app-backend/
+          value: bank-app-backend/
       resources:
         inputs:
           - name: source
-            resource: loyalty-git
+            resource: bank-git
         outputs:
           - name: image
-            resource: event-image
+            resource: transaction-image
       runAfter:
         - code-analysis
       taskRef:
@@ -60,11 +60,11 @@ spec:
         - name: MAVEN_ARGS_APPEND
           value: '-pl :user-service -am package'
         - name: PATH_CONTEXT
-          value: loyalty-app-backend/
+          value: bank-app-backend/
       resources:
         inputs:
           - name: source
-            resource: loyalty-git
+            resource: bank-git
         outputs:
           - name: image
             resource: user-image
@@ -80,7 +80,7 @@ spec:
       resources:
         inputs:
           - name: source
-            resource: loyalty-git
+            resource: bank-git
         outputs:
           - name: image
             resource: ui-image
@@ -89,15 +89,15 @@ spec:
       taskRef:
         kind: Task
         name: s2i-nodejs
-    - name: deploy-event
+    - name: deploy-transaction
       params:
         - name: COMMANDS
           value: >
             oc apply -f
-            https://raw.githubusercontent.com/IBM/loyalty/master/loyalty-app-backend/event-service/deployment.yaml
-            -n example-loyalty
+            https://raw.githubusercontent.com/IBM/example-bank/main/bank-app-backend/transaction-service/deployment.yaml
+            -n example-bank
       runAfter:
-        - build-event
+        - build-transaction
       taskRef:
         kind: Task
         name: openshift-client
@@ -106,8 +106,8 @@ spec:
         - name: COMMANDS
           value: >
             oc apply -f
-            https://raw.githubusercontent.com/IBM/loyalty/master/loyalty-app-backend/user-service/deployment.yaml
-            -n example-loyalty
+            https://raw.githubusercontent.com/IBM/example-bank/main/bank-app-backend/user-service/deployment.yaml
+            -n example-bank
       runAfter:
         - build-user
       taskRef:
@@ -118,10 +118,10 @@ spec:
         - name: COMMANDS
           value: >
             oc apply -f
-            https://raw.githubusercontent.com/IBM/loyalty/master/deployment.yaml
-            -n example-loyalty
+            https://raw.githubusercontent.com/IBM/example-bank/main/deployment.yaml
+            -n example-bank
       runAfter:
-        - build-event
+        - build-transaction
       taskRef:
         kind: Task
         name: openshift-client
