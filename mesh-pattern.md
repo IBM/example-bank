@@ -40,7 +40,19 @@ The [example bank system](https://developer.ibm.com/patterns/privacy-backend-loy
 
 This pattern starts with the deployed services and layers on the OpenShift Service Mesh, allowing more fine grained control of traffic and better overall observability. 
 
-## Step 1: Installing the OSSM Operator
+## Step 1: Deploy the services
+
+Follow the steps in the [Example Bank application](https://github.com/IBM/loyalty/blob/main/README.md) to deploy all the components of the back-end here.  You will see these services running:
+
+ - Font-end service (Node.js)
+ - User management service (Java / OpenLiberty)
+ - Transaction processing (Java / OpenLiberty)
+ - User cleanup CronJob ( Java / OpenLiberty)
+ - serverless (knative) loyalty point service (Node.js)
+
+Ensure that the project they are deployed in is `example-bank`, to match the project in the ServiceMeshMemberRoll instance.
+
+## Step 2: Installing the OSSM Operator
 
 Follow the instructions to install the necessary operators, in this order. (Note: `OSSM` stands for "OpenShift ServiceMesh").
 
@@ -83,19 +95,7 @@ configuredMembers:
 meshGeneration: 8
 ```
 
-## Step 4: Deploy the services
-
-Follow the steps in the [Example Bank application](https://github.com/IBM/loyalty/blob/main/README.md) to deploy all the components of the back-end here.  You will see these services running:
-
- - Font-end service (Node.js)
- - User management service (Java / OpenLiberty)
- - Transaction processing (Java / OpenLiberty)
- - User cleanup CronJob ( Java / OpenLiberty)
- - serverless (knative) loyalty point service (Node.js)
-
-Ensure that the project they are deployed in is `example-bank`, to match the project in the ServiceMeshMemberRoll instance.
-
-## Step 3: Check-out service mesh-enabled branch
+## Step 4: Check-out service mesh-enabled branch
 
 Check-out the `service-mesh` branch, which includes modified deployment scripts to allow the application to function in a Red Hat Service Mesh environment.
 
@@ -105,7 +105,7 @@ git checkout service-mesh
 
 This will checkout updated YAML manifests to enable operations inside the mesh.
 
-## Step 4: Review and apply changes
+## Step 5: Review and apply changes
 
 Let's look at the changes being introduced to allow the Example Bank application to work with the service mesh and run the necessary commands to get our deployments updated.
 
