@@ -28,15 +28,17 @@ See the differences between the OpenShift service mesh and upstream Istio here:
 
 # Prerequisites
 
-1. Log in, or create an cccount on [IBM Cloud](https://cloud.ibm.com)
+1. Log in, or create an account on [IBM Cloud](https://cloud.ibm.com)
 2. Provision an OpenShift 4.3 cluster on on [IBM Cloud](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_tutorial)
 3. Create a [project](https://docs.openshift.com/container-platform/4.3/applications/projects/configuring-project-creation.html) called `example-bank`.
 
 # Architecture
 
-The example bank system includes several microservices for handling user authentication and transacton mechanics. (TBD: Link to bank pattern.) (Todo: replace with Glenn's diagram :)
+The [example bank system](https://developer.ibm.com/patterns/privacy-backend-loyalty-app-openshift-4/) includes several microservices for handling user authentication and transaction and loyalty point mechanics.
 
-![screenshot](images/mesh-diag.png)
+![screenshot](https://raw.githubusercontent.com/IBM/example-bank/main/images/pattern-flow-diag.png)
+
+This pattern starts with the deployed services and layers on the OpenShift Service Mesh, allowing more fine grained control of traffic and better overall observability. 
 
 ## Step 1: Installing the OSSM Operator
 
@@ -55,7 +57,7 @@ Once complete, your "Installed Operators" screen will show these operators insta
 
 ## Step 3: Control Plane and Member Roll
 
-In this step, we'll use the OSSM operator to create two new instance - a Control Plane and a Service Mesh Member Roll. we'll install the control plane into the `istio-system` project (create a project with this naame if not done in the previous step.)  Note that while it is possible to enable global auto-mTLS, we will enabling it selectively only for specific services because global TLS causes issues with triggering the knative transaction processing service.
+In this step, we'll use the OSSM operator to create two new instance - a Control Plane and a Service Mesh Member Roll. we'll install the control plane into the `istio-system` project (create a project with this name if not done in the previous step.)  Note that while it is possible to enable global auto-mTLS, we will enabling it selectively only for specific services because global TLS causes issues with triggering the knative transaction processing service.
 
 - Install the Control Plane. No changes from the default template are needed.
 
@@ -91,8 +93,7 @@ Follow the steps in the [Example Bank application](https://github.com/IBM/loyalt
  - User cleanup CronJob ( Java / OpenLiberty)
  - serverless (knative) loyalty point service (Node.js)
 
-Ensure that the project they are deployed in is `example-bank`, to match the 
-project in the ServiceMeshMemberRoll instance.
+Ensure that the project they are deployed in is `example-bank`, to match the project in the ServiceMeshMemberRoll instance.
 
 ## Step 3: Check-out service mesh-enabled branch
 
@@ -102,7 +103,7 @@ Check-out the `service-mesh` branch, which includes modified deployment scripts 
 git checkout service-mesh
 ```
 
-This will checkout updated YAML manifests to enable operationinsdie the mesh.
+This will checkout updated YAML manifests to enable operations inside the mesh.
 
 ## Step 4: Review and apply changes
 
@@ -121,7 +122,7 @@ template:
       sidecar.istio.io/inject: "true"
 ```
 
-The `sidecar.istio.io/inject: "true"` is the mechanism the service mesh uses to inject the Envoy proxy into the pod. Note that labeling the namespace to enable sidecar injection for all bservices will not work with OpenShift. This allows more fine-grained control of which applications use the Istio proxy. 
+The `sidecar.istio.io/inject: "true"` is the mechanism the service mesh uses to inject the Envoy proxy into the pod. Note that labeling the namespace to enable sidecar injection for all services will not work with OpenShift. This allows more fine-grained control of which applications use the Istio proxy. 
 
 Let's apply the changes needed for the front-end simulator and two of the Java services:
 
@@ -131,12 +132,12 @@ oc apply -f bank-app-backend/user-service/deployment.yaml -f bank-app-backend/tr
 
 #### Ingress gateway
 
-The istio ingressgateway is needed to pass traffic into the service mesh.
+The Istio ingressgateway is needed to pass traffic into the service mesh.
  
 Excerpt from `bank-istio-gw.yaml`: 
 ```
 apiVersion: networking.istio.io/v1alpha3
-kind: Gatewayn
+kind: Gateway
 metadata:
   name: simulator-gateway
 spec:
@@ -189,7 +190,7 @@ oc apply -f bank-knative-service/deployment.yaml
 ```
 #### Patch the database service to inject the sidecar proxy. 
 
-The database xsinstance must have the sidecar to handle TLS aspects of mesh traffic.
+The database instance must have the Envoy sidecar to properly handle TLS aspects of mesh traffic.
 
 ```
 $ kubectl patch deployments.apps creditdb -p '{"spec":{"template":{"metadata":{"annotations":{"sidecar.istio.io/inject":"true"}}}}}'
@@ -282,6 +283,46 @@ Now, let's expose the application in OpenShift with a secure (TLS enabled) route
 5. The application should now be available at this URL:
 
 ![screenshot](images/new-route-5.png)
+
+## Troubleshooting
+
+Setting up rules for Istio traffic can be complex, so it helps to have some tools available to investigate its internals.  Here are two helpful tools.
+
+### 1. `istioctl` CLI
+
+Install the `istioctl` CLI: 
+
+```
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.4.6 sh -
+```
+
+The `istioctl` CLI has a large variety of subcommands to introspect the configuration of the Istio resources and configurations. See the [documentation](https://istio.io/latest/docs/reference/commands/istioctl/) for more details.
+
+One useful sub-command is `istioctl authn tls-check` - this validates the rules that traffic must follow to be permitted to create connections to application containers:
+
+```
+$ istioctl authn tls-check transaction-service-79d48bf9f-6st96 
+creditdb.bank-mesh-new.svc.cluster.local:5432                              OK         STRICT         ISTIO_MUTUAL     bank-mesh-new/db-tls                           bank-mesh-new/creditdb
+mobile-simulator-service.bank-mesh-new.svc.cluster.local:8080              OK         STRICT         ISTIO_MUTUAL     bank-mesh-new/simulator-tls                    bank-mesh-new/mobile-simulator-service
+    STRICT         ISTIO_MUTUAL     bank-mesh-new/transaction-tls                  bank-mesh-new/transaction-service
+user-service.bank-mesh-new.svc.cluster.local:9080                          OK         STRICT         ISTIO_MUTUAL     bank-mesh-new/user-tls                         bank-mesh-new/user-service
+```
+
+### 2. Kiali 
+
+Kiali, the service graph, can also be used to explore and investigate the mesh configuration, and view traffic in near-real time as it traverses the services.
+
+Open the Kiali console by clicking here in your OpenShift console:
+
+![kiali1](images/kiali-1.png)
+
+Once the Kiali console is open, you can monitor traffic by:
+
+1. Selecting the "Graph" view
+2. Choosing the namespace/project name where the bank services are deployed.
+3. Click "refresh" after generating traffic through the mobile simulator.
+
+![kiali2](images/kiali-2.png)
 
 ## License
 
