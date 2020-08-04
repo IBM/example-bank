@@ -1,0 +1,46 @@
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: mobile-simulator-service
+    labels:
+      app: mobile-simulator
+  spec:
+    ports:
+      - port: 8080
+        name: http
+    selector:
+      app: mobile-simulator
+      version: v2
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mobile-simulator-deployment
+  labels:
+    app: mobile-simulator
+    version: v2
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mobile-simulator
+        version: v2
+      annotations:
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - image: ykoyfman/mobile-simulator:example-bank-login-tracker
+          imagePullPolicy: Always
+          name: mobile-simulator
+          envFrom:
+            - secretRef:
+                name: mobile-simulator-secrets
+          env:
+            - name: PORT
+              value: '8080'
+          ports:
+            - containerPort: 8080
+

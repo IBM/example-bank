@@ -27,6 +27,7 @@ router.get('/random_user', function (req, res) {
 
 router.post('/login', function (req, res) {
   getAppIdToken(req.body.username, req.body.password, (err, response, body) => {
+		console.log("Login tracker for: " + req.body.username)
     if (err) {
       console.log(err)
       console.log(response)
