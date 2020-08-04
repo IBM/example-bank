@@ -338,8 +338,6 @@ This code pattern is licensed under the Apache License, Version 2. Separate thir
 
 ## Resources
 
-https://docs.openshift.com/container-platform/4.3/service_mesh/service_mesh_day_two/prepare-to-deploy-applications-ossm.html#deploying-applications-ossm
-
 More documentation:
 https://github.com/Maistra/istio-operator
 
