@@ -5,7 +5,7 @@ metadata:
   labels:
     app: bank-user-cleanup-utility
 spec:
-  schedule: "* * * * *"
+  schedule: "@hourly"
   jobTemplate:
     spec:
       template:
