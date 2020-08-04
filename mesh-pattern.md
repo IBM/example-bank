@@ -12,7 +12,6 @@ make the necessary modifications to deployment scripts, Dockerfiles and network 
 - [IBM Managed OpenShift](https://www.ibm.com/cloud/openshift)
 - [OpenLiberty](https://openliberty.io)
 - [App ID](https://www.ibm.com/cloud/app-id)
-- [LogDNA](https://www.ibm.com/cloud/log-analysis)
 - [OpenShift ServiceMesh](https://docs.openshift.com/container-platform/4.3/service_mesh)
 - [OpenShift Serverless](https://www.openshift.com/learn/topics/serverless)
 
@@ -34,11 +33,17 @@ See the differences between the OpenShift service mesh and upstream Istio here:
 
 # Architecture
 
-The [example bank system](https://developer.ibm.com/patterns/privacy-backend-loyalty-app-openshift-4/) includes several microservices for handling user authentication and transaction and loyalty point mechanics.
+The following diagram shows the architecture flow of the service mesh for the Example Bank mobile application, which includes several microservices for handling user authentication and transaction mechanics.
 
-![screenshot](https://raw.githubusercontent.com/IBM/example-bank/main/images/pattern-flow-diag.png)
+![architecture](images/example-bank-service-mesh-architecture-flow-diagram.png)
 
-This pattern starts with the deployed services and layers on the OpenShift Service Mesh, allowing more fine grained control of traffic and better overall observability. 
+1. The user connects to the OpenShift router via HTTPS, which forwards the request to the Istio Ingress Gateway, an Envoy instance.
+2. Envoy forwards the request, using gateway and virtual service rules, to the Node.js service, which validates user accounts with App ID.
+3. Traffic rules inside the service mesh are set up such that all traffic is intercepted by the Istio Proxy, which enforces security between services. Communication flows between the Node.js service, the Java Transaction service and the Java User management service via mTLS connections proxied by Envoy.
+4. The user, transaction, and cleanup services all communicate with the PostgreSQL database inside the cluster. The database itself is also running inside a pod with a proxy container, allowing security and filter rules to be used for database access.
+5. The Java erasure service runs once every 24 hours, removing users from App ID. In the Istio environment, jobs like this need to have a delay to wait until the Envoy proxy starts up and is receiving traffic.
+
+This pattern starts with the deployed services and layers on the OpenShift Service Mesh.
 
 ## Step 1: Deploy the services
 
@@ -63,7 +68,7 @@ Follow the instructions to install the necessary operators, in this order. (Note
 
 Official instructions are here: https://docs.openshift.com/container-platform/4.3/service_mesh/service_mesh_install/installing-ossm.html#ossm-operatorhub-install_installing-ossm
 
-Once complete, your "Installed Operators" screen will show these operators installed.
+Once comphatlete, your "Installed Operators" screen will show these operators installed.
 
 ![screenshot](images/installed_operators_chrome.png)
 
