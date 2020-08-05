@@ -1,10 +1,10 @@
 # Microservices with the OpenShift Service Mesh
 
-In this code pattern, we show the steps needed to deploy OpenShift Service Mesh (based on Istio) for the banking simulator microservice back-end described here in the [Building a data privacy focused mobile back-end](https://github.com/IBM/loyalty/blob/main/README.md) code pattern.
+In this code pattern, we show the steps needed to deploy OpenShift Service Mesh (based on Istio) for the banking simulator microservice back-end described here: [Building a data privacy focused mobile back-end](https://github.com/IBM/loyalty/blob/main/README.md).
 
 ## Introduction
 
-The OpenShift ServiceMesh is a layer built on top of Istio, based on the Maistra operator.  In this patter, we show how to take the microservice based application and
+The OpenShift ServiceMesh is a layer built on top of Istio, based on the Maistra operator.  In this pattern, we show how to take the microservice based application and
 make the necessary modifications to deployment scripts, Dockerfiles and network policies to allow it to work with Istio service mesh.  Although the primary goal is security provided by mTLS between services and via the ingress, once Istio is configured, you have all the flexibility of its traffic management and security policies.  In this example, we will install OpenShift Service mesh and configure the Example Bank project to use mutual TLS between services.  Once inside the Istio mesh, you can also take advantage of its traffic management, telemetry and observability features.
 
 ## Included Components
