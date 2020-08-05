@@ -29,7 +29,7 @@ spec:
         app: mobile-simulator
     spec:
       containers:
-        - image: anthonyamanse/mobile-simulator:example-bank-1.0
+        - image: ykoyfman/mobile-simulator:ga
           imagePullPolicy: Always
           name: mobile-simulator
           envFrom:
