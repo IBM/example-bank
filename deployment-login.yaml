@@ -2,23 +2,23 @@
   apiVersion: v1
   kind: Service
   metadata:
-    name: mobile-simulator-service
+    name: mobile-simulator-login-service
     labels:
-      app: mobile-simulator
+      app: mobile-simulator-login
   spec:
     ports:
       - port: 8080
         name: http
     selector:
-      app: mobile-simulator
+      app: mobile-simulator-login
       version: v2
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mobile-simulator-deployment
+  name: mobile-simulator-login-deployment
   labels:
-    app: mobile-simulator
+    app: mobile-simulator-login
     version: v2
 spec:
   strategy:
@@ -34,7 +34,7 @@ spec:
       containers:
         - image: ykoyfman/mobile-simulator:example-bank-login-tracker
           imagePullPolicy: Always
-          name: mobile-simulator
+          name: mobile-simulator-login
           envFrom:
             - secretRef:
                 name: mobile-simulator-secrets
