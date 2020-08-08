@@ -18,7 +18,7 @@ The GDPR standard defines requirements around what operations need to be availab
 # Prerequisites
 
 1. Log in, or create an cccount on [IBM Cloud](https://cloud.ibm.com)
-2. Provision an OpenShift 4.3 cluster on on [IBM Cloud](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_tutorial)
+2. Provision an OpenShift 4.3 cluster on [IBM Cloud](https://cloud.ibm.com/docs/openshift?topic=openshift-openshift_tutorial)
 3. Create a [project](https://docs.openshift.com/container-platform/4.3/applications/projects/configuring-project-creation.html) called `example-bank`.
 
 ## Why OpenShift?
