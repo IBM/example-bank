@@ -21,7 +21,7 @@ You will see the term "maistra" appear - this is the name of the operator used t
 
 See the differences between the OpenShift service mesh and upstream Istio here:
 
-- [Compoarison with Istio](https://maistra.io/docs/comparison-with-istio/)
+- [Comparison with Istio](https://maistra.io/docs/comparison-with-istio/)
 - [OpenShift Service Mesh Architecture](https://docs.openshift.com/container-platform/4.3/service_mesh/service_mesh_arch/ossm-vs-community.html#ossm-vs-community)
 - [Maistra releases](https://maistra.io/docs/installation/release-notes/)
 
@@ -47,7 +47,7 @@ This pattern starts with the deployed services and layers on the OpenShift Servi
 
 ## Step 1: Deploy the services
 
-Follow the steps in the [Example Bank application](https://github.com/IBM/loyalty/blob/main/README.md) to deploy all the components of the back-end here.  You will see these services running:
+Follow the steps in the [Example Bank application](https://github.com/IBM/example-bank/blob/main/README.md) to deploy all the components of the back-end here.  You will see these services running:
 
  - Font-end service (Node.js)
  - User management service (Java / OpenLiberty)
