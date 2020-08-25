@@ -3,7 +3,7 @@ kind: Database
 metadata:
   generation: 1
   name: creditdb
-  namespace: bank-lab1
+  namespace: example-bank
   spec:
     databaseCpu: 30m
     databaseCpuLimit: 60m
