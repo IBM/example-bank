@@ -47,3 +47,5 @@ oc create secret generic mobile-simulator-secrets \
   --from-literal=PROXY_TRANSACTION_MICROSERVICE=transaction-service:9080
 
 oc create secret generic bank-oidc-adminuser --from-literal=APP_ID_ADMIN_USER=bankadmin --from-literal=APP_ID_ADMIN_PASSWORD=password
+
+oc create secret generic loyalty-db-secret --from-literal=DB_SERVERNAME=creditdb --from-literal=DB_PORTNUMBER=5432 --from-literal=DB_DATABASENAME=example --from-literal=DB_USER=postgres --from-literal=DB_PASSWORD=postgres
