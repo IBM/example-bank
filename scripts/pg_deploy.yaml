@@ -7,9 +7,9 @@ metadata:
   labels:
     olm.owner: postgresql-operator.v0.1.1
     olm.owner.kind: ClusterServiceVersion
-    olm.owner.namespace: bank-lab1
+    olm.owner.namespace: example-bank
   name: postgresql-operator
-  namespace: bank-lab1
+  namespace: example-bank
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -71,9 +71,9 @@ spec:
         description: Operator in Go developed using the Operator Framework to package,
           install, configure and manage a PostgreSQL database. This project includes
           backup feature.
-        olm.operatorGroup: bank-lab1-rgc7j
-        olm.operatorNamespace: bank-lab1
-        olm.targetNamespaces: bank-lab1
+        olm.operatorGroup: example-bank-rgc7j
+        olm.operatorNamespace: example-bank
+        olm.targetNamespaces: example-bank
         repository: https://github.com/dev4devs-com/postgresql-operator
         support: Dev4Devs, Inc
       creationTimestamp: null

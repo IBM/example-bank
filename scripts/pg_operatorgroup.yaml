@@ -3,10 +3,10 @@ kind: OperatorGroup
 metadata:
   annotations:
     olm.providedAPIs: Backup.v1alpha1.postgresql.dev4devs.com,Database.v1alpha1.postgresql.dev4devs.com
-  generateName: bank-lab1-
+  generateName: example-bank-
   generation: 1
-  name: bank-lab1-rgc7j
-  namespace: bank-lab1
+  name: example-bank-rgc7j
+  namespace: example-bank
 spec:
   targetNamespaces:
-  - bank-lab1
+  - example-bank

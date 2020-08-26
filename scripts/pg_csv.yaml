@@ -48,20 +48,19 @@ metadata:
     description: Operator in Go developed using the Operator Framework to package,
       install, configure and manage a PostgreSQL database. This project includes backup
       feature.
-    olm.operatorGroup: bank-lab1-rgc7j
-    olm.operatorNamespace: bank-lab1
-    olm.targetNamespaces: bank-lab1
+    olm.operatorGroup: example-bank-rgc7j
+    olm.operatorNamespace: example-bank
+    olm.targetNamespaces: example-bank
     repository: https://github.com/dev4devs-com/postgresql-operator
     support: Dev4Devs, Inc
-  creationTimestamp: "2020-07-14T20:08:10Z"
   generation: 1
   labels:
     olm.api.8a107ba44dd0f831: provided
     olm.api.dc3543ba06e9f8a0: provided
   name: postgresql-operator.v0.1.1
-  namespace: bank-lab1
+  namespace: example-bank
   resourceVersion: "72208"
-  selfLink: /apis/operators.coreos.com/v1alpha1/namespaces/bank-lab1/clusterserviceversions/postgresql-operator.v0.1.1
+  selfLink: /apis/operators.coreos.com/v1alpha1/namespaces/example-bank/clusterserviceversions/postgresql-operator.v0.1.1
   uid: 9351e01d-bb3e-431d-8ec5-b2e069c6173e
 spec:
   apiservicedefinitions: {}
@@ -623,7 +622,6 @@ spec:
           strategy: {}
           template:
             metadata:
-              creationTimestamp: null
               labels:
                 name: postgresql-operator
             spec:
