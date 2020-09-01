@@ -12,6 +12,7 @@ spec:
   source: redhat-operators 
   sourceNamespace: openshift-marketplace
 EOF
+sleep 5
 
 echo "Creating Knative Serving component"
 oc create namespace knative-serving
@@ -31,7 +32,7 @@ EOF
 # echo "oc get knativeserving.operator.knative.dev/knative-serving -n knative-serving --template='{{range .status.conditions}}{{printf \"%s=%s\\\n\" .type .status}}{{end}}'"
 # echo "######################################################"
 # echo "When the status of everything is TRUE, you can now deploy Knative Services"
-
+sleep 5
 echo "##################"
 echo "Waiting for Knative Serving to be up"
 
