@@ -32,7 +32,7 @@ spec:
         - name: USER_SERVICE_URL
           value: "http://user-service:9080/bank/v1/users"
         - name: KNATIVE_SERVICE_URL
-          value: "http://process-transaction.bank-mesh-new.svc.cluster.local"
+          value: "http://process-transaction.example-bank.svc.cluster.local"
         - name: WLP_LOGGING_CONSOLE_LOGLEVEL
           value: INFO
 ---

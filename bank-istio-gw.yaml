@@ -11,9 +11,7 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - ibm-bank.com
-    - secure.ibm-bank.com
-    - credit-card.ibmdeveloper.net
+    - "*"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -21,9 +19,7 @@ metadata:
   name: simulator
 spec:
   hosts:
-  - ibm-bank.com
-  - secure.ibm-bank.com
-  - credit-card.ibmdeveloper.net
+  - "*"
   gateways:
   - simulator-gateway
   http:
