@@ -63,8 +63,8 @@ Follow the instructions to install the necessary operators, in this order. (Note
 
 1. ElasticSearch Operator
 2. Jaeger Operator
-3. Kialie Operator
-4. Red Had OpenShift ServiceMesh Operator
+3. Kiali Operator
+4. Red Hat OpenShift ServiceMesh Operator
 
 Official instructions are here: https://docs.openshift.com/container-platform/4.3/service_mesh/service_mesh_install/installing-ossm.html#ossm-operatorhub-install_installing-ossm
 
