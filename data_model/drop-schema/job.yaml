@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cc-schema-unload
+  labels:
+    app: cc-schema-unload
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: cc-schema-unload
+          image: ykoyfman/drop-schema
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: bank-db-secret
