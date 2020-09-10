@@ -12,13 +12,16 @@
     selector:
       app: mobile-simulator
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mobile-simulator-deployment
   labels:
     app: mobile-simulator
 spec:
+  selector:
+    matchLabels:
+      app: mobile-simulator
   strategy:
     type: Recreate
   template:
@@ -29,7 +32,7 @@ spec:
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - image: anthonyamanse/mobile-simulator:example-bank-1.0
+        - image: ykoyfman/mobile-simulator:ga
           imagePullPolicy: Always
           name: mobile-simulator
           envFrom:

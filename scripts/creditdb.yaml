@@ -1,0 +1,20 @@
+apiVersion: postgresql.dev4devs.com/v1alpha1
+kind: Database
+metadata:
+  generation: 1
+  name: creditdb
+  namespace: example-bank
+  spec:
+    databaseCpu: 30m
+    databaseCpuLimit: 60m
+    databaseMemoryLimit: 512Mi
+    databaseMemoryRequest: 128Mi
+    databaseName: example
+    databaseNameKeyEnvVar: POSTGRESQL_DATABASE
+    databasePassword: postgres
+    databasePasswordKeyEnvVar: POSTGRESQL_PASSWORD
+    databaseStorageRequest: 1Gi
+    databaseUser: postgres
+    databaseUserKeyEnvVar: POSTGRESQL_USER
+    image: centos/postgresql-96-centos7
+    size: 1
