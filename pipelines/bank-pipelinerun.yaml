@@ -1,0 +1,40 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  generateName: bank-run-
+spec:
+  pipelineRef:
+    name: example-bank
+  resources:
+  - name: bank-git
+    resourceSpec:
+      type: git
+      params:
+        - name: url
+          value: https://github.com/IBM/example-bank.git
+        - name: revision
+          value: main
+  - name: transaction-image
+    resourceSpec:
+      type: image
+      params:
+        - name: url
+          value: image-registry.openshift-image-registry.svc:5000/bank-infra/transaction
+  - name: user-image
+    resourceSpec:
+      type: image
+      params:
+        - name: url
+          value: image-registry.openshift-image-registry.svc:5000/bank-infra/user
+  - name: ui-image
+    resourceSpec:
+      type: image
+      params:
+        - name: url
+          value: image-registry.openshift-image-registry.svc:5000/bank-infra/ui
+  workspaces:
+  - name: local-maven-repo
+    persistentVolumeClaim:
+      claimName: maven-repo-pvc
+  serviceAccountName: pipeline

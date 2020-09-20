@@ -1,11 +1,5 @@
 class Welcome extends HTMLElement {
 
-    mode='INTEGRATED';
-
-    static get observedAttributes() {
-        return ['mode'];
-    }
-
     constructor() {
         
         super();        
@@ -21,16 +15,36 @@ class Welcome extends HTMLElement {
     }
 
     connectedCallback() {
-        
-        this.mode = this.getAttribute('mode');
 
         let sr = this.shadowRoot;
 
         let selectUserInput = sr.getElementById("usernameselect")
         let signinButton = sr.getElementById("signin")
 
-        if(this.mode=='INTEGRATED'){
+        var phoneview = document.getElementById("phoneview");
+        var mobileview = phoneview.getMobileView();
 
+        if (loyalty.getCookie('access_token') != "" && loyalty.getCookie('id_token') != "") {
+            let id_object = loyalty.parseJwt(loyalty.getCookie('id_token'))
+            console.log(id_object)
+
+            var accountinfo = {
+                firstname: id_object.given_name,
+                surname: id_object.family_name
+            }
+
+            var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+
+            mobileview.innerHTML = "";
+
+            let element = document.createElement('transactions-element')
+            element.setAttribute('name', fullname);
+            mobileview.appendChild(element); 
+
+            localStorage.setItem("loyaltyname", fullname);
+
+            phoneview.showNavigation();
+        } else {
             getAllUsers((users) => {
                 users.forEach(user => {
                     var option = document.createElement("option");
@@ -52,21 +66,36 @@ class Welcome extends HTMLElement {
         var mobileview = sr.host.parentElement;
         mobileview.innerHTML = "";
 
-        if(this.mode=='INTEGRATED'){
-            // create loading spinner first
-            var element = document.createElement('loading-spinner-element');
-            element.setAttribute("status", "Logging in...")
-            mobileview.appendChild(element)
+        // create loading spinner first
+        var element = document.createElement('loading-spinner-element');
+        element.setAttribute("status", "Logging in...")
+        mobileview.appendChild(element)
 
-            loginWithAppId(username, password, (jsonWebToken) => {
-                // when login complete,
-                // re-initialize app?
-                new Loyalty(this.mode);
-                // edge case when unable to sign in
-            })
-         }else{
+        loginWithAppId(username, password, (jsonWebToken) => {
+            // when login complete,
+            // re-initialize app?
             new Loyalty(this.mode);
-         }
+            let id_object = loyalty.parseJwt(jsonWebToken.id_token)
+            console.log(id_object)
+
+            var accountinfo = {
+                firstname: id_object.given_name,
+                surname: id_object.family_name
+            }
+
+            var fullname = accountinfo.firstname + ' ' + accountinfo.surname
+
+            mobileview.innerHTML = "";
+
+            let element = document.createElement('transactions-element')
+            element.setAttribute('name', fullname);
+            mobileview.appendChild(element);
+
+            localStorage.setItem("loyaltyname", fullname);
+
+            phoneview.showNavigation();
+            // edge case when unable to sign in
+        })
     }
 }
 

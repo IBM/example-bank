@@ -1,8 +1,5 @@
 class Phone extends HTMLElement {
 
-    mode = 'DEVMODE';
-    // mode = 'INTEGRATED';
-
     constructor() {
         super();
 

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-service
+  labels:
+    app: transaction-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transaction-service
+  template:
+    metadata:
+      labels:
+        app: transaction-service
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      containers:
+      - name: transaction-service
+        image: ykoyfman/bank-transaction-service:1.0
+        imagePullPolicy: Always
+        ports:
+        - name: http-server
+          containerPort: 9080
+        envFrom:
+        - secretRef:
+            name: bank-db-secret
+        - secretRef:
+            name: bank-oidc-secret
+        env:
+        - name: USER_SERVICE_URL
+          value: "http://user-service:9080/bank/v1/users"
+        - name: KNATIVE_SERVICE_URL
+          value: "http://process-transaction.example-bank.svc.cluster.local"
+        - name: WLP_LOGGING_CONSOLE_LOGLEVEL
+          value: INFO
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transaction-service
+  labels:
+    app: transaction-service
+spec:
+  ports:
+  - port: 9080
+    targetPort: 9080
+  selector:
+    app: transaction-service
+---
+apiVersion: v1
+kind: Route
+metadata:
+  name: transaction-service
+spec:
+  to:
+    kind: Service
+    name: transaction-service
+

@@ -26,15 +26,23 @@
             <asset-element link="https://developer.ibm.com/articles/intro-to-openshift-4/" assetimage="./images/lightbulb.svg" text="Background"></asset-element>
             <asset-element link="https://github.com/IBM/loyalty#architecture" assetimage="./images/cloud.svg" text="Cloud Architecture"></asset-element>
             <asset-element link="https://developer.ibm.com/articles/threat-modeling-microservices-openshift-4/" assetimage="./images/threat.svg" text="Introduction to threat modelling"></asset-element>
+            <asset-element link="https://developer.ibm.com/tutorials/operator-hub-openshift-4-operators-ibm-cloud/" assetimage="./images/flash.svg" text="Fun with Operators"></asset-element>
             <asset-element link="https://developer.ibm.com/patterns/privacy-backend-loyalty-app-openshift-4/" assetimage="./images/secure.svg"
-                text="Building a JEE loyalty app on openshift 4 code pattern"></asset-element>
-            <asset-element assetimage="./images/istio.svg" text="Scaling secure communications with service mesh"></asset-element>
-            <asset-element assetimage="./images/flash.svg" text="Extending apps with OpenShift Serverless"></asset-element>
-            <asset-element assetimage="./images/admin.svg" text="Building OpenShift Pipelines">
+                text="Build a microservice-based backend on OpenShift 4"></asset-element>
+            <asset-element link="https://developer.ibm.com/patterns/microservices-with-the-openshift-service-mesh/" assetimage="./images/istio.svg" text="Scaling secure communications with service mesh"></asset-element>
+            <asset-element link="https://developer.ibm.com/tutorials/build-serverless-nodejs-applications-with-the-openshift-serverless-operator/" assetimage="./images/programming.svg" text="Extending apps with OpenShift Serverless"></asset-element>
+            <asset-element link="https://developer.ibm.com/tutorials/tekton-pipeline-deploy-a-mobile-app-backend-openshift-4/" assetimage="./images/deploy-rules.svg" text="Building OpenShift Pipelines">
             </asset-element>
             <!-- asset-element assetimage="./images/admin.svg" text="Admin view"></asset-element> -->
         </div>
-        <phone-element id="phoneview"></phone-element>            
+        <phone-element id="phoneview"></phone-element>      
+        <script>
+            var supportTest = 'customElements' in window;
+            console.log('supports web components = ' + supportTest);
+            if(supportTest == false){
+                window.alert('If you see this alert, it means this example is not compatible with your browser. This example uses Web Components - a technology supported in the latest versions of Firefox, Chrome and Safari. Please update your browser to the latest release.');
+            }
+        </script>      
         </div>
     </div>
 </body>
@@ -291,6 +299,7 @@
             border: 2px solid var(--loyalty-button-color);
             margin-top: 10px;
             outline: 0;
+            font-size: 11px;
         }
 
         .signup {
@@ -303,6 +312,8 @@
             margin: 10px;
             outline: 0;
             background: white;
+            text-transform: uppercase;
+            font-size: 11px;
         }
 
         .viewtitle {
@@ -392,15 +403,16 @@
 
         .signup {
             width: 120px;
-            height: 30px;
+            height: 28px;
             border-radius: 4px;
-            background: white;
-            color: white;
+            color: var(--loyalty-sensor-color);
             font-weight: bold;
-            border: none;
-            margin: 30px;
+            border: 2px solid var(--loyalty-sensor-color);
+            margin: 10px;
             outline: 0;
-
+            background: white;
+            text-transform: uppercase;
+            font-size: 11px;
         }
 
         .signup:disabled {
@@ -445,23 +457,27 @@
         <div class="identity">
             <div class="identityblock">
                 <label class="idpart">First Name</label>
-                <div class="idinfo" id="firstname"></div>
+                <div class="idinfo" id="firstname" contenteditable="true"></div>
             </div>
 
             <div class="identityblock">
                 <label class="idpart">Surname</label>
-                <div class="idinfo" id="surname"></div>
+                <div class="idinfo" id="surname" contenteditable="true"></div>
+            </div>
+
+            <div class="identityblock">
+                <label class="idpart">Email</label>
+                <div class="idinfo" id="email"></div>
+            </div>
+
+            <div class="identityblock">
+                <label class="idpart">username</label>
+                <div class="idinfo" id="username"></div>
             </div>
 
             <div class="identityblock">
                 <label class="idpart">Password</label>
                 <div class="idinfo" id="password"></div>
-            </div>
-
-
-            <div class="identityblock">
-                <label class="idpart">Email</label>
-                <div class="idinfo" id="username"></div>
             </div>
         </div>
 
@@ -532,22 +548,21 @@
         }
 
         .signup {
-            width: 70px;
-            height: 30px;
+            width: 120px;
+            height: 28px;
             border-radius: 4px;
-            background: white;
-            color: white;
+            color: var(--loyalty-sensor-color);
             font-weight: bold;
-            border: none;
-            margin: 10;
+            border: 2px solid var(--loyalty-sensor-color);
+            margin: 10px;
             outline: 0;
-            font-size: 9px;
+            background: white;
             text-transform: uppercase;
+            font-size: 11px;
         }
 
         .logout {
             width: 70px;
-            ;
             height: 30px;
             border-radius: 4px;
             background: #1c87c9;
@@ -1187,6 +1202,16 @@
         <div class="status" id="status">Loading</div>
       </div>
 </template>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-174204989-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-174204989-1');
+</script>
 
 <script src="./javascript/moment.js"></script>
 <script src="./javascript/clientHelpers/demoaccounts.js"></script>

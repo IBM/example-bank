@@ -173,7 +173,7 @@ function getUsersAppID(iamToken, callback) {
 				})
 				// remove test accounts
 				users = users.filter((element) => {
-					if (element == 'testadmin' || element == 'gregdritschler') {
+					if (element == 'testadmin' || element == 'gregdritschler' || element.includes('admin')) {
 						return false
 					}
 					return true

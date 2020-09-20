@@ -1,0 +1,53 @@
+<server description="Liberty server">
+
+    <featureManager>
+      <feature>jpa-2.2</feature>
+      <feature>microProfile-3.0</feature>
+      <feature>mpJwt-1.1</feature>
+    </featureManager>
+
+    <logging traceSpecification="eclipselink=all" maxFileSize="20" maxFiles="10"/>
+
+    <keyStore id="digicertRootCA" password="digicert" location="${server.config.dir}/resources/security/digicert-root-ca.jks"/>
+    <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="digicertRootCA" />
+
+    <httpEndpoint host="*" httpPort="${default.http.port}" 
+        httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+
+    <mpJwt 
+      id="jwt"  
+      issuer="${OIDC_ISSUERIDENTIFIER}"
+      jwksUri="${OIDC_JWKENDPOINTURL}"
+      audiences="${OIDC_AUDIENCES}"
+      userNameAttribute="sub"
+    />  
+
+    <library id="PostgresLib">
+      <fileset dir="${server.config.dir}/jdbc"/>
+    </library>
+
+    <dataSource id="AccountsDataSource" jndiName="jdbc/AccountsDataSource">
+      <jdbcDriver libraryRef="PostgresLib" />
+      <!-- Idle connections to this server are timing out after 5 minutes.
+           It is recommended to set maxIdleTime to half of that value to avoid jdbc failures (e.g. broken pipe).
+           Reap time is reduced from default of 3 minutes to close idle connections in time. -->
+      <connectionManager maxIdleTime="2m30s" reapTime="60s"/>
+      <properties.postgresql 
+        serverName="${DB_SERVERNAME}"
+        portNumber="${DB_PORTNUMBER}"
+        databaseName="${DB_DATABASENAME}"
+        user="${DB_USER}"
+        password="${DB_PASSWORD}"
+        ssl="false"
+        />
+    </dataSource>
+
+    <webApplication location="transaction-service.war" contextRoot="/">
+      <application-bnd>
+        <security-role name="authenticated">
+          <special-subject type="ALL_AUTHENTICATED_USERS"/>
+        </security-role>
+      </application-bnd>
+    </webApplication>
+
+</server>

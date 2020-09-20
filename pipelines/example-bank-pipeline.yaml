@@ -1,0 +1,129 @@
+﻿apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: example-bank
+spec:
+  resources:
+    - name: bank-git
+      type: git
+    - name: transaction-image
+      type: image
+    - name: user-image
+      type: image
+    - name: ui-image
+      type: image
+  tasks:
+    - name: code-analysis
+      params:
+        - name: GOALS
+          value:
+            - install
+            - 'sonar:sonar'
+            - '-Dsonar.host.url=http://sonarqube:9000'
+            - '-Dsonar.userHome=/tmp/sonar'
+            - '-DskipITs'
+            - '-Darguments=-DskipITs'
+      resources:
+        inputs:
+          - name: source
+            resource: bank-git
+      taskRef:
+        kind: Task
+        name: maven
+      workspaces:
+        - name: maven-repo
+          workspace: local-maven-repo
+    - name: build-transaction
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: MAVEN_ARGS_APPEND
+          value: '-pl :transaction-service -am package'
+        - name: PATH_CONTEXT
+          value: bank-app-backend/
+      resources:
+        inputs:
+          - name: source
+            resource: bank-git
+        outputs:
+          - name: image
+            resource: transaction-image
+      runAfter:
+        - code-analysis
+      taskRef:
+        kind: Task
+        name: s2i-java-8
+    - name: build-user
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+        - name: MAVEN_ARGS_APPEND
+          value: '-pl :user-service -am package'
+        - name: PATH_CONTEXT
+          value: bank-app-backend/
+      resources:
+        inputs:
+          - name: source
+            resource: bank-git
+        outputs:
+          - name: image
+            resource: user-image
+      runAfter:
+        - code-analysis
+      taskRef:
+        kind: Task
+        name: s2i-java-8
+    - name: build-ui
+      params:
+        - name: TLSVERIFY
+          value: 'false'
+      resources:
+        inputs:
+          - name: source
+            resource: bank-git
+        outputs:
+          - name: image
+            resource: ui-image
+      runAfter:
+        - code-analysis
+      taskRef:
+        kind: Task
+        name: s2i-nodejs
+    - name: deploy-transaction
+      params:
+        - name: COMMANDS
+          value: >
+            oc apply -f
+            https://raw.githubusercontent.com/IBM/example-bank/main/bank-app-backend/transaction-service/deployment.yaml
+            -n example-bank
+      runAfter:
+        - build-transaction
+      taskRef:
+        kind: Task
+        name: openshift-client
+    - name: deploy-user
+      params:
+        - name: COMMANDS
+          value: >
+            oc apply -f
+            https://raw.githubusercontent.com/IBM/example-bank/main/bank-app-backend/user-service/deployment.yaml
+            -n example-bank
+      runAfter:
+        - build-user
+      taskRef:
+        kind: Task
+        name: openshift-client
+    - name: deploy-ui
+      params:
+        - name: COMMANDS
+          value: >
+            oc apply -f
+            https://raw.githubusercontent.com/IBM/example-bank/main/deployment.yaml
+            -n example-bank
+      runAfter:
+        - build-transaction
+      taskRef:
+        kind: Task
+        name: openshift-client
+  workspaces:
+    - name: local-maven-repo

@@ -1,82 +1,53 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: loyalty-mobile-simulator-service
-  labels:
-    app: loyalty-mobile-simulator
-spec:
-  ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 8080
-  type: LoadBalancer
-  selector:
-    app: loyalty-mobile-simulator
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: mobile-simulator-service
+    labels:
+      app: mobile-simulator
+  spec:
+    ports:
+      - port: 80
+        protocol: TCP
+        targetPort: 8080
+    type: LoadBalancer
+    selector:
+      app: mobile-simulator
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: loyalty-mobile-simulator-deployment
+  name: mobile-simulator-deployment
   labels:
-    app: loyalty-mobile-simulator
+    app: mobile-simulator
 spec:
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: loyalty-mobile-simulator
+        app: mobile-simulator
     spec:
       containers:
-        - image: ykoyfman/simulator:1.0-SNAPSHOT
+        - image: anthonyamanse/mobile-simulator:example-bank-1.0
           imagePullPolicy: Always
-          name: loyalty-mobile-simulator
+          name: mobile-simulator
+          envFrom:
+            - secretRef:
+                name: mobile-simulator-secrets
           env:
             - name: PORT
               value: '8080'
-            - name: APP_ID_IAM_APIKEY
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_IAM_APIKEY
-            - name: APP_ID_MANAGEMENT_URL
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_MANAGEMENT_URL
-            - name: APP_ID_CLIENT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_CLIENT_ID
-            - name: APP_ID_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_CLIENT_SECRET
-            - name: APP_ID_TOKEN_URL
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: APP_ID_TOKEN_URL
-            - name: PROXY_USER_MICROSERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: PROXY_USER_MICROSERVICE
-            - name: PROXY_EVENT_MICROSERVICE
-              valueFrom:
-                secretKeyRef:
-                  name: mobile-simulator-secrets
-                  key: PROXY_EVENT_MICROSERVICE
           ports:
             - containerPort: 8080
+
 ---
 apiVersion: v1
 kind: Route
 metadata:
-  name: loyalty-mobile-simulator-service
+  name: mobile-simulator-service
 spec:
   to:
     kind: Service
-    name: loyalty-mobile-simulator-service
+    name: mobile-simulator-service
+

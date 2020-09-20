@@ -1,17 +1,17 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: loyalty-database-load
+  name: cc-schema-load
   labels:
-    app: loyalty-database-load
+    app: cc-schema-load
 spec:
   template:
     spec:
       restartPolicy: Never
       containers:
-        - name: loyalty-database-load
-          image: ykoyfman/schema-data:1.0-SNAPSHOT
+        - name: cc-schema-load
+          image: ykoyfman/bank-schema:1.0
           imagePullPolicy: Always
           envFrom:
             - secretRef:
-                name: loyalty-db-secret
+                name: bank-db-secret

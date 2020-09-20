@@ -1,13 +1,13 @@
 class Navigation extends HTMLElement {
 
     activeview = '';
-   
+
     getMobileView(){
         var sr = this.shadowRoot;
 
          // I don't like this being hard coded, but have stuggled to find a dynamic way for exampe: .childNodes.item("mobileview");
 
-        var mobileview = sr.host.parentElement.childNodes[3]; 
+        var mobileview = sr.host.parentElement.childNodes[3];
         return mobileview;
     }
 
@@ -46,7 +46,7 @@ class Navigation extends HTMLElement {
             console.log(e)
 
             var id = e.detail.eventData.id;
-            
+
             // console.log('HOMESCREEN RECIEVED EVENT FROM NAV BUTTON: ' + id.toLocaleUpperCase());
 
             this.setAllButtonsDisabled();
