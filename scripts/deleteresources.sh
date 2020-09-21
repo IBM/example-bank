@@ -15,7 +15,7 @@ oc delete namespace knative-eventing
 
 # delete subscription and clusterserviceversion of openshift serverless operator
 oc delete subscription serverless-operator -n openshift-operators
-oc delete csv $(oc get csv -n openshift-operators -o=jsonpath='{.items[*].metadata.name}' | grep serverless) -n openshift-operators
+oc delete csv $(oc get csv -n openshift-operators -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | grep serverless-operator) -n openshift-operators
 
 ## end of delete openshift serverless
 
@@ -42,3 +42,7 @@ sleep 2
 
 oc delete project example-bank
 oc delete project istio-system
+
+## Delete jaeger,elasticsearch,kialia,servicemesh operators
+
+oc delete csv -n openshift-operators $(oc get csv -n openshift-operators -o=jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}' | grep 'elasticsearch-operator\|jaeger-operator\|kiali-operator\|servicemeshoperator')
