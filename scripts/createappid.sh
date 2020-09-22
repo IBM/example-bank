@@ -1,3 +1,23 @@
+# Check if ibmcloud is in user's account
+ibmcloud_accountname=$(ibmcloud target --output json | jq -j '.account.name')
+
+## check if account is in quicklabs (labs.cognitiveclass.ai) or workshop clusters account in DEG
+if [ "$ibmcloud_accountname" = "QuickLabs - IBM Skills Network" ]; then
+  echo "\n"
+  echo "WARNING: You're logged in as ${ibmcloud_accountname}"
+  echo "Please log in again using -- ibmcloud login -u YOUR_IBM_CLOUD_EMAIL"
+  echo "and run this script again"
+  exit 1
+elif [ "$ibmcloud_accountname" = "DEGCloud DEGCloud's Account" ]; then
+  echo "\n"
+  echo "WARNING: You're logged in as ${ibmcloud_accountname}"
+  echo "Please log in again using -- ibmcloud login -u YOUR_IBM_CLOUD_EMAIL"
+  echo "and run this script again"
+  exit 1
+fi
+# end check
+
+
 RG=$(ibmcloud resource groups --default | grep -i ^default | awk '{print $1}')
 ibmcloud target -g $RG
 
