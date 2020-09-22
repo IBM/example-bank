@@ -17,7 +17,7 @@ echo $response
 code=$(echo "${response}" | tail -n1)
 [ "$code" -ne "200" ] && exit 1
 
-accesstoken=$(echo "${response}" | head -n-1 | jq -j '.access_token')
+accesstoken=$(echo "${response}" | head -n1 | jq -j '.access_token')
 
 response=$(curl -v -X GET -w "\n%{http_code}" \
   -H "Content-Type: application/json" \
@@ -29,10 +29,10 @@ echo $response
 code=$(echo "${response}" | tail -n1)
 [ "$code" -ne "200" ] && exit 1
 
-tenantid=$(echo "${response}"| head -n-1 | jq -j '.applications[0].tenantId')
-clientid=$(echo "${response}"| head -n-1 | jq -j '.applications[0].clientId')
-secret=$(echo "${response}"| head -n-1 | jq -j '.applications[0].secret')
-oauthserverurl=$(echo "${response}"| head -n-1 | jq -j '.applications[0].oAuthServerUrl')
+tenantid=$(echo "${response}"| head -n1 | jq -j '.applications[0].tenantId')
+clientid=$(echo "${response}"| head -n1 | jq -j '.applications[0].clientId')
+secret=$(echo "${response}"| head -n1 | jq -j '.applications[0].secret')
+oauthserverurl=$(echo "${response}"| head -n1 | jq -j '.applications[0].oAuthServerUrl')
 appidhost=$(echo "${oauthserverurl}" | awk -F/ '{print $3}')
 
 # Creates secret from application credentials

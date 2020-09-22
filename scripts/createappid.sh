@@ -63,7 +63,7 @@ echo $response
 code=$(echo "${response}" | tail -n1)
 [ "$code" -ne "200" ] && printf "\nFAILED to create application\n" && exit 1
 
-clientid=$(echo "${response}" | head -n-1 | jq -j '.clientId')
+clientid=$(echo "${response}" | head -n1 | jq -j '.clientId')
 
 printf "\nDefining admin scope\n"
 response=$(curl -X PUT -w "\n%{http_code}" \
@@ -93,7 +93,7 @@ echo $response
 code=$(echo "${response}" | tail -n1)
 [ "$code" -ne "201" ] && printf "\nFAILED to define admin role\n" && exit 1
 
-roleid=$(echo "${response}" | head -n-1 | jq -j '.id')
+roleid=$(echo "${response}" | head -n1 | jq -j '.id')
 
 printf "\nDefining admin user in cloud directory\n"
 response=$(curl -X POST -w "\n%{http_code}" \
@@ -125,7 +125,7 @@ echo $response
 code=$(echo "${response}" | tail -n1)
 [ "$code" -ne "200" ] && printf "\nFAILED to get admin user profile\n" && exit 1
 
-userid=$(echo "${response}" | head -n-1 | jq -j '.users[0].id')
+userid=$(echo "${response}" | head -n1 | jq -j '.users[0].id')
 
 printf "\nAdding admin role to admin user\n"
 response=$(curl -X PUT -w "\n%{http_code}" \
