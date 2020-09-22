@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  annotations:
+    olm.providedAPIs: Backup.v1alpha1.postgresql.dev4devs.com,Database.v1alpha1.postgresql.dev4devs.com
+  generateName: example-bank-
+  generation: 1
+  name: example-bank-rgc7j
+  namespace: example-bank
+spec:
+  targetNamespaces:
+  - example-bank
