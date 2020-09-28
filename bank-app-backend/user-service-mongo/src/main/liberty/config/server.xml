@@ -1,0 +1,38 @@
+<server description="Liberty server">
+
+    <featureManager>
+      <feature>jpa-2.2</feature>
+      <feature>microProfile-3.0</feature>
+      <feature>mpJwt-1.1</feature>
+    </featureManager>
+
+    <logging traceSpecification="eclipselink=all" maxFileSize="20" maxFiles="10"/>
+
+    <keyStore id="digicertRootCA" password="digicert" location="${server.config.dir}/resources/security/digicert-root-ca.jks"/>
+    <ssl id="defaultSSLConfig" keyStoreRef="defaultKeyStore" trustStoreRef="digicertRootCA" />
+
+    <httpEndpoint host="*" httpPort="${default.http.port}" 
+        httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
+
+    <mpJwt 
+      id="jwt"  
+      issuer="${OIDC_ISSUERIDENTIFIER}"
+      jwksUri="${OIDC_JWKENDPOINTURL}"
+      audiences="${OIDC_AUDIENCES}"
+      userNameAttribute="sub"
+    />  
+
+    <library id="PostgresLib">
+      <fileset dir="${server.config.dir}/jdbc"/>
+    </library>
+
+    <webApplication location="user-service-mongo.war" contextRoot="/">
+      <application-bnd>
+        <security-role name="authenticated">
+          <!-- <special-subject type="ALL_AUTHENTICATED_USERS"/> -->
+          <special-subject type="EVERYONE"/>
+        </security-role>
+      </application-bnd>
+    </webApplication>
+
+</server>
