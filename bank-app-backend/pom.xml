@@ -181,6 +181,7 @@
         <module>common</module>
         <module>transaction-service</module>
         <module>user-service</module>
+        <module>user-service-mongo</module>
         <module>integration-tests</module>
     </modules>
 

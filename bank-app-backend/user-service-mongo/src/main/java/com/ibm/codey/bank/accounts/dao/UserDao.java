@@ -8,6 +8,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import static com.mongodb.client.model.Filters.*;
 
+import java.util.UUID;
 
 @RequestScoped
 public class UserDao {
@@ -26,7 +27,7 @@ public class UserDao {
     }
 
     public User findUserByRegistryId(final String subject) {
-        return db.getCollection("users", User.class).find(eq("subject", subject)).first();
+        return db.getCollection("users", User.class).find(eq("subject", UUID.fromString(subject))).first();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.ibm.codey.bank.accounts;
 
+import java.util.UUID;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
@@ -44,7 +46,7 @@ public class UserResource extends BaseResource {
             return Response.status(Response.Status.BAD_REQUEST).entity("User is already registered").build();
         }
         User newUser = new User();
-        newUser.setSubject(subject);
+        newUser.setSubject(UUID.fromString(subject));
         newUser.setConsentGiven(userRegistration.isConsentGiven());
         userDAO.createUser(newUser);
         return Response.status(Response.Status.NO_CONTENT).build();
@@ -67,7 +69,7 @@ public class UserResource extends BaseResource {
             return Response.status(Response.Status.NOT_FOUND).entity("User is not registered").build();
         } 
         UserRegistrationInfo userRegistration = new UserRegistrationInfo();
-        userRegistration.setUserId(prevUser.getUserId());
+        userRegistration.setUserId(prevUser.getUserId().toString());
         userRegistration.setConsentGiven(prevUser.isConsentGiven());
         return Response.status(Response.Status.OK).entity(userRegistration).build();
     }
