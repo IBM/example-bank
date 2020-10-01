@@ -1,6 +1,7 @@
 package com.ibm.codey.bank.catalog.dao;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +11,9 @@ import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.ws.rs.WebApplicationException;
 
+import com.ibm.codey.bank.catalog.KnativeService;
 import com.ibm.codey.bank.catalog.models.Category;
 import com.ibm.codey.bank.catalog.models.Transaction;
 import com.mongodb.client.MongoCollection;
@@ -18,6 +21,9 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -27,9 +33,22 @@ public class TransactionDao {
     @Inject
     MongoDatabase db;
 
+    @Inject
+    @ConfigProperty(name = "KNATIVE_SERVICE_URL")
+    private URL knativeServiceURL;
+
     public void createTransaction(Transaction transaction) {
         MongoCollection<Transaction> collection = db.getCollection("transactions", Transaction.class);
         collection.insertOne(transaction);
+        KnativeService knativeService = RestClientBuilder.newBuilder().baseUrl(knativeServiceURL).build(KnativeService.class);
+        try {
+            System.out.println(knativeServiceURL);
+            knativeService.processTransaction(transaction.getTransactionId().toString(), transaction.getCategory(), transaction.getAmount().toString());
+        } catch (WebApplicationException wae) {
+            System.out.print("web app exception");
+            wae.printStackTrace();
+        }
+        
     }
 
     public void updateTransaction(Transaction transaction) {
