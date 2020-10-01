@@ -25,17 +25,17 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 @ApplicationScoped
 public class MongoProducer {
 
-    // @Inject
-    // @ConfigProperty(name = "mongo.hostname", defaultValue = "mongo")
-    // String hostname;
+    @Inject
+    @ConfigProperty(name = "MONGODB_HOSTNAME", defaultValue = "mongo")
+    String hostname;
 
-    // @Inject
-    // @ConfigProperty(name = "mongo.port", defaultValue = "27017")
-    // String port;
+    @Inject
+    @ConfigProperty(name = "MONGODB_PORT", defaultValue = "27017")
+    String port;
 
-    // @Inject
-    // @ConfigProperty(name = "mongo.dbname", defaultValue = "example")
-    // String dbName;
+    @Inject
+    @ConfigProperty(name = "MONGODB_DATABASE", defaultValue = "example")
+    String dbName;
 
     // @Inject
     // @ConfigProperty(name = "mongo.user")
@@ -55,7 +55,7 @@ public class MongoProducer {
             .codecRegistry(pojoCodecRegistry)
             .uuidRepresentation(UuidRepresentation.STANDARD)
             .applyToClusterSettings(builder ->
-                            builder.hosts(Arrays.asList(new ServerAddress("mongo"))))
+                            builder.hosts(Arrays.asList(new ServerAddress(hostname, Integer.parseInt(port)))))
             .build();
 
         return MongoClients.create(settings);

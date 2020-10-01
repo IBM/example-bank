@@ -29,8 +29,8 @@
     <webApplication location="transaction-service-mongo.war" contextRoot="/">
       <application-bnd>
         <security-role name="authenticated">
-          <!-- <special-subject type="ALL_AUTHENTICATED_USERS"/> -->
-          <special-subject type="EVERYONE"/>
+          <special-subject type="ALL_AUTHENTICATED_USERS"/>
+          <!-- <special-subject type="EVERYONE"/> -->
         </security-role>
       </application-bnd>
     </webApplication>
