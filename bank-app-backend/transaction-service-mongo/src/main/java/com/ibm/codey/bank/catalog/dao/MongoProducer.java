@@ -1,4 +1,4 @@
-package com.ibm.codey.bank.accounts.dao;
+package com.ibm.codey.bank.catalog.dao;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Disposes;
