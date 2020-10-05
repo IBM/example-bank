@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: anthonyamanse/user-service:example-bank-1.0
+        image: anthonyamanse/lab-user-mongo:tls-1.0
         imagePullPolicy: Always
         ports:
         - name: http-server
@@ -26,6 +26,18 @@ spec:
             name: bank-db-secret
         - secretRef:
             name: bank-oidc-secret
+        volumeMounts:
+          - name: mongo-ca
+            mountPath: "/etc/tls-mongo"
+            readOnly: true
+      volumes:
+        - name: mongo-ca
+          secret:
+            secretName: ca-key-pair
+            items:
+            - key: tls.crt
+              path: custom-ca
+              
 ---
 apiVersion: v1
 kind: Service

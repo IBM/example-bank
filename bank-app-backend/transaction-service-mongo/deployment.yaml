@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: transaction-service
-        image: ykoyfman/bank-transaction-service:1.0
+        image: anthonyamanse/lab-transaction-mongo:tls-1.0
         imagePullPolicy: Always
         ports:
         - name: http-server
@@ -35,6 +35,17 @@ spec:
           value: "http://process-transaction.example-bank.svc.cluster.local"
         - name: WLP_LOGGING_CONSOLE_LOGLEVEL
           value: INFO
+        volumeMounts:
+          - name: mongo-ca
+            mountPath: "/etc/tls-mongo"
+            readOnly: true
+      volumes:
+        - name: mongo-ca
+          secret:
+            secretName: ca-key-pair
+            items:
+            - key: tls.crt
+              path: custom-ca
 ---
 apiVersion: v1
 kind: Service
