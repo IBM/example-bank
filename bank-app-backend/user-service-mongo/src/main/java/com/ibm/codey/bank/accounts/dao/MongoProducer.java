@@ -8,6 +8,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 import com.mongodb.MongoClientSettings;
+import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -50,13 +51,13 @@ public class MongoProducer {
     @ConfigProperty(name = "MONGODB_DATABASE", defaultValue = "example")
     String dbName;
 
-    // @Inject
-    // @ConfigProperty(name = "mongo.user")
-    // String user;
+    @Inject
+    @ConfigProperty(name = "MONGODB_USER", defaultValue = "")
+    String user;
 
-    // @Inject
-    // @ConfigProperty(name = "mongo.pass")
-    // String pass;
+    @Inject
+    @ConfigProperty(name = "MONGODB_PASSWORD", defaultValue = "")
+    String pass;
 
     @Produces
     private SSLContext createSSLContext() {
@@ -90,12 +91,22 @@ public class MongoProducer {
     }
 
     @Produces
-    public MongoClient createMongo(SSLContext sslContext) {
+    private MongoCredential createCredential() {
+        if (user.isEmpty() || pass.isEmpty()) {
+            return null;
+        } else {
+            // dbName is where user is stored
+            return MongoCredential.createScramSha256Credential(user, dbName, pass.toCharArray());
+        }
+    }
+
+    @Produces
+    public MongoClient createMongo(SSLContext sslContext, MongoCredential credential) {
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
             // use local
-            MongoClientSettings settings = MongoClientSettings.builder()
+            MongoClientSettings.Builder settingsBuilder = MongoClientSettings.builder()
                 .codecRegistry(pojoCodecRegistry)
                 .uuidRepresentation(UuidRepresentation.STANDARD)
                 .applyToSslSettings(builder -> {
@@ -105,10 +116,13 @@ public class MongoProducer {
                                 }
                             })
                 .applyToClusterSettings(builder ->
-                                builder.hosts(Arrays.asList(new ServerAddress(hostname, Integer.parseInt(port)))))
-                .build();
+                                builder.hosts(Arrays.asList(new ServerAddress(hostname, Integer.parseInt(port)))));
 
-            return MongoClients.create(settings);
+            if (credential != null) {
+                settingsBuilder = settingsBuilder.credential(credential);
+            }
+
+            return MongoClients.create(settingsBuilder.build());
     }
 
     @Produces

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: anthonyamanse/lab-user-mongo:tls-1.0
+        image: anthonyamanse/lab-user-mongo:tls-auth-1.0
         imagePullPolicy: Always
         ports:
         - name: http-server
@@ -26,6 +26,8 @@ spec:
             name: bank-db-secret
         - secretRef:
             name: bank-oidc-secret
+        - secretRef:
+            name: bank-db-mongo-user
         volumeMounts:
           - name: mongo-ca
             mountPath: "/etc/tls-mongo"
