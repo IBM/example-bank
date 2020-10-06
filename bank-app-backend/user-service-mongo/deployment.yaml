@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: anthonyamanse/lab-user-mongo:tls-auth-1.0
+        image: anthonyamanse/lab-user-mongo:tls-auth-2.0
         imagePullPolicy: Always
         ports:
         - name: http-server

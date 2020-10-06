@@ -1,5 +1,6 @@
 package com.ibm.codey.bank.accounts.dao;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
@@ -10,7 +11,7 @@ import static com.mongodb.client.model.Filters.*;
 
 import java.util.UUID;
 
-@RequestScoped
+@ApplicationScoped
 public class UserDao {
 
     @Inject

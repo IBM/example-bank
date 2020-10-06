@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
@@ -27,7 +28,7 @@ import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 import static com.mongodb.client.model.Filters.*;
 
-@RequestScoped
+@ApplicationScoped
 public class TransactionDao {
 
     @Inject

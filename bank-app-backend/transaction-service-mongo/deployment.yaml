@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: transaction-service
-        image: anthonyamanse/lab-transaction-mongo:tls-auth-1.0
+        image: anthonyamanse/lab-transaction-mongo:tls-auth-2.0
         imagePullPolicy: Always
         ports:
         - name: http-server

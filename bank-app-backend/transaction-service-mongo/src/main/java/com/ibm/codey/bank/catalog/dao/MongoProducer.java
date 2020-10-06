@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
+import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -42,6 +43,10 @@ public class MongoProducer {
     @Inject
     @ConfigProperty(name = "MONGODB_HOSTNAME", defaultValue = "mongo")
     String hostname;
+
+    @Inject
+    @ConfigProperty(name = "MONGODB_REPLICASET_NAME", defaultValue = "mongo")
+    String replicaSetName;
 
     @Inject
     @ConfigProperty(name = "MONGODB_PORT", defaultValue = "27017")
@@ -100,6 +105,18 @@ public class MongoProducer {
         }
     }
 
+    private ConnectionString getConnectionString() {
+        if (Arrays.asList(hostname.split(",")).size() > 1) {
+            return new ConnectionString("mongodb://".concat(hostname).concat("/").concat("?replicaSet=").concat(replicaSetName));
+        } else {
+            if (Arrays.asList(hostname.split(":")).size() > 1) {
+                return new ConnectionString("mongodb://".concat(hostname));
+            } else {
+                return new ConnectionString("mongodb://".concat(hostname).concat(":").concat(port));
+            }
+        }
+    }
+
     @Produces
     public MongoClient createMongo(SSLContext sslContext, MongoCredential credential) {
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
@@ -115,8 +132,8 @@ public class MongoProducer {
                                     builder.context(sslContext);
                                 }
                             })
-                .applyToClusterSettings(builder ->
-                                builder.hosts(Arrays.asList(new ServerAddress(hostname, Integer.parseInt(port)))));
+                .applyToClusterSettings(builder -> 
+                                builder.applyConnectionString(getConnectionString()));
 
                 if (credential != null) {
                     settingsBuilder = settingsBuilder.credential(credential);
