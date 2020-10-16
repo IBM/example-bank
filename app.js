@@ -31,6 +31,8 @@ var appEnv = cfenv.getAppEnv();
 var log4js = require('log4js');
 var logger = log4js.getLogger();
 
+console.log(process.env);
+
 logger.level = 'debug';
 logger.debug("launching bank simulated UI");
 

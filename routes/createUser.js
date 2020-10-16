@@ -10,6 +10,9 @@ const random_name = require('node-random-name');
 const SelfServiceManager = require("ibmcloud-appid").SelfServiceManager;
 let APP_ID_IAM_APIKEY = process.env.APP_ID_IAM_APIKEY
 let APP_ID_MANAGEMENT_URL = process.env.APP_ID_MANAGEMENT_URL
+
+console.log("App_ID_management_URL:" + APP_ID_MANAGEMENT_URL);
+
 let selfServiceManager = new SelfServiceManager({
 	iamApiKey: APP_ID_IAM_APIKEY,
 	managementUrl: APP_ID_MANAGEMENT_URL
@@ -20,6 +23,7 @@ const APP_ID_CLIENT_SECRET = process.env.APP_ID_CLIENT_SECRET
 const APP_ID_TOKEN_URL = process.env.APP_ID_TOKEN_URL
 // IAM token url
 const IAM_TOKEN_URL = 'https://iam.cloud.ibm.com/identity/token'
+
 
 router.get('/random_user', function (req, res) {
 	res.send(random_name())
