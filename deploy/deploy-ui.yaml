@@ -44,13 +44,3 @@ spec:
           ports:
             - containerPort: 8080
 
----
-apiVersion: v1
-kind: Route
-metadata:
-  name: mobile-simulator-service
-spec:
-  to:
-    kind: Service
-    name: mobile-simulator-service
-
