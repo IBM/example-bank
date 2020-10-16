@@ -48,13 +48,3 @@ spec:
     targetPort: 9080
   selector:
     app: transaction-service
----
-apiVersion: v1
-kind: Route
-metadata:
-  name: transaction-service
-spec:
-  to:
-    kind: Service
-    name: transaction-service
-
