@@ -1,0 +1,28 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: bank-user-cleanup-utility
+  labels:
+    app: bank-user-cleanup-utility
+spec:
+  schedule: "@hourly"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: bank-user-cleanup-utility
+            image: ykoyfman/bank-cleanup:1.0
+            imagePullPolicy: Always
+            envFrom:
+            - secretRef:
+                name: bank-db-secret
+            - secretRef:
+                name: bank-iam-secret
+            - secretRef:
+                name: bank-appid-secret
+            env:
+            - name: LAST_LOGIN_HOURS
+              value: "24"
+      backoffLimit: 0

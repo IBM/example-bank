@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cc-schema-load
+  labels:
+    app: cc-schema-load
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: cc-schema-load
+          image: ykoyfman/bank-schema:1.0
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: bank-db-secret
