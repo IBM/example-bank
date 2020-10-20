@@ -4,6 +4,7 @@ metadata:
   name: cc-schema-load
   labels:
     app: cc-schema-load
+    git: test
 spec:
   template:
     spec:
