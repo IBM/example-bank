@@ -1,0 +1,28 @@
+config:
+  plugin:
+    statsd:
+      host: "localhost"
+      port: 8125
+      prefix: "artillery"
+  target: https://credit-card.ibmdeveloper.net
+  phases:
+    - duration: 1
+      arrivalRate: 1
+      rampTo: 1
+      name: "Login warmup"
+    - duration: 100
+      arrivalRate: 3
+      name: "Login max load"
+scenarios:
+  - name: "Login testing"
+    flow:
+      - post:
+          url: "/demo/login"
+          json:
+            username: "foobar"
+            password: "barfoo"
+          capture:
+            json: "$.cdErrorCode"
+            as: "error"
+      - log: "The response is: {{ error }}"            
+
