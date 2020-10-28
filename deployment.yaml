@@ -29,7 +29,7 @@ spec:
         sidecar.istio.io/inject: "true"
     spec:
       containers:
-        - image: ykoyfman/mobile-simulator:ga
+        - image: ykoyfman/mobile-simulator:b58c277
           imagePullPolicy: Always
           name: mobile-simulator
           envFrom:
