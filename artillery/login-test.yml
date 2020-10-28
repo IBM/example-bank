@@ -5,6 +5,7 @@ config:
       port: 8125
       prefix: "artillery"
   target: https://credit-card.ibmdeveloper.net
+  processor: "./custom-artillery-functions.js"
   phases:
     - duration: 1
       arrivalRate: 1
@@ -16,13 +17,15 @@ config:
 scenarios:
   - name: "Login testing"
     flow:
+      - function: "getUser"
+      - log: "The username is: {{ username }}"
       - post:
           url: "/demo/login"
           json:
-            username: "foobar"
-            password: "barfoo"
+            username: "{{ username }}"
+            password: "{{ username }}"
           capture:
-            json: "$.cdErrorCode"
+            json: "$"
             as: "error"
       - log: "The response is: {{ error }}"            
 
