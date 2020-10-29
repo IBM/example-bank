@@ -29,3 +29,18 @@ scenarios:
             as: "error"
       - log: "The response is: {{ error }}"            
 
+scenarios:
+  - name: "Login testing"
+    flow:
+      - function: "getUser"
+      - log: "The username is: {{ username }}"
+      - post:
+          url: "/demo/login"
+          json:
+            username: "{{ username }}"
+            password: "{{ username }}"
+          capture:
+            json: "$"
+            as: "error"
+      - log: "The response is: {{ error }}"            
+
