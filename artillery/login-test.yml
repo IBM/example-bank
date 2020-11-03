@@ -11,29 +11,39 @@ config:
       arrivalRate: 1
       rampTo: 1
       name: "Login warmup"
-    - duration: 300
-      arrivalRate: 10
-      name: "Login max load"
 scenarios:
-  - name: "Login testing"
-    flow:
-      - function: "getUser"
-      - log: "The username is: {{ username }}"
-      - post:
-          url: "/demo/login"
-          json:
-            username: "{{ username }}"
-            password: "{{ username }}"
-          capture:
-            json: "$"
-            as: "error"
-      - log: "The response is: {{ error }}"            
-  - name: "Get users"
+  - name: "Get user and login"
     flow:
       - get:
           url: "/demo/get_all_users"
+          afterResponse: "afterGetUsers"
+      - log: "The username picked is {{ user }}"
+      - post:
+          url: "/demo/login"
+          headers:
+            Content-type: "application/json"
+          json:
+            username: "{{ user }}"
+            password: "{{ user }}"
+          capture:
+            json: "$.access_token"
+            as: "token"
+      - log: "Got this token {{ token }}"
+      - post:
+          url: "/proxy_transaction/bank/v1/transactions"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          json:
+            category: "CAFE"
+            transactionName: "ArtilleryCoffee"
+            amount: "109"
+      - get:
+          url: "/proxy_transaction/bank/v1/transactions"
+          headers:
+            Authorization: "Bearer {{ token }}"
           capture:
             json: "$"
-            as: "response"
-      - log: "The response is: {{ response }}"
-
+            as: "transactions"
+      - log: "The transactions are: {{ transactions }}"
+        
+        

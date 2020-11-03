@@ -32,6 +32,9 @@ spec:
         - image: ykoyfman/mobile-simulator:b58c277
           imagePullPolicy: Always
           name: mobile-simulator
+          resources:
+            limits:
+              cpu: "280m"          
           envFrom:
             - secretRef:
                 name: mobile-simulator-secrets
