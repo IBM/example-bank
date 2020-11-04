@@ -7,10 +7,10 @@ config:
   target: https://credit-card.ibmdeveloper.net
   processor: "./custom-artillery-functions.js"
   phases:
-    - duration: 1
-      arrivalRate: 1
-      rampTo: 1
-      name: "Login warmup"
+    - duration: 20
+      arrivalRate: 3
+      rampTo: 5
+      name: "Stress test"
 scenarios:
   - name: "Get user and login"
     flow:
@@ -37,13 +37,13 @@ scenarios:
             category: "CAFE"
             transactionName: "ArtilleryCoffee"
             amount: "109"
-      - get:
-          url: "/proxy_transaction/bank/v1/transactions"
-          headers:
-            Authorization: "Bearer {{ token }}"
-          capture:
-            json: "$"
-            as: "transactions"
-      - log: "The transactions are: {{ transactions }}"
-        
-        
+      - loop:
+          - get:
+              url: "/proxy_transaction/bank/v1/transactions"
+              headers:
+                Authorization: "Bearer {{ token }}"
+              capture:
+                json: "$"
+                as: "transactions"
+          - log: "The transactions are: {{ transactions }}"
+        count: 100
