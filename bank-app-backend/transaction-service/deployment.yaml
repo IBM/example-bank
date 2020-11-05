@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: transaction-service
-        image: ykoyfman/bank-transaction-service:1.0
+        image: ykoyfman/transaction-service:no-timeout
         imagePullPolicy: Always
         ports:
         - name: http-server
@@ -44,7 +44,8 @@ metadata:
     app: transaction-service
 spec:
   ports:
-  - port: 9080
+  - name: http
+    port: 9080
     targetPort: 9080
   selector:
     app: transaction-service

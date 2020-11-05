@@ -37,7 +37,8 @@ metadata:
     app: user-service
 spec:
   ports:
-  - port: 9080
+  - name: http
+    port: 9080
     targetPort: 9080
   selector:
     app: user-service

@@ -1,0 +1,39 @@
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: user-tls
+spec:
+  targets:
+  - name: user-service
+  peers:
+  - mtls: {}
+---
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: transaction-tls
+spec:
+  targets:
+  - name: transaction-service
+  peers:
+  - mtls: {}
+---
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: simulator-tls
+spec:
+  targets:
+  - name: mobile-simulator-service
+  peers:
+  - mtls: {}
+---
+apiVersion: authentication.istio.io/v1alpha1
+kind: Policy
+metadata:
+  name: db-tls
+spec:
+  targets:
+  - name: creditdb
+  peers:
+  - mtls: {}
