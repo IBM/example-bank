@@ -5,9 +5,9 @@
     --loyalty-button-color: #FF7E00;
     --loyalty-highlight-color: #FF002E;
     --loyalty-phone-color: #39687E;
-    --loyalty-sensor-color:#88a4b1;
-    --loyalty-divide-color:aliceblue;
-    --loyalty-highlight-color:#fff2e5;
+    --loyalty-sensor-color: #88a4b1;
+    --loyalty-divide-color: aliceblue;
+    --loyalty-highlight-color: #fff2e5;
 }
 
 .loyalty {
@@ -37,8 +37,8 @@
 
 .navigation {
     display: flex;
-    min-height: 15%;
-    max-height:15%;
+    /* min-height: 15%;
+    max-height:15%; */
     flex-direction: column;
     width: 50%;
     padding-right: 50px;
@@ -94,6 +94,7 @@
     font-size: 12px;
     line-height: 18px;
     word-spacing: 2px;
+    padding-bottom: 20px;
 }
 
 .instruction {
@@ -129,4 +130,3 @@
     font-weight: bold;
     font-size: 14px;
 }
-
