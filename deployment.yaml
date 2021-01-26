@@ -32,7 +32,7 @@ spec:
         app: mobile-simulator
     spec:
       containers:
-        - image: ykoyfman/mobile-simulator:b58c277
+        - image: ykoyfman/mobile-simulator:css-fix
           imagePullPolicy: Always
           name: mobile-simulator
           envFrom:
