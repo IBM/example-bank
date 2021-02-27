@@ -10,7 +10,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: cc-schema-load
-          image: ykoyfman/bank-schema:1.0
+          image: docker.io/ykoyfman/db-load-icd
           imagePullPolicy: Always
           envFrom:
             - secretRef:
