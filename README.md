@@ -2,7 +2,7 @@
 
 ## Introduction to IBM Cloud Satellite
 
-In this code pattern, we show how to deploy a microservice based back-end in OpenShift 4.3 Running on an IBM Cloud Satellite Location on virtual servers running on Google Cloud Platform. IBM Satelite allows you to connect your own compute infrastructure -- either on-premises or running in another cloud provider -- to a central control point on IBM Cloud, allowing for consistent management of OpenShift and, in the future, other services like databases. In this pattern, we'll create a Satellite location, deploy and attach VMs from Google Compute Platform, and deploy OpenShift (managed by IBM Cloud) on those virtual machines. We'll then be creating Satellite Links -- encrypted, managed tunnels -- to connect our application to services on IBM Cloud: App ID for authentication and IBM Cloud Databases for transaction storage. Finally, we'll deploying our Node and Java microservice-based back-end to OpenShift. The application will be running on the GCP hosts and will be made accessible via an OpenShift route.
+In this code pattern, we show how to deploy a microservice based back-end in OpenShift 4.3 Running on an IBM Cloud Satellite Location on virtual servers running on Google Cloud Platform. IBM Cloud Satelite allows you to connect your own compute infrastructure -- either on-premises or running in another cloud provider -- to a central control point on IBM Cloud, allowing for consistent management of OpenShift and, in the future, other services like databases. In this pattern, we'll create a Satellite location, deploy and attach VMs from Google Compute Platform, and deploy OpenShift (managed by IBM Cloud) on those virtual machines. We'll then be creating Satellite Links -- encrypted, managed tunnels -- to connect our application to services on IBM Cloud: App ID for authentication and IBM Cloud Databases for transaction storage. Finally, we'll deploying our Node.js and Java microservice-based back-end to OpenShift. The application will be running on the GCP hosts and will be made accessible via an OpenShift route.
 
 ## Introduction to Example Bank
 
@@ -17,7 +17,7 @@ OpenShift is RedHat's customized distribution of Kubernetes. With OpenShift, you
 ![app_id](satimage/arch-official-1.png)
 
 # Included components
-- [IBM Satellite](https://www.ibm.com/cloud/satellite)
+- [IBM Cloud Satellite](https://www.ibm.com/cloud/satellite)
 - [IBM Managed OpenShift](https://www.ibm.com/cloud/openshift)
 - [OpenLiberty](https://openliberty.io)
 - [App ID](https://www.ibm.com/cloud/app-id)
