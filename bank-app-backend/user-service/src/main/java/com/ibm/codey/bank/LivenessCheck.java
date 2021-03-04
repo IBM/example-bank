@@ -11,8 +11,8 @@ import org.eclipse.microprofile.health.Liveness;
 public class LivenessCheck implements HealthCheck {
 
     private boolean isAlive() {
-        // perform health checks here
-
+        // perform health checks here 
+        System.out.println("Health checks");
         return true;
     }
 	
