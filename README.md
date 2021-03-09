@@ -39,7 +39,7 @@ In this code pattern, you will set up compute infrastructure on Google Cloud Pla
 # Steps
 
 1. Create a Satellite location in IBM Cloud.
-2. Deploy infrastructure for a Satellite location on Google Cloud by provisioning RHEL VMs from a template. [GCP Host Requirements](https://cloud.ibm.com/docs/satellite?topic=satellite-providers)
+2. Deploy infrastructure for a Satellite location on Google Cloud by provisioning RHEL VMs from a template. [GCP Host Requirements](https://cloud.ibm.com/docs/satellite?topic=satellite-gcp)
 3. Assign three GCP VMs to the Satellite Location control plane.
 4. Set up a RedHat OpenShift Cluster in the satellite location.
 5. Assign VMs to the OpenShift Cluster.
@@ -65,7 +65,7 @@ create a location instance. This sets up the IBM Cloud portion that will set up 
 
  We are creating a Google Cloud and will follow the instructions here to modify the attachment script we just downloaded: 
 
- https://cloud.ibm.com/docs/satellite?topic=satellite-providers#gcp-reqs
+ https://cloud.ibm.com/docs/satellite?topic=satellite-gcp
 
 After this line: 
 `API_URL="https://containers.cloud.ibm.com/"`
