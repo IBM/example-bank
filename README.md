@@ -63,7 +63,7 @@ create a location instance. This sets up the IBM Cloud portion that will set up 
  
  ## Modify the server attachment script
 
- We are creating a Google Cloud virtual machine and will follow the instructions here to modify the attachment script we just downloaded: 
+ We are creating a Google Cloud virtual machine as a host for Cloud Satellite and will follow the instructions here to modify the attachment script we just downloaded: 
 
  https://cloud.ibm.com/docs/satellite?topic=satellite-gcp
 
