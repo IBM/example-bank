@@ -13,7 +13,7 @@
     "express": "^4.16.4",
     "express-http-proxy": "^1.6.0",
     "ibmcloud-appid": "^6.1.0",
-    "log4js": "^6.1.0",
+    "log4js": "^6.4.0",
     "node-random-name": "^1.0.1",
     "request": "^2.88.2"
   },
